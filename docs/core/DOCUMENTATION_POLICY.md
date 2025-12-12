@@ -53,6 +53,17 @@ In rare cases, duplication is permitted when there is a clear operational benefi
   - Must be kept synchronized when source docs change
   - Must cover ALL relevant topics (not selective)
 
+**Agent Token Economy Best Practices:**
+
+All agent primer files should prioritize token efficiency to maximize context budget for code analysis and implementation. See `.aide/docs/agents/AGENT_TOKEN_ECONOMY.md` for comprehensive strategies.
+
+- **Prefer concise directives over verbose explanations**
+- **Use bullet points and checklists instead of paragraphs**
+- **Reference authoritative docs instead of duplicating content**
+- **Front-load critical information (most important rules first)**
+- **Use quick reference documents when available**
+- **Avoid redundant examples (one clear example > three similar ones)**
+
 ### Implementation State Tracking
 
 **Exception:** `{{IMPLEMENTATION_STATUS_DOC}}` (e.g., `IMPLEMENTATION_STATUS.md`, `PROJECT_STATUS.md`)

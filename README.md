@@ -146,6 +146,8 @@ AIDE defines specialized AI agent roles:
 
 Each role has a dedicated primer in `docs/agents/`.
 
+**Token Optimization**: All agent primers follow token economy best practices (see `docs/agents/AGENT_TOKEN_ECONOMY.md`) to maximize context budget for code analysis and implementation. Target 150-500 tokens per primer depending on complexity.
+
 ## The 7-Step Implementation Workflow
 
 1. **Codebase Survey** - Understand current state (no coding yet)

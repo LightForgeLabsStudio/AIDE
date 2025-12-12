@@ -47,6 +47,12 @@ Use this skeleton to create new agent primers. Keep it concise, explicit, and en
 
 ## Tone and Brevity
 - Prefer concise checklists; add optional elaboration only if needed.
+- Follow token economy best practices in `AGENT_TOKEN_ECONOMY.md`:
+  - Use bullet points/checklists over paragraphs
+  - Reference authoritative docs instead of duplicating content
+  - Front-load critical constraints
+  - One clear example > multiple redundant ones
+  - Target 150-500 tokens depending on agent complexity
 
 ## Signature/Attribution (if required)
 - Commit trailer or review prefix format.
