@@ -1,254 +1,181 @@
 # PR Review Agent Quick Start
 
-**You are reviewing Pull Requests for {{PROJECT_NAME}} ({{TECH_STACK}}).** This document contains everything you need.
+Review PRs for {{PROJECT_NAME}} ({{TECH_STACK}}).
 
-**Non-goal:** Do not push code or fixes; provide findings and decisions only.
+**Non-goal:** Don't push code/fixes. Provide findings and decisions only.
 
-## Your Review Process
+**Token Economy:** Follow `AGENT_OPERATIONAL_TOKEN_ECONOMY.md` - structured reviews (not prose), reference file:line, batch tool calls.
+
+## Review Process
 
 ### Initial Review
-1. **Get Context** - Request PR number/link, scope, test results, and manual steps run
-2. **Fetch PR** - View diff/commits via `gh pr view <number>` or GitHub UI
-3. **Review Commits** - Check commit quality, size, and logical flow
-4. **Review Code** - Check for bugs, style violations, and architecture issues
-5. **Verify Tests** - Confirm automated tests ran (or manual checklist provided) and passed
-6. **Check Docs** - Ensure docs updated if behavior changed
-7. **Post Inline Comments** - Add line-specific comments on issues found during code review
-8. **Post Summary Review** - Comment with overall findings and decision
-9. **Decide** - Approve, request changes, or comment
+1. **Context** - Get PR number, scope, test results
+2. **Fetch** - `gh pr view <number>` or `gh pr diff <number>`
+3. **Review commits** - Quality, size, logical flow
+4. **Review code** - Bugs, style, architecture
+5. **Verify tests** - Automated ran + passed (or manual checklist provided)
+6. **Check docs** - Updated if behavior changed
+7. **Post inline comments** - Line-specific issues via `gh pr comment`
+8. **Post summary** - Overall findings + decision
+9. **Decide** - Approve / Request changes / Comment
 
-### Re-Review (After Feedback Addressed)
-When the implementer has addressed feedback and requests re-review:
+### Re-Review (After Fixes)
+1. Read implementer's status comment
+2. Verify fixes in new commits
+3. Check tests still pass
+4. Decide: Approve / Request more / Comment
 
-1. **Read implementer's status comment** - Check what they claim to have fixed
-2. **Verify fixes** - Review new commits, check that critical issues are resolved
-3. **Check tests** - Confirm tests still pass after changes
-4. **Decide:**
-   - **Approve** if all critical/major issues resolved
-   - **Request more changes** if issues remain or new ones introduced
-   - **Comment** if clarification needed
-
-**Comment Resolution Policy:**
-- **Implementers MAY resolve comments** as they fix issues (shows progress)
-- **Reviewers verify and may re-open** comments if fixes are insufficient
-- **Reviewers should resolve any remaining comments** when approving the PR
-- Resolved comments = "Implementer believes fixed" → Reviewer verifies
+**Comment resolution:**
+- Implementers MAY resolve as they fix
+- Reviewers verify, may re-open if insufficient
+- Reviewers resolve remaining when approving
 
 ## What to Review
 
-### Code Quality Checklist
-- [ ] No security risks or resource leaks
-- [ ] No obvious bugs or logic errors
-- [ ] Follows {{LANGUAGE}} style conventions and {{FRAMEWORK}} patterns
-- [ ] Module boundaries respected (see `{{CODING_GUIDELINES_DOC}}`)
-- [ ] No over-engineering; minimal necessary abstractions
-- [ ] No leftover debug code, commented-out blocks, or TODO comments without issues
+### Code Quality
+- [ ] No security risks, resource leaks
+- [ ] No bugs or logic errors
+- [ ] Follows `{{CODING_GUIDELINES_DOC}}` style
+- [ ] Module boundaries respected
+- [ ] No over-engineering
+- [ ] No debug code, commented blocks, orphaned TODOs
 
-### Architecture Compliance
-- [ ] Implementation follows design docs and documented patterns
-- [ ] No violations of core systems architecture
-- [ ] Changes integrate with existing patterns rather than introducing parallel systems
-- [ ] New functionality fits within the established module boundaries
+### Architecture
+- [ ] Follows design docs + patterns (`{{DEVELOPMENT_DOC}}`)
+- [ ] No core architecture violations
+- [ ] Integrates with existing patterns (not parallel systems)
+- [ ] Fits within module boundaries
 
-**Key Architecture References:**
-- Architecture patterns: `{{DEVELOPMENT_DOC}}`
-- Code standards: `{{CODING_GUIDELINES_DOC}}`
-- Design documentation: `{{PROJECT_DESIGN_DOCS}}`
+**References:**
+- `{{DEVELOPMENT_DOC}}` - Architecture
+- `{{CODING_GUIDELINES_DOC}}` - Style
+- `{{PROJECT_DESIGN_DOCS}}` - Design docs
 
 ### Testing
-- [ ] Automated tests ran and passed, or a clear manual checklist is provided
-- [ ] Relevant scenario checks executed for touched systems
-- [ ] No existing tests modified without justification
-- [ ] New tests added for new functionality where feasible
+- [ ] Automated tests ran + passed OR manual checklist provided
+- [ ] Relevant scenarios checked
+- [ ] No tests modified without justification
+- [ ] New tests for new functionality
 
-### Documentation
-- [ ] README/user docs updated if user-facing behavior changed
-- [ ] `{{DEVELOPMENT_DOC}}`/`{{CONTRIBUTING_DOC}}` updated if architecture/workflow changed
-- [ ] Changelog entry added if project uses one
-- [ ] No unnecessary spec files created
+### Docs
+- [ ] User docs updated if behavior changed
+- [ ] `{{DEVELOPMENT_DOC}}`/`{{CONTRIBUTING_DOC}}` updated if arch/workflow changed
+- [ ] No unnecessary spec files
 
 ### Git Hygiene
-- [ ] Commits are small and single-purpose
-- [ ] Commit messages are clear and descriptive
-- [ ] No stray debug prints or commented-out code
-- [ ] Branch targets the correct base (usually `{{MAIN_BRANCH}}`)
+- [ ] Small, single-purpose commits
+- [ ] Clear commit messages
+- [ ] No debug prints, commented code
+- [ ] Targets `{{MAIN_BRANCH}}`
 
-## Critical Issues to Flag
+## Issue Severity
 
-**Request Changes (Critical):**
-- Violates core architecture documented in design docs or `{{DEVELOPMENT_DOC}}`
-- Breaks existing functionality or introduces regressions
-- Tests not run or failing; missing required manual verification
-- Missing required doc updates for behavior changes
+**Request Changes (Critical - blocking):**
+- Violates architecture (`{{DEVELOPMENT_DOC}}`, design docs)
+- Breaks functionality, regressions
+- Tests not run, failing, or missing required manual verification
+- Missing required doc updates
 - Modifies tests without justification
-- Introduces security risks or crashes
+- Security risks, crashes
 
 **Request Changes or Comment (Major):**
-- Over-engineering, poor commit structure, style violations
+- Over-engineering, poor commits, style violations
 - Module boundary violations
-- Missing tests for new functionality where feasible
+- Missing tests (where feasible)
 
 **Comment Only (Minor):**
-- Typos in comments/docs
-- Naming that could be clearer
-- Small simplifications
+- Typos, naming, small simplifications
 
 ## GitHub CLI Commands
 
-### Basic PR Commands
 ```bash
-gh pr view <number>                          # View PR details
-gh pr diff <number>                          # View PR diff
-gh api repos/:owner/:repo/pulls/<number>/commits  # View commits
-gh pr comment <number> --body "review text"  # Post summary comment
-gh pr review <number> --approve              # Approve
-gh pr review <number> --request-changes      # Request changes
+# View PR
+gh pr view <number>
+gh pr diff <number>
+
+# Post inline comment
+gh pr comment <number> --body "Comment on general PR"
+
+# Post inline code comment (specific line)
+gh api repos/:owner/:repo/pulls/<number>/comments \
+  -f body="Comment text" \
+  -f path="file.ext" \
+  -f commit_id="<commit-sha>" \
+  -F position=5
+
+# Read inline comments
+gh api repos/:owner/:repo/pulls/<number>/comments
+
+# Approve
+gh pr review <number> --approve --body "LGTM. Summary..."
+
+# Request changes
+gh pr review <number> --request-changes --body "Summary..."
+
+# Comment only
+gh pr review <number> --comment --body "Summary..."
 ```
 
-### Posting Inline Comments on Specific Lines
+## Review Output Format
 
-**IMPORTANT:** Always post inline comments on specific lines where issues are found, in addition to the summary review comment.
-
-**Get the latest commit SHA:**
-```bash
-gh api repos/:owner/:repo/pulls/<number>/commits --jq '.[].sha' | tail -1
-```
-
-**Post an inline comment on a specific line:**
-```bash
-gh api \
-  --method POST \
-  -H "Accept: application/vnd.github+json" \
-  repos/:owner/:repo/pulls/<number>/comments \
-  -f body='Your comment here' \
-  -f commit_id='<commit_sha>' \
-  -f path='path/to/file.ext' \
-  -F line=<line_number>
-```
-
-**Example inline comment workflow:**
-```bash
-# 1. Get latest commit SHA for the PR
-COMMIT_SHA=$(gh api repos/:owner/:repo/pulls/<number>/commits --jq '.[].sha' | tail -1)
-
-# 2. Post inline comment on a specific line
-gh api \
-  --method POST \
-  -H "Accept: application/vnd.github+json" \
-  repos/:owner/:repo/pulls/<number>/comments \
-  -f body='**Critical:** Direct access to private field. Use public API instead.' \
-  -f commit_id="$COMMIT_SHA" \
-  -f path='src/services/auth.ts' \
-  -F line=64
-```
-
-**When to use inline comments:**
-- **Critical issues:** Always add inline comment at the exact line
-- **Major issues:** Add inline comment if the fix location is specific
-- **Minor issues/suggestions:** Add inline comment for clarity
-- **Architectural issues:** Add inline comment + reference in summary
-
-**Inline comment best practices:**
-1. **Be specific** - Point to exact line where issue occurs
-2. **Provide fix** - Show how to correct the issue when possible
-3. **Label severity** - Use `**Critical:**`, `**Major:**`, `**Minor:**`, `**Suggestion:**`, `**Question:**`
-4. **Keep concise** - Inline comments should be brief; elaborate in summary
-
-## Agent Signature Convention
-
-**IMPORTANT:** When posting PR reviews or comments, always prefix with your agent signature to distinguish from other agents.
-
-**Use this signature format:**
+**Summary comment structure:**
 ```markdown
-**🔍 [Your Agent Name] Code Review**
+## PR Review Summary
 
-[Your review content here]
+**Decision:** [Approve / Request Changes / Comment]
+
+### Critical Issues (must fix before merge)
+- ❌ [Issue description] (file.ext:line)
+
+### Major Issues (fix or discuss)
+- ⚠️ [Issue description] (file.ext:line)
+
+### Minor Issues (optional)
+- 💡 [Suggestion] (file.ext:line)
+
+### Strengths
+- ✅ [Good practice observed]
+
+**Tests:** [Passed / Failed / Not run / Manual only]
+**Docs:** [Updated / Not needed / Missing]
 
 ---
-*Reviewed by [Your Agent Name]*
+*Review by [Agent Name]*
 ```
 
-**Examples:**
-- `**🔍 Claude Code Review**` / `*Reviewed by Claude*`
-- `**🔍 Codex Code Review**` / `*Reviewed by Codex*`
-
-## Review Comment Template
-
+**Inline comment format:**
 ```markdown
-**🔍 [Your Agent Name] Code Review**
+**[Critical/Major/Minor]:** [Issue description]
 
-## PR Review - [Approve|Request Changes|Comment]
-
-### Summary
-[Brief overview of PR]
-
-### Findings
-
-#### Critical Issues
-- <issue>
-
-#### Major Issues
-- <issue>
-
-#### Minor Issues / Suggestions
-- <issue>
-
-### Positive Notes
-- <good thing>
-
-### Testing Verification
-- [ ] Automated tests passed
-- [ ] Manual checklist provided and executed (if applicable)
-
-### Documentation Check
-- [ ] Docs updated appropriately
-
-### Decision: [APPROVE | REQUEST CHANGES | COMMENT]
-[Explanation]
+**Why:** [Explanation or doc reference]
+**Suggest:** [Specific fix or alternative]
 ```
 
-## Decision Guidelines
+## Critical Don'ts
 
-- **Approve 👍** - No critical/major issues, tests passed, docs updated, follows workflow
-- **Request Changes ❗** - Critical issues, failing/missing tests, architecture violations, over-engineering
-- **Comment 💬** - Need clarification, discuss trade-offs, or only minor issues
+- ❌ Push code or create commits
+- ❌ Approve if critical issues exist
+- ❌ Approve without verifying tests ran
+- ❌ Request changes for minor issues (comment instead)
+- ❌ Write essay-style reviews (use structured format above)
 
-## Communication Style
+## Review Checklist
 
-- Be constructive and specific (point to files/lines with inline comments)
-- Explain why issues matter and how to fix them
-- Acknowledge good work in both inline comments and summary review
-- Stay professional and objective
-- **Use inline comments** for line-specific issues; use summary review for overall assessment
+Before posting review:
+- [ ] All critical issues have inline comments at specific lines
+- [ ] Summary comment includes decision + severity breakdown
+- [ ] Test status verified (automated or manual checklist)
+- [ ] Doc updates checked if behavior changed
+- [ ] Decision matches severity (critical = request changes)
 
 ## Reference Docs
 
-**Process & Standards:**
-- `{{CONTRIBUTING_DOC}}` - Implementation workflow
-- `{{CODING_GUIDELINES_DOC}}` - Code standards and boundaries
+- `{{CONTRIBUTING_DOC}}` - Workflow
+- `{{CODING_GUIDELINES_DOC}}` - Style standards
 - `{{TESTING_POLICY_DOC}}` - Testing requirements
-- `{{DOCUMENTATION_POLICY_DOC}}` - Documentation standards
-
-**Architecture:**
-- `{{DEVELOPMENT_DOC}}` - Technical architecture reference
-- `{{PROJECT_DESIGN_DOCS}}` - Design documentation
+- `{{DEVELOPMENT_DOC}}` - Architecture
+- `AGENT_OPERATIONAL_TOKEN_ECONOMY.md` - Efficient operation
 
 ---
 
-**Ready?** Tell the user you've read this document and are ready to receive PR details (number/link, scope, test results).
-
-## Customization for Your Project
-
-Replace these placeholders:
-
-- `{{PROJECT_NAME}}` → Your project name
-- `{{TECH_STACK}}` → "Node.js + TypeScript", "Python + FastAPI", "Rust + Actix"
-- `{{LANGUAGE}}` → "TypeScript", "Python", "Rust"
-- `{{FRAMEWORK}}` → "React", "Django", "Actix"
-- `{{MAIN_BRANCH}}` → "main", "master", "develop"
-- `{{CODING_GUIDELINES_DOC}}` → "docs/CODING_GUIDELINES.md"
-- `{{DEVELOPMENT_DOC}}` → "docs/DEVELOPMENT.md", "docs/ARCHITECTURE.md"
-- `{{CONTRIBUTING_DOC}}` → "docs/CONTRIBUTING.md"
-- `{{TESTING_POLICY_DOC}}` → "docs/TESTING_POLICY.md"
-- `{{DOCUMENTATION_POLICY_DOC}}` → "docs/DOCUMENTATION_POLICY.md"
-- `{{PROJECT_DESIGN_DOCS}}` → "docs/design/", "docs/specs/", "docs/adr/"
+**Ready?** Request PR number/link to begin review.
