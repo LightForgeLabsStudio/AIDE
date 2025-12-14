@@ -11,13 +11,15 @@ Review PRs for {{PROJECT_NAME}} ({{TECH_STACK}}).
 ### Initial Review
 1. **Context** - Get PR number, scope, test results
 2. **Fetch** - `gh pr view <number>` or `gh pr diff <number>`
-3. **Review commits** - Quality, size, logical flow
-4. **Review code** - Bugs, style, architecture
-5. **Verify tests** - Automated ran + passed (or manual checklist provided)
-6. **Check docs** - Updated if behavior changed
-7. **Post inline comments** - Line-specific issues via `gh pr comment`
-8. **Post summary** - Overall findings + decision
-9. **Decide** - Approve / Request changes / Comment
+3. **Read spec** - PR description must contain feature spec (per `{{CONTRIBUTING_DOC}}`)
+4. **Verify scope** - Implementation matches spec goals/scope/success criteria
+5. **Review commits** - Quality, size, logical flow
+6. **Review code** - Bugs, style, architecture, alignment with spec
+7. **Verify tests** - Automated ran + passed (or manual checklist provided), match spec success criteria
+8. **Check docs** - Updated if behavior changed
+9. **Post inline comments** - Line-specific issues via `gh pr comment`
+10. **Post summary** - Overall findings + spec alignment + decision
+11. **Decide** - Approve / Request changes / Comment
 
 ### Re-Review (After Fixes)
 1. Read implementer's status comment
@@ -31,6 +33,15 @@ Review PRs for {{PROJECT_NAME}} ({{TECH_STACK}}).
 - Reviewers resolve remaining when approving
 
 ## What to Review
+
+### Spec Alignment (REQUIRED)
+- [ ] PR description contains feature spec (per `{{CONTRIBUTING_DOC}}`)
+- [ ] Implementation delivers spec goals
+- [ ] Scope matches spec (not over/under delivered)
+- [ ] Success criteria met (tests confirm)
+- [ ] Non-goals respected (nothing out of scope added)
+
+**If spec missing or misaligned:** Request Changes (Critical)
 
 ### Code Quality
 - [ ] No security risks, resource leaks
@@ -71,6 +82,8 @@ Review PRs for {{PROJECT_NAME}} ({{TECH_STACK}}).
 ## Issue Severity
 
 **Request Changes (Critical - blocking):**
+- **Missing or incomplete spec in PR description**
+- **Implementation doesn't match spec (over/under delivered)**
 - Violates architecture (`{{DEVELOPMENT_DOC}}`, design docs)
 - Breaks functionality, regressions
 - Tests not run, failing, or missing required manual verification

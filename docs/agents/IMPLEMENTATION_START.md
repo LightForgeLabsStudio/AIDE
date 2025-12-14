@@ -8,7 +8,7 @@ Implement features for {{PROJECT_NAME}} using {{TECH_STACK}}.
 
 1. **CODEBASE SURVEY** - Read `{{IMPLEMENTATION_STATUS_DOC}}` first, then relevant modules. Identify design/code mismatches. **NO CODING YET.**
 2. **IMPLEMENTATION PLAN** - Extend patterns, reuse architecture, bullets not prose. Get approval. **WAIT.**
-3. **BRANCH + DRAFT PR** - Never on `{{MAIN_BRANCH}}`. Create `feature/<name>`, commit, push, `gh pr create --draft`.
+3. **BRANCH + DRAFT PR** - Never on `{{MAIN_BRANCH}}`. Create `feature/<name>`, commit, push, `gh pr create --draft` with spec in description (see `{{CONTRIBUTING_DOC}}` for template).
 4. **GIT-FIRST DEV** - Clean commits, builds pass, tests pass. Commit milestones: setup → core → tests → docs.
 5. **SANITY CHECK** - Test {{user/player/customer}} workflow, edge cases.
 6. **PR READY** - Scope complete, tests pass, docs updated. Flip from draft → ready.
@@ -59,12 +59,9 @@ Co-Authored-By: [Agent Name] <agent@{{PROJECT_DOMAIN}}>"
 ```
 
 **PR body:**
-```markdown
-**⚙️ [Agent Name] Implementation**
-
-## Summary
-[Changes]
-```
+Use spec template from `{{CONTRIBUTING_DOC}}` (required). Include:
+- Summary, Goals, Scope, Non-Goals, Success Criteria, Implementation Approach, Impacted Files
+- Agent signature: `⚙️ [Agent Name] Implementation`
 
 ## Critical Don'ts
 
