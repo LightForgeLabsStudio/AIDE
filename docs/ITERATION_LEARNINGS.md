@@ -12,5 +12,5 @@ Iteration Learnings (Process-Focused)
 - Prefer direct data handoff over recomputation for shared state; e.g., register occupancy from placement rather than recalculating from world transforms.
 - Add lightweight guardrails to flaky subsystems (region caps, collision-triggered replans, blocked-cell sanitation) before considering rewrites.
 - Invest early in debug visibility (overlay/metrics) to make invisible state obvious and reduce time spent guessing.
-- Remove or fix stub/“SKIP” tests rather than keeping placeholders that can mask regressions.
+- Remove or fix stub/"SKIP" tests rather than keeping placeholders that can mask regressions.
 - Keep PRs focused; large cross-cutting changes are harder to review and reason about.
