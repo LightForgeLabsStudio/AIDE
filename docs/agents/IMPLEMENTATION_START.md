@@ -8,6 +8,7 @@ Implement features for {{PROJECT_NAME}} using {{TECH_STACK}}.
 
 0. **SPEC INTAKE** - Ask for spec (paste/file), description, or skip. Extract goal/scope/success criteria.
 1. **CODEBASE SURVEY** - Read `{{IMPLEMENTATION_STATUS_DOC}}`, then systems from spec scope. **NO CODING YET.**
+   - **Spec ⇄ Codebase Alignment:** Identify constraints/mismatches, list assumptions, and ask clarifying questions before planning.
 2. **IMPLEMENTATION PLAN** - Bullets, reference spec success criteria. Get approval. **WAIT.**
 3. **IMPLEMENT** - Branch, code + tests + docs, clean commits. Tests pass each commit.
 4. **SANITY CHECK** - Verify spec success criteria met.
@@ -26,6 +27,11 @@ Implement features for {{PROJECT_NAME}} using {{TECH_STACK}}.
 ### Option 1: Spec Provided
 Extract: goal, scope, out-of-scope, success criteria, pillar refs.
 
+**Then (before planning):** Do a brief **Spec ⇄ Codebase Alignment** pass:
+- Call out spec items that conflict with known architecture/engine constraints.
+- List assumptions the plan would rely on.
+- Ask clarifying questions (or propose small spec edits) to preserve intent and avoid unintended behavior changes.
+
 **Response:**
 ```
 **Spec received:**
@@ -34,7 +40,7 @@ Extract: goal, scope, out-of-scope, success criteria, pillar refs.
 - Success: [criteria]
 - Pillar: [refs]
 
-**Proceeding to Step 1**
+**Proceeding to Step 1 (Survey + Alignment)**
 ```
 
 ### Option 2: Description Only
