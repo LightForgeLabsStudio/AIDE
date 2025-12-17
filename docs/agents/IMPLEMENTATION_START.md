@@ -4,27 +4,51 @@ Implement features for {{PROJECT_NAME}} using {{TECH_STACK}}.
 
 **Token Economy:** Follow `AGENT_OPERATIONAL_TOKEN_ECONOMY.md` - read targeted (not exhaustive), communicate concisely, batch parallel tool calls.
 
-## The 7-Step Workflow
+## The 8-Step Workflow
 
-1. **CODEBASE SURVEY** - Read `{{IMPLEMENTATION_STATUS_DOC}}` first, then relevant modules. Identify design/code mismatches. **NO CODING YET.**
-2. **IMPLEMENTATION PLAN** - Extend patterns, reuse architecture, bullets not prose. Get approval. **WAIT.**
-3. **BRANCH + DRAFT PR** - Never on `{{MAIN_BRANCH}}`. Create `feature/<name>`, commit, push, `gh pr create --draft` with spec in description (see `{{CONTRIBUTING_DOC}}` for template).
-4. **GIT-FIRST DEV** - Clean commits, builds pass, tests pass. Commit milestones: setup → core → tests → docs.
-5. **SANITY CHECK** - Test {{user/player/customer}} workflow, edge cases.
-6. **PR READY** - Scope complete, tests pass, docs updated. Flip from draft → ready.
-7. **REPORT BACK** - Summarize changes, architectural fit, limitations.
+0. **SPEC INTAKE** - Ask for spec (paste/file), description, or skip. Extract goal/scope/success criteria.
+1. **CODEBASE SURVEY** - Read `{{IMPLEMENTATION_STATUS_DOC}}`, then systems from spec scope. **NO CODING YET.**
+2. **IMPLEMENTATION PLAN** - Bullets, reference spec success criteria. Get approval. **WAIT.**
+3. **IMPLEMENT** - Branch, code + tests + docs, clean commits. Tests pass each commit.
+4. **SANITY CHECK** - Verify spec success criteria met.
+5. **DRAFT PR** - Push branch, `gh pr create --draft`, spec in description.
+6. **PR READY** - Scope complete, flip to ready.
+7. **REPORT BACK** - Summarize vs spec, note deviations.
 
-## Before Coding - Read These
+## Step 0: Spec Intake
 
-- `{{IMPLEMENTATION_STATUS_DOC}}` - What's implemented, planned (READ THIS FIRST)
-- `{{PROJECT_DESIGN_DOCS}}` - Authoritative design requirements
-- `{{DEVELOPMENT_DOC}}` - Architecture patterns
-- `{{CODING_GUIDELINES_DOC}}` - Style, module boundaries
+**Agent asks:**
+"Ready to implement. Please provide:
+1. **Feature spec** (paste or file path)
+2. **Quick description** (no formal spec)
+3. **'skip'** (trivial fixes: typos, single-line)"
 
-**Key Systems:** See `{{DEVELOPMENT_DOC}}` for details:
-- `{{SYSTEM_1}}`: {{Brief description}}
-- `{{SYSTEM_2}}`: {{Brief description}}
-- `{{SYSTEM_3}}`: {{Brief description}}
+### Option 1: Spec Provided
+Extract: goal, scope, out-of-scope, success criteria, pillar refs.
+
+**Response:**
+```
+**Spec received:**
+- Goal: [1 sentence]
+- Systems: [from scope]
+- Success: [criteria]
+- Pillar: [refs]
+
+**Proceeding to Step 1**
+```
+
+### Option 2: Description Only
+Draft minimal spec, present for approval, wait.
+
+### Option 3: Skip Requested
+Confirm trivial (single file/line), proceed with description only.
+
+## Before Survey - Read Targeted
+
+- `{{IMPLEMENTATION_STATUS_DOC}}` - Find relevant systems
+- Spec-referenced pillars only (not all `{{PROJECT_DESIGN_DOCS}}`)
+- `{{DEVELOPMENT_DOC}}` sections for involved systems
+- `{{CODING_GUIDELINES_DOC}}` - Style
 
 ## Critical Constraints
 
@@ -65,12 +89,11 @@ Use spec template from `{{CONTRIBUTING_DOC}}` (required). Include:
 
 ## Critical Don'ts
 
-- ❌ Code without codebase survey
+- ❌ Code without spec intake + codebase survey
 - ❌ Implement without plan approval
 - ❌ Work on `{{MAIN_BRANCH}}`
-- ❌ Rewrite systems (extend instead)
+- ❌ Create PR before implementation done
 - ❌ Modify tests without approval
-- ❌ Create spec files unless requested
 
 ## PR Review Feedback
 
@@ -124,4 +147,4 @@ gh pr merge <number> --squash --delete-branch
 
 ---
 
-**Ready?** Confirm you've read this, then begin **Step 1: Codebase Survey**.
+**Ready?** Begin **Step 0: Ask user for spec**.
