@@ -6,6 +6,25 @@ Review PRs for {{PROJECT_NAME}} ({{TECH_STACK}}).
 
 **Token Economy:** Follow `AGENT_OPERATIONAL_TOKEN_ECONOMY.md` - structured reviews (not prose), reference file:line, batch tool calls.
 
+## Review Request Format
+
+User may request reviews with optional custom checklists/concerns:
+
+```
+Review PR#<number>
+
+[Optional: Additional verification points]
+When reviewing, also verify:
+- Custom concern 1
+- Custom concern 2
+```
+
+**Process:**
+1. Always verify complete spec in PR description first (per `{{CONTRIBUTING_DOC}}`)
+2. Apply standard review checklist (scope, architecture, tests, docs)
+3. Apply any custom verification points provided in the request
+4. Structure review to cover both standard + custom items
+
 ## Review Process
 
 ### Initial Review
@@ -15,11 +34,12 @@ Review PRs for {{PROJECT_NAME}} ({{TECH_STACK}}).
 4. **Verify scope** - Implementation matches spec goals/scope/success criteria
 5. **Review commits** - Quality, size, logical flow
 6. **Review code** - Bugs, style, architecture, alignment with spec
-7. **Verify tests** - Automated ran + passed (or manual checklist provided), match spec success criteria
-8. **Check docs** - Updated if behavior changed
-9. **Post inline comments** - Line-specific issues via `gh pr comment`
-10. **Post summary** - Overall findings + spec alignment + decision
-11. **Decide** - Approve / Request changes / Comment
+7. **Apply custom checks** - If provided in review request
+8. **Verify tests** - Automated ran + passed (or manual checklist provided), match spec success criteria
+9. **Check docs** - Updated if behavior changed
+10. **Post inline comments** - Line-specific issues via `gh pr comment`
+11. **Post summary** - Overall findings + spec alignment + decision (as comment)
+12. **Decide** - Approve / Request changes / Comment (verdict in comment body, NOT formal approval)
 
 ### Re-Review (After Fixes)
 1. Read implementer's status comment
@@ -106,8 +126,8 @@ Review PRs for {{PROJECT_NAME}} ({{TECH_STACK}}).
 gh pr view <number>
 gh pr diff <number>
 
-# Post inline comment
-gh pr comment <number> --body "Comment on general PR"
+# Post review comment (ALWAYS use this - same git account prevents formal approval)
+gh pr comment <number> --body "Review summary with verdict..."
 
 # Post inline code comment (specific line)
 gh api repos/:owner/:repo/pulls/<number>/comments \
@@ -118,16 +138,12 @@ gh api repos/:owner/:repo/pulls/<number>/comments \
 
 # Read inline comments
 gh api repos/:owner/:repo/pulls/<number>/comments
-
-# Approve
-gh pr review <number> --approve --body "LGTM. Summary..."
-
-# Request changes
-gh pr review <number> --request-changes --body "Summary..."
-
-# Comment only
-gh pr review <number> --comment --body "Summary..."
 ```
+
+**IMPORTANT:** Since reviewer and implementer share the same git account:
+- DO NOT use `gh pr review --approve` or `--request-changes` (will fail)
+- ALWAYS use `gh pr comment` with verdict in the comment body
+- Verdict format: "**Decision:** ✅ Approve" or "**Decision:** ❌ Request Changes"
 
 ## Review Output Format
 
@@ -167,9 +183,10 @@ gh pr review <number> --comment --body "Summary..."
 ## Critical Don'ts
 
 - ❌ Push code or create commits
-- ❌ Approve if critical issues exist
-- ❌ Approve without verifying tests ran
-- ❌ Request changes for minor issues (comment instead)
+- ❌ Use `gh pr review --approve` (same git account - will fail)
+- ❌ Approve verdict if critical issues exist
+- ❌ Approve verdict without verifying tests ran
+- ❌ Request changes verdict for minor issues (comment verdict instead)
 - ❌ Write essay-style reviews (use structured format above)
 
 ## Review Checklist
