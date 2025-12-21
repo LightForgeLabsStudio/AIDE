@@ -70,6 +70,12 @@ When reviewing, also verify:
 - [ ] Module boundaries respected
 - [ ] No over-engineering
 - [ ] No debug code, commented blocks, orphaned TODOs
+- [ ] Code refinement performed (Step 5 of implementation):
+  - [ ] No dead code (unused functions, commented blocks)
+  - [ ] Simplified (reduced nesting, extracted complex logic, eliminated duplication)
+  - [ ] Follows `{{BEST_PRACTICES_DOC}}` patterns
+  - [ ] Scalable abstractions where appropriate (data-driven vs hardcoded)
+  - [ ] Self-documenting names, minimal comments
 
 ### Architecture
 - [ ] Follows design docs + patterns (`{{DEVELOPMENT_DOC}}`)
