@@ -4,7 +4,7 @@ Implement features for {{PROJECT_NAME}} using {{TECH_STACK}}.
 
 **Token Economy:** Follow `AGENT_OPERATIONAL_TOKEN_ECONOMY.md` - read targeted (not exhaustive), communicate concisely, batch parallel tool calls.
 
-## The 8-Step Workflow
+## The 9-Step Workflow
 
 0. **SPEC INTAKE** - Ask for spec (paste/file), description, or skip. Extract goal/scope/success criteria.
 1. **CODEBASE SURVEY** - Read `{{IMPLEMENTATION_STATUS_DOC}}`, then systems from spec scope. **NO CODING YET.**
@@ -12,9 +12,10 @@ Implement features for {{PROJECT_NAME}} using {{TECH_STACK}}.
 2. **IMPLEMENTATION PLAN** - Bullets, reference spec success criteria. Get approval. **WAIT.**
 3. **IMPLEMENT** - Branch, code + tests + docs, clean commits. Tests pass each commit.
 4. **SANITY CHECK** - Verify spec success criteria met.
-5. **DRAFT PR** - Push branch, `gh pr create --draft`, spec in description.
-6. **PR READY** - Scope complete, flip to ready.
-7. **REPORT BACK** - Summarize vs spec, note deviations.
+5. **CODE REFINEMENT** - Cleanup, simplify, align with best practices. Check scalability.
+6. **DRAFT PR** - Push branch, `gh pr create --draft`, spec in description.
+7. **PR READY** - Scope complete, flip to ready.
+8. **REPORT BACK** - Summarize vs spec, note deviations.
 
 ## Step 0: Spec Intake
 
@@ -76,6 +77,28 @@ Follow `{{TESTING_POLICY_DOC}}`. Derive test intent from spec success criteria.
 {{RUN_ALL_TESTS_COMMAND}}      # All suites (before PR)
 {{RUN_UNIT_TESTS_COMMAND}}     # Fast iteration
 ```
+
+## Step 5: Code Refinement
+
+After implementation complete + spec verified, refine before PR:
+
+**Checklist:**
+- [ ] **Remove dead code** - Unused functions, commented blocks, debug prints
+- [ ] **Simplify** - Reduce nesting, extract complex logic to functions, eliminate duplication
+- [ ] **Best practices** - Follow `{{BEST_PRACTICES_DOC}}` (technology-specific patterns)
+- [ ] **Scalability** - Abstract where extension likely (multiple similar entities → data-driven)
+- [ ] **Clarity** - Self-documenting names, minimal comments (explain why, not what)
+
+**Output (concise):**
+```markdown
+**Code Refinement:**
+- Removed: [dead code items]
+- Simplified: [what was refactored]
+- Abstracted: [scalability improvements]
+- No changes needed (already clean)
+```
+
+**Skip if:** Trivial changes (Step 0: skip), refactoring would exceed spec scope.
 
 ## Agent Signature
 
@@ -149,8 +172,29 @@ gh pr merge <number> --squash --delete-branch
 - `{{CODING_GUIDELINES_DOC}}` - Code style
 - `{{TESTING_POLICY_DOC}}` - Testing requirements
 - `{{DEVELOPMENT_DOC}}` - Architecture
+- `{{BEST_PRACTICES_DOC}}` - Technology-specific patterns (e.g., Godot, React, Rust)
 - `AGENT_OPERATIONAL_TOKEN_ECONOMY.md` - Efficient operation
 
 ---
 
 **Ready?** Begin **Step 0: Ask user for spec**.
+
+## Customization for Your Project
+
+Replace these placeholders with your project specifics:
+
+- `{{PROJECT_NAME}}` → Your project name
+- `{{TECH_STACK}}` → "Godot 4.5 + GDScript", "Node.js + TypeScript", "Rust + Actix"
+- `{{MAIN_BRANCH}}` → "main", "master", "develop"
+- `{{PROJECT_DOMAIN}}` → "example.com", "yourproject.dev"
+- `{{IMPLEMENTATION_STATUS_DOC}}` → "docs/IMPLEMENTATION_STATUS.md"
+- `{{PROJECT_DESIGN_DOCS}}` → "design/", "docs/specs/", "docs/adr/"
+- `{{DEVELOPMENT_DOC}}` → "docs/DEVELOPMENT.md", "docs/ARCHITECTURE.md"
+- `{{CODING_GUIDELINES_DOC}}` → "docs/CODING_GUIDELINES.md"
+- `{{TESTING_POLICY_DOC}}` → "docs/TESTING_POLICY.md"
+- `{{CONTRIBUTING_DOC}}` → "docs/CONTRIBUTING.md"
+- `{{BEST_PRACTICES_DOC}}` → "docs/GODOT_BEST_PRACTICES.md", "docs/REACT_PATTERNS.md"
+- `{{UNIT_TEST_TYPE}}` → "GUT unit tests", "Jest tests", "pytest"
+- `{{INTEGRATION_TEST_TYPE}}` → "GUT integration tests", "Playwright e2e"
+- `{{RUN_ALL_TESTS_COMMAND}}` → "cmd /c run_tests.bat", "npm test", "cargo test"
+- `{{RUN_UNIT_TESTS_COMMAND}}` → "Godot_v4.5.1_console.exe --headless -s addons/gut/gut_cmdln.gd"
