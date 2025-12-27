@@ -111,38 +111,73 @@ cp .aide/docs/core/PROJECT_SUMMARY.template.md docs/PROJECT_SUMMARY.md
 cp .aide/docs/core/README.template.md README.md
 ```
 
-### 6. Replace Placeholders
+### 6. Configure AIDE Placeholders
 
-Edit your new docs and replace template variables:
+**Recommended: Configuration Mapping Pattern**
 
-```bash
-# In docs/TESTING_POLICY.md, docs/CODING_GUIDELINES.md, etc.
+Instead of copying AIDE files and manually replacing placeholders, keep AIDE generic and define mappings in your project's agent instructions:
 
-{{PROJECT_NAME}}              → "MyAwesomeApp"
-{{PROJECT_DESCRIPTION}}       → "A web app for tracking fitness goals"
-{{LANGUAGE}}                  → "TypeScript"
-{{FRAMEWORK}}                 → "React + Express"
-{{TECH_STACK}}                → "Node.js 20, TypeScript 5.3, React 18"
+```markdown
+# Create/edit docs/AGENTS.md (or equivalent agent config file)
 
-# Testing
-{{UNIT_TEST_FRAMEWORK}}       → "Jest"
-{{INTEGRATION_TEST_FRAMEWORK}} → "Playwright"
-{{RUN_ALL_TESTS_COMMAND}}     → "npm test"
-{{RUN_UNIT_TESTS_COMMAND}}    → "npm run test:unit"
+## AIDE Configuration (Placeholder Mappings)
 
-# Architecture
-{{ARCHITECTURE_DOCS}}         → "docs/DEVELOPMENT.md"
-{{PROJECT_DESIGN_DOCS}}       → "docs/architecture/"
-{{STYLE_GUIDE_REFERENCE}}     → "Airbnb JavaScript Style Guide"
-{{STYLE_GUIDE_LINK}}          → "https://github.com/airbnb/javascript"
+This project uses the AIDE framework with the following constant mappings.
+When reading AIDE primers (prefixed with `@`), mentally substitute these
+values for `{{PLACEHOLDERS}}`:
 
-# Repository
-{{REPO_OWNER}}                → "your-username"
-{{REPO_NAME}}                 → "my-awesome-app"
-{{MAIN_BRANCH}}               → "main"
+### Project Identity
+| AIDE Placeholder | Project Value |
+|-----------------|---------------|
+| `{{PROJECT_NAME}}` | MyAwesomeApp |
+| `{{TECH_STACK}}` | Node.js 20, TypeScript 5.3, React 18 |
+| `{{PROJECT_DOMAIN}}` | myawesomeapp.com |
+| `{{MAIN_BRANCH}}` | main |
+
+### Documentation Files
+| AIDE Placeholder | Project File |
+|-----------------|--------------|
+| `{{IMPLEMENTATION_STATUS_DOC}}` | docs/IMPLEMENTATION_STATUS.md |
+| `{{DEVELOPMENT_DOC}}` | docs/DEVELOPMENT.md |
+| `{{CODING_GUIDELINES_DOC}}` | docs/CODING_GUIDELINES.md |
+| `{{TESTING_POLICY_DOC}}` | docs/TESTING_POLICY.md |
+| `{{CONTRIBUTING_DOC}}` | docs/CONTRIBUTING.md |
+| `{{DOCUMENTATION_POLICY_DOC}}` | docs/DOCUMENTATION_POLICY.md |
+| `{{BEST_PRACTICES_DOC}}` | docs/REACT_PATTERNS.md |
+| `{{HIGH_LEVEL_VISION_DOC}}` | docs/VISION.md |
+| `{{PROJECT_DESIGN_DOCS}}` | docs/architecture/ |
+
+### Testing
+| AIDE Placeholder | Project Value |
+|-----------------|---------------|
+| `{{UNIT_TEST_TYPE}}` | Jest unit tests |
+| `{{INTEGRATION_TEST_TYPE}}` | Playwright e2e tests |
+| `{{RUN_ALL_TESTS_COMMAND}}` | npm test |
+| `{{RUN_UNIT_TESTS_COMMAND}}` | npm run test:unit |
+
+## Agent Workflows (AIDE Framework)
+
+@.aide/docs/agents/IMPLEMENTATION_START.md
+@.aide/docs/agents/PR_REVIEW_START.md
+...
 ```
 
-**Pro tip:** Use find-and-replace in your editor to batch update all placeholders.
+**Benefits:**
+- AIDE framework stays reusable (no project-specific content)
+- AIDE updates propagate automatically (if using git submodule)
+- Single source of truth for project paths
+- DRY principle - no duplicating/replacing in multiple files
+- Agents resolve placeholders by reading config first
+
+**Alternative: Direct Replacement (Legacy)**
+
+If you prefer, you can copy AIDE templates and manually replace placeholders:
+
+1. Copy tech-specific files: `cp .aide/docs/examples/nodejs-typescript/*.md docs/`
+2. Edit each file and find-replace `{{PLACEHOLDERS}}` with actual values
+3. Commit modified copies to your repo
+
+**Note:** This approach duplicates AIDE content and won't receive framework updates automatically.
 
 ### 7. Initialize Implementation Status
 

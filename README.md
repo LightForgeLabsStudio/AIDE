@@ -74,15 +74,27 @@ cp .aide/docs/examples/nodejs-typescript/CODING_GUIDELINES.md docs/CODING_GUIDEL
 ln -s .aide/docs/agents docs/agents
 ```
 
-### 4. Customize for Your Project
+### 4. Configure AIDE for Your Project
 
-Replace template placeholders with your project specifics:
-- `{{PROJECT_NAME}}` → Your project name
-- `{{LANGUAGE}}` → Your programming language
-- `{{FRAMEWORK}}` → Your framework/engine
-- `{{RUN_ALL_TESTS_COMMAND}}` → Your test command
+**Recommended:** Create a configuration mapping table in `docs/AGENTS.md` (or equivalent):
 
-See [QUICK_START.md](QUICK_START.md) for detailed instructions.
+```markdown
+## AIDE Configuration (Placeholder Mappings)
+
+| AIDE Placeholder | Project Value |
+|-----------------|---------------|
+| `{{PROJECT_NAME}}` | YourProjectName |
+| `{{TECH_STACK}}` | Your stack (e.g., "Node.js + TypeScript") |
+| `{{IMPLEMENTATION_STATUS_DOC}}` | docs/IMPLEMENTATION_STATUS.md |
+| `{{RUN_ALL_TESTS_COMMAND}}` | npm test |
+...
+```
+
+This keeps AIDE generic while your project config defines the mappings. Agents resolve placeholders by reading your config first.
+
+**Alternative:** Copy templates and replace `{{PLACEHOLDERS}}` directly (see legacy approach in [QUICK_START.md](QUICK_START.md)).
+
+See [QUICK_START.md](QUICK_START.md) for detailed configuration instructions.
 
 ## Documentation Structure
 
