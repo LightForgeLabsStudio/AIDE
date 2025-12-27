@@ -72,6 +72,9 @@ When reviewing, also verify:
 - [ ] No debug code, commented blocks, orphaned TODOs
 - [ ] Code refinement performed (Step 5 of implementation):
   - [ ] No dead code (unused functions, commented blocks)
+  - [ ] No backward compatibility wrappers after migration complete
+  - [ ] No deprecated constants/types still defined (check Config, enums)
+  - [ ] Function names updated to reflect current behavior (no legacy naming)
   - [ ] Simplified (reduced nesting, extracted complex logic, eliminated duplication)
   - [ ] Follows `{{BEST_PRACTICES_DOC}}` patterns
   - [ ] Scalable abstractions where appropriate (data-driven vs hardcoded)
