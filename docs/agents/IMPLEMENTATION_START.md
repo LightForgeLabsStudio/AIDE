@@ -21,21 +21,68 @@ Implement features for {{PROJECT_NAME}} using {{TECH_STACK}}.
 
 **Agent asks:**
 "Ready to implement. Please provide:
-1. **Feature spec** (paste or file path)
-2. **Quick description** (no formal spec)
-3. **'skip'** (trivial fixes: typos, single-line)"
+1. **GitHub issue number** (spec in issue)
+2. **Feature spec** (I'll create issue for tracking)
+3. **Quick description** (no formal spec)
+4. **'skip'** (trivial fixes: typos, single-line)"
 
-### Option 1: Spec Provided
+### Option 1A: Issue Number Provided
+
+**Read issue:**
+```bash
+gh issue view <number>
+```
+
+Extract: goal, scope, out-of-scope, success criteria, pillar refs from issue description.
+
+**Mark in progress:**
+```bash
+gh issue edit <number> --add-label "status: in-progress"
+```
+
+### Option 1B: Spec Provided (No Issue)
+
+**Create tracking issue:**
+```bash
+gh issue create \
+  --title "[Feature]: <brief title>" \
+  --body "<full spec>" \
+  --label "enhancement,priority: <level>,area: <system>,status: ready"
+```
+
+**Output:** "Created issue #<number> for tracking."
+
 Extract: goal, scope, out-of-scope, success criteria, pillar refs.
 
-**Then (before planning):** Do a brief **Spec ⇄ Codebase Alignment** pass:
-- Call out spec items that conflict with known architecture/engine constraints.
-- List assumptions the plan would rely on.
-- Ask clarifying questions (or propose small spec edits) to preserve intent and avoid unintended behavior changes.
+### Spec ⇄ Codebase Alignment (Both Options)
+
+**Before planning:** Do a brief alignment pass:
+- Call out spec items that conflict with known architecture/engine constraints
+- List assumptions the plan would rely on
+- Ask clarifying questions to preserve intent
+
+**If clarifications needed:**
+```bash
+# Post question to issue
+gh issue comment <number> --body "**Clarification needed:**
+
+<question>
+
+**Context:** <why this matters>
+
+**Options:** <if applicable>"
+```
+
+**Wait for user response.** User will answer in issue comments or update issue description.
+
+**Read updated issue:**
+```bash
+gh issue view <number> --comments
+```
 
 **Response:**
 ```
-**Spec received:**
+**Spec received (issue #<number>):**
 - Goal: [1 sentence]
 - Systems: [from scope]
 - Success: [criteria]
@@ -137,7 +184,13 @@ Co-Authored-By: [Agent Name] <agent@{{PROJECT_DOMAIN}}>"
 **PR body:**
 Use spec template from `{{CONTRIBUTING_DOC}}` (required). Include:
 - Summary, Goals, Scope, Non-Goals, Success Criteria, Implementation Approach, Impacted Files
+- **Issue reference:** `Fixes #<number>` (auto-closes issue on merge)
 - Agent signature: `⚙️ [Agent Name] Implementation`
+
+**Commit messages:** Reference issue number for traceability:
+```bash
+git commit -m "Add job prioritization (refs #42)"
+```
 
 ## Critical Don'ts
 
