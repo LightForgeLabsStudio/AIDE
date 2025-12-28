@@ -20,7 +20,7 @@ When reviewing, also verify:
 ```
 
 **Process:**
-1. Always verify complete spec in PR description first (per `{{CONTRIBUTING_DOC}}`)
+1. Always verify PR links to issue and read full spec from issue (per `{{CONTRIBUTING_DOC}}`)
 2. Apply standard review checklist (scope, architecture, tests, docs)
 3. Apply any custom verification points provided in the request
 4. Structure review to cover both standard + custom items
@@ -29,13 +29,17 @@ When reviewing, also verify:
 
 ### Initial Review
 1. **Context** - Get PR number, scope, test results
-2. **Fetch** - `gh pr view <number>` or `gh pr diff <number>`
-3. **Read spec** - PR description must contain feature spec (per `{{CONTRIBUTING_DOC}}`)
-4. **Verify scope** - Implementation matches spec goals/scope/success criteria
+2. **Fetch PR** - `gh pr view <number>` or `gh pr diff <number>`
+3. **Read spec from linked issue** - Extract issue number from PR description (e.g., "Fixes #42"), then:
+   ```bash
+   gh issue view <number> --comments
+   ```
+   Read: goals, scope, non-goals, success criteria, pillar refs, and any clarification discussions from comments
+4. **Verify scope** - Implementation matches spec goals/scope/success criteria from issue
 5. **Review commits** - Quality, size, logical flow
 6. **Review code** - Bugs, style, architecture, alignment with spec
 7. **Apply custom checks** - If provided in review request
-8. **Verify tests** - Automated ran + passed (or manual checklist provided), match spec success criteria
+8. **Verify tests** - Automated ran + passed (or manual checklist provided), match spec success criteria from issue
 9. **Check docs** - Updated if behavior changed
 10. **Post inline comments** - Line-specific issues via `gh pr comment`
 11. **Post summary** - Overall findings + spec alignment + decision (as comment)
@@ -55,13 +59,14 @@ When reviewing, also verify:
 ## What to Review
 
 ### Spec Alignment (REQUIRED)
-- [ ] PR description contains feature spec (per `{{CONTRIBUTING_DOC}}`)
-- [ ] Implementation delivers spec goals
-- [ ] Scope matches spec (not over/under delivered)
-- [ ] Success criteria met (tests confirm)
+- [ ] PR links to GitHub issue containing spec (via "Fixes #X")
+- [ ] Issue contains complete spec (goals, scope, non-goals, success criteria)
+- [ ] Implementation delivers spec goals from issue
+- [ ] Scope matches spec from issue (not over/under delivered)
+- [ ] Success criteria met (tests confirm criteria from issue)
 - [ ] Non-goals respected (nothing out of scope added)
 
-**If spec missing or misaligned:** Request Changes (Critical)
+**If issue link missing or spec misaligned:** Request Changes (Critical)
 
 ### Code Quality
 - [ ] No security risks, resource leaks
@@ -111,8 +116,9 @@ When reviewing, also verify:
 ## Issue Severity
 
 **Request Changes (Critical - blocking):**
-- **Missing or incomplete spec in PR description**
-- **Implementation doesn't match spec (over/under delivered)**
+- **PR doesn't link to GitHub issue (missing "Fixes #X")**
+- **Linked issue missing spec (goals, scope, success criteria)**
+- **Implementation doesn't match spec from issue (over/under delivered)**
 - Violates architecture (`{{DEVELOPMENT_DOC}}`, design docs)
 - Breaks functionality, regressions
 - Tests not run, failing, or missing required manual verification
