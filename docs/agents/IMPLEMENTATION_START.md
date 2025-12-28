@@ -23,8 +23,9 @@ Implement features for {{PROJECT_NAME}} using {{TECH_STACK}}.
 "Ready to implement. Please provide:
 1. **GitHub issue number** (spec in issue)
 2. **Feature spec** (I'll create issue for tracking)
-3. **Quick description** (no formal spec)
-4. **'skip'** (trivial fixes: typos, single-line)"
+3. **Batch of specs** (I'll create multiple issues, you pick first to implement)
+4. **Quick description** (no formal spec)
+5. **'skip'** (trivial fixes: typos, single-line)"
 
 ### Option 1A: Issue Number Provided
 
@@ -54,7 +55,35 @@ gh issue create \
 
 Extract: goal, scope, out-of-scope, success criteria, pillar refs.
 
-### Spec ⇄ Codebase Alignment (Both Options)
+### Option 1C: Batch of Specs Provided
+
+**Parse and create issues:**
+- Iterate through spec list (markdown sections, numbered list, etc.)
+- For each spec, extract title, goals, scope, success criteria, priority, area
+- Create issue:
+  ```bash
+  gh issue create \
+    --title "[Feature]: <brief title>" \
+    --body "<full spec>" \
+    --label "enhancement,priority: <level>,area: <system>,status: ready"
+  ```
+- Collect issue numbers
+
+**Output table:**
+```
+Created 5 issues:
+- #42: Job Priority System (priority: high, area: job-system)
+- #43: Drone Cargo Visualization (priority: medium, area: drone-ai, ui)
+- #44: Building Health Indicators (priority: low, area: buildings, ui)
+- #45: Resource Transfer Animations (priority: medium, area: resources, ui)
+- #46: Combat Wave Progression (priority: high, area: combat)
+```
+
+**Ask:** "Which issue would you like to implement first?"
+
+**Continue with Option 1A** workflow for selected issue.
+
+### Spec ⇄ Codebase Alignment (All Options)
 
 **Before planning:** Do a brief alignment pass:
 - Call out spec items that conflict with known architecture/engine constraints
@@ -91,10 +120,10 @@ gh issue view <number> --comments
 **Proceeding to Step 1 (Survey + Alignment)**
 ```
 
-### Option 2: Description Only
+### Option 4: Description Only
 Draft minimal spec, present for approval, wait.
 
-### Option 3: Skip Requested
+### Option 5: Skip Requested
 Confirm trivial (single file/line), proceed with description only.
 
 ## Before Survey - Read Targeted
