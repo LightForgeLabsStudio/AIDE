@@ -22,12 +22,10 @@ Implement features for {{PROJECT_NAME}} using {{TECH_STACK}}.
 **Agent asks:**
 "Ready to implement. Please provide:
 1. **GitHub issue number** (spec in issue)
-2. **Feature spec** (I'll create issue for tracking)
-3. **Batch of specs** (I'll create multiple issues, you pick first to implement)
-4. **Quick description** (no formal spec)
-5. **'skip'** (trivial fixes: typos, single-line)"
+2. **Spec or batch of specs** (I'll create issue(s) for tracking)
+3. **'skip'** (trivial fixes: typos, single-line)"
 
-### Option 1A: Issue Number Provided
+### Option 1: Issue Number Provided
 
 **Read issue:**
 ```bash
@@ -41,9 +39,12 @@ Extract: goal, scope, out-of-scope, success criteria, pillar refs from issue des
 gh issue edit <number> --add-label "status: in-progress"
 ```
 
-### Option 1B: Spec Provided (No Issue)
+### Option 2: Spec or Batch of Specs Provided
 
-**Create tracking issue:**
+**Single spec:** Create one tracking issue.
+**Batch of specs:** Iterate through list (markdown sections, numbered, etc.), create issue for each.
+
+**For each spec:**
 ```bash
 gh issue create \
   --title "[Feature]: <brief title>" \
@@ -51,37 +52,19 @@ gh issue create \
   --label "enhancement,priority: <level>,area: <system>,status: ready"
 ```
 
-**Output:** "Created issue #<number> for tracking."
-
-Extract: goal, scope, out-of-scope, success criteria, pillar refs.
-
-### Option 1C: Batch of Specs Provided
-
-**Parse and create issues:**
-- Iterate through spec list (markdown sections, numbered list, etc.)
-- For each spec, extract title, goals, scope, success criteria, priority, area
-- Create issue:
-  ```bash
-  gh issue create \
-    --title "[Feature]: <brief title>" \
-    --body "<full spec>" \
-    --label "enhancement,priority: <level>,area: <system>,status: ready"
-  ```
-- Collect issue numbers
-
-**Output table:**
+**If batch, output table:**
 ```
 Created 5 issues:
 - #42: Job Priority System (priority: high, area: job-system)
 - #43: Drone Cargo Visualization (priority: medium, area: drone-ai, ui)
 - #44: Building Health Indicators (priority: low, area: buildings, ui)
-- #45: Resource Transfer Animations (priority: medium, area: resources, ui)
-- #46: Combat Wave Progression (priority: high, area: combat)
 ```
 
-**Ask:** "Which issue would you like to implement first?"
+**If batch, ask:** "Which issue would you like to implement first?"
 
-**Continue with Option 1A** workflow for selected issue.
+**Extract from issue:** goal, scope, out-of-scope, success criteria, pillar refs.
+
+**Continue with Option 1** workflow (mark in-progress, alignment, etc.).
 
 ### Spec ⇄ Codebase Alignment (All Options)
 
@@ -120,10 +103,7 @@ gh issue view <number> --comments
 **Proceeding to Step 1 (Survey + Alignment)**
 ```
 
-### Option 4: Description Only
-Draft minimal spec, present for approval, wait.
-
-### Option 5: Skip Requested
+### Option 3: Skip Requested
 Confirm trivial (single file/line), proceed with description only.
 
 ## Before Survey - Read Targeted
