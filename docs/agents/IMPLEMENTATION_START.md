@@ -100,6 +100,29 @@ After implementation complete + spec verified, refine before PR:
 
 **Skip if:** Trivial changes (Step 0: skip), refactoring would exceed spec scope.
 
+## Handling Out-of-Scope Work
+
+**If you discover bugs or issues outside the current spec:**
+
+1. **Document** the problem clearly
+2. **Create GitHub issue** to track it:
+   ```bash
+   gh issue create \
+     --title "[Bug]: Brief description" \
+     --body "Description, reproduction steps, code location" \
+     --label "bug,priority: [level],area: [system]"
+   ```
+3. **Comment in PR** that issue was discovered and tracked
+4. **Continue** with current implementation (don't expand scope)
+
+**Example:**
+> Note: Discovered pathfinding issue with diagonal obstacles during testing. Created #42 to track. Out of scope for this PR.
+
+**Don't:**
+- ❌ Fix out-of-scope bugs in current PR (expands scope)
+- ❌ Ignore problems without tracking them
+- ❌ Let technical debt accumulate silently
+
 ## Agent Signature
 
 **Commits:**

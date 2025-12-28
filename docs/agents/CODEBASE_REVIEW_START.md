@@ -63,14 +63,32 @@ Holistic codebase reviews (not PR reviews). Surface structural risks, design dri
 - 💡 [Suggestion] (file.ext:line)
 
 ## Follow-ups
-- [ ] [Remediation task] - Route to DESIGN_SPEC_START
-- [ ] Add tests: [Specific scenarios]
-- [ ] Update docs: [Which files + what]
+
+**Create GitHub issues for all findings:**
+
+```bash
+# For technical debt
+gh issue create \
+  --title "[Tech Debt]: Brief description" \
+  --body "Impact, code location, proposed solution" \
+  --label "technical-debt,priority: [level],area: [system]"
+```
+
+**Checklist:**
+- [ ] GitHub issues created for all Critical/Major findings
+- [ ] Issues tagged with appropriate labels (type, priority, area)
+- [ ] Issues include code locations and proposed solutions
+- [ ] Remediation tasks routed appropriately (DESIGN_SPEC_START for features, direct implementation for refactors)
+
+**Don't:**
+- ❌ Leave findings untracked
+- ❌ Fix issues yourself (codebase review agent doesn't code)
+- ❌ Create vague issues without actionable details
 ```
 
 ## Handoff
 
-- Don't fix—hand findings to requester
+- Don't fix—hand findings to requester via GitHub issues
 - Route specs to `DESIGN_SPEC_START`
 - Call out exact test scenarios to automate (manual only as fallback)
 

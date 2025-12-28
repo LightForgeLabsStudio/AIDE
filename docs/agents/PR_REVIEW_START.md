@@ -189,6 +189,24 @@ gh api repos/:owner/:repo/pulls/<number>/comments
 **Suggest:** [Specific fix or alternative]
 ```
 
+## Suggesting Follow-up Issues
+
+**For deferred improvements outside current PR scope:**
+- **Suggest** creating follow-up GitHub issues in review comments
+- **Don't create issues directly** (reviewer suggests, implementer decides and creates)
+
+**Examples:**
+```markdown
+**Minor:** Consider caching pathfinding results for frequently-used routes.
+**Suggest:** Create follow-up issue for performance optimization (out of scope for this PR).
+```
+
+**When to suggest:**
+- Performance optimizations not blocking current functionality
+- Additional test coverage beyond minimum requirements
+- Future enhancements related to current changes
+- Technical debt noticed but not critical
+
 ## Critical Don'ts
 
 - ❌ Push code or create commits
