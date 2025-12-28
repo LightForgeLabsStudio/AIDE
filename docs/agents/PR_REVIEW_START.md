@@ -195,23 +195,43 @@ gh api repos/:owner/:repo/pulls/<number>/comments
 **Suggest:** [Specific fix or alternative]
 ```
 
-## Suggesting Follow-up Issues
+## Follow-up Issues
 
-**For deferred improvements outside current PR scope:**
-- **Suggest** creating follow-up GitHub issues in review comments
-- **Don't create issues directly** (reviewer suggests, implementer decides and creates)
+**Reviewer role:** Identify follow-up work, but don't create issues directly (implementer creates).
 
-**Examples:**
+### Suggest (Comment - Don't Block Merge)
+
+**When:**
+- Performance optimizations (non-blocking)
+- Additional test coverage (beyond minimum)
+- Future enhancements
+- Minor technical debt
+
+**Example:**
 ```markdown
 **Minor:** Consider caching pathfinding results for frequently-used routes.
 **Suggest:** Create follow-up issue for performance optimization (out of scope for this PR).
 ```
 
-**When to suggest:**
-- Performance optimizations not blocking current functionality
-- Additional test coverage beyond minimum requirements
-- Future enhancements related to current changes
-- Technical debt noticed but not critical
+### Demand (Critical - Block Merge)
+
+**When:**
+- **Bug discovered during review** (out of scope for this PR)
+- **Major architectural technical debt introduced**
+
+**Example:**
+```markdown
+**Critical:** Out-of-scope bug: Drone crashes when job queue is empty.
+**Action required:** Create bug issue before merging. This must be tracked.
+```
+
+**Process:**
+1. Reviewer flags critical issue requiring tracking
+2. Implementer creates issue via `gh issue create`
+3. Implementer adds issue number to PR description: "Discovered #123 (out of scope)"
+4. Reviewer verifies issue created, approves PR
+
+**Don't block merge for nice-to-haves.** Only demand issue creation for critical bugs/debt.
 
 ## Critical Don'ts
 
