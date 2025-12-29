@@ -177,6 +177,12 @@ gh api repos/:owner/:repo/pulls/<number>/comments
 ### Minor Issues (optional)
 - 💡 [Suggestion] (file.ext:line)
 
+### Follow-up Issues (Suggest - Don't Block)
+- 💡 [Out-of-scope suggestion] - Consider creating issue for [description]
+
+### Follow-up Issues (Demand - Block Until Tracked)
+- ⚠️ [Critical out-of-scope bug/debt] - Must create issue before merge: [description]
+
 ### Strengths
 - ✅ [Good practice observed]
 
@@ -186,6 +192,11 @@ gh api repos/:owner/:repo/pulls/<number>/comments
 ---
 *Review by [Agent Name]*
 ```
+
+**Note on Follow-up Issues sections:**
+- Use "Suggest" for out-of-scope nice-to-haves (optimizations, additional tests, future enhancements) - don't block merge
+- Use "Demand" for critical out-of-scope bugs or major architectural debt discovered during review - block merge until issue created
+- See "Follow-up Issues" section below for detailed guidance on when to suggest vs demand
 
 **Inline comment format:**
 ```markdown
