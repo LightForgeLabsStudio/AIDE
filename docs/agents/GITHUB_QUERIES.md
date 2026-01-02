@@ -121,7 +121,87 @@ gh api graphql -f query='
 
 ### Set Relationships (GraphQL Mutations)
 
-GitHub uses **TaskList** items to track issue relationships. You need the issue's `id` (not number) for mutations.
+GitHub has two types of relationships:
+1. **Parent/Child (Sub-issues)** - Proper hierarchical Epic structure (`addSubIssue` mutation)
+2. **Tracked issues** - Task list dependencies (`trackedIssues` via task lists in body)
+
+#### Add Sub-Issue (Parent/Child) - RECOMMENDED
+
+This is what the GitHub web UI "Relationships" sidebar uses:
+
+```bash
+# Get issue IDs
+gh api graphql -f query='
+{
+  repository(owner: "OWNER", name: "REPO") {
+    parent: issue(number: 116) { id }
+    child: issue(number: 117) { id }
+  }
+}
+'
+
+# Add child to parent
+gh api graphql -f query='
+mutation {
+  addSubIssue(input: {
+    issueId: "PARENT_ID"
+    subIssueId: "CHILD_ID"
+  }) {
+    issue {
+      number
+      subIssues(first: 10) {
+        totalCount
+        nodes { number title state }
+      }
+    }
+  }
+}
+'
+```
+
+**Query parent/child relationships:**
+
+```bash
+# From parent (Epic) - show all children
+gh api graphql -f query='
+{
+  repository(owner: "OWNER", name: "REPO") {
+    issue(number: 116) {
+      number
+      title
+      subIssues(first: 50) {
+        totalCount
+        nodes {
+          number
+          title
+          state
+        }
+      }
+    }
+  }
+}
+'
+
+# From child - show parent
+gh api graphql -f query='
+{
+  repository(owner: "OWNER", name: "REPO") {
+    issue(number: 117) {
+      number
+      title
+      parent {
+        number
+        title
+      }
+    }
+  }
+}
+'
+```
+
+#### Task List Dependencies (Tracked Issues)
+
+Task lists in issue body create `trackedIssues` relationships (different from parent/child).
 
 **Get issue ID:**
 
