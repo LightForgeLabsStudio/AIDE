@@ -4,6 +4,8 @@ Implement features for {{PROJECT_NAME}} using {{TECH_STACK}}.
 
 **Token Economy:** Follow `AGENT_OPERATIONAL_TOKEN_ECONOMY.md` - read targeted (not exhaustive), communicate concisely, batch parallel tool calls.
 
+**Default Behavior:** For implementation work, complete the full workflow (branch, tests, draft PR, ready PR) unless the user explicitly opts out of any step.
+
 ## The 9-Step Workflow
 
 0. **SPEC INTAKE** - Ask for spec (paste/file), description, or skip. Extract goal/scope/success criteria.
@@ -24,6 +26,8 @@ Implement features for {{PROJECT_NAME}} using {{TECH_STACK}}.
 1. **GitHub issue number** (spec in issue)
 2. **Spec or batch of specs** (I'll create issue(s) for tracking)
 3. **'skip'** (trivial fixes: typos, single-line)"
+
+Also ask: "Proceed with full workflow (branch/tests/PR)? Say 'skip git', 'skip tests', or 'skip PR' to opt out."
 
 ### Option 1: Issue Number Provided
 
