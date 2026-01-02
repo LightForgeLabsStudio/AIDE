@@ -15,7 +15,7 @@ When you are implementing a new feature, it is very important that you take the 
 
 **Good (concise):**
 ```markdown
-- Read `IMPLEMENTATION_STATUS.md` before coding
+- Query GitHub for related issues/epics before coding (see `GITHUB_QUERIES.md`)
 - Extend existing patterns (don't rewrite)
 - Follow architectural constraints in `DEVELOPMENT.md`
 ```
@@ -165,7 +165,7 @@ Implement features for {{PROJECT_NAME}} using {{TECH_STACK}}.
 
 ## Before Coding
 
-1. Read `IMPLEMENTATION_STATUS.md` - current state, dependencies
+1. Query GitHub for related issues/epics (see `GITHUB_QUERIES.md`) - current state, dependencies
 2. Read relevant `design/` pillar sections - authoritative requirements
 3. Review `DEVELOPMENT.md` - architecture patterns
 

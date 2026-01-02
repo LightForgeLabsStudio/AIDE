@@ -26,15 +26,15 @@ Total: 107,000 tokens consumed BEFORE starting work
 **Good (targeted reading):**
 ```
 Agent reads:
-- IMPLEMENTATION_STATUS.md (1,500 tokens) - identifies relevant systems
+- GitHub queries for related issues/epics (200 tokens) - identifies relevant systems
 - DESIGN_QUICK_REFERENCE.md (500 tokens) - understands context
-- Specific pillar section referenced in status (800 tokens)
-- 3-5 relevant code files identified from status (6,000 tokens)
-Total: 8,800 tokens consumed - 92% savings
+- Specific pillar section referenced in issue (800 tokens)
+- 3-5 relevant code files identified from GitHub state (6,000 tokens)
+Total: 7,500 tokens consumed - 93% savings
 ```
 
 **Strategy:**
-- Read `IMPLEMENTATION_STATUS.md` FIRST (roadmap to what's relevant)
+- Query GitHub FIRST using `GITHUB_QUERIES.md` (roadmap to what's relevant)
 - Use quick reference docs for overview (not full docs)
 - Read specific sections/files only when needed
 - Use grep/glob to locate files instead of reading entire directories
@@ -60,11 +60,11 @@ the authoritative requirements...
 
 **Good (action-oriented):**
 ```markdown
-Reading IMPLEMENTATION_STATUS.md and design/pillar_2_logistics.md...
+Querying GitHub and reading design/pillar_2_logistics.md...
 
 **Context gathered:**
-- Drone system: Implemented (see IMPLEMENTATION_STATUS.md:45)
-- Pressure system: In progress
+- Drone system: Implemented (see issue #42, closed)
+- Pressure system: In progress (issue #43, in-progress)
 - Logistics pillar: Authoritative requirements in design/pillar_2_logistics.md
 
 **Implementation approach:**
@@ -230,7 +230,7 @@ Reading drone.gd:45-89 (state machine logic)
 **Strategy:**
 - Use `grep` to locate specific functions/patterns first
 - Use `Read` with `offset` and `limit` parameters for large files
-- Read only sections referenced in IMPLEMENTATION_STATUS or plan
+- Read only sections referenced in GitHub issues or plan
 - Avoid "let me understand the whole file" approach
 
 ### 8. Tool Use - Parallel Over Sequential
@@ -326,8 +326,8 @@ I've just completed the drone return-to-base feature...
 ```markdown
 ✅ Completed: Drone return-to-base feature
 
-**Updated:** IMPLEMENTATION_STATUS.md - mark drone logistics as complete
-**Next dependency unlocked:** Mothership docking (requires drone return)
+**GitHub:** Issue #42 closed, PR #45 merged
+**Next dependency unlocked:** Mothership docking (issue #46)
 ```
 **Token cost:** ~20 tokens - 75% savings
 
@@ -359,7 +359,7 @@ I've just completed the drone return-to-base feature...
 
 Before responding, agents should check:
 
-- [ ] Did I read only what's necessary? (Used IMPLEMENTATION_STATUS as roadmap?)
+- [ ] Did I read only what's necessary? (Queried GitHub for related issues/epics?)
 - [ ] Am I communicating concisely? (Bullets over paragraphs?)
 - [ ] Did I batch parallel tool calls? (Not sequential when independent?)
 - [ ] Am I showing key info vs. explaining obvious things?

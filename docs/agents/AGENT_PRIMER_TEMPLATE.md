@@ -7,9 +7,9 @@ Use this skeleton to create new agent primers. Keep it concise, explicit, and en
 - Non-goals: what it must not do (e.g., no code changes, read-only).
 
 ## Sources of Truth
-- Primary docs to read first (e.g., `../IMPLEMENTATION_STATUS.md`, `../design/` pillars).
+- GitHub queries for current state (see `GITHUB_QUERIES.md` for issue/epic queries).
+- Primary docs to read first (e.g., `../design/` pillars).
 - Secondary/quick refs (e.g., `../DESIGN_QUICK_REFERENCE.md`).
-- Any status/roadmap files or guidelines.
 
 ## Workflow Steps (numbered, checkable)
 1) Intake/context (what to ask, what approvals are needed).
