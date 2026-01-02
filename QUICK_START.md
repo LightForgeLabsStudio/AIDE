@@ -118,7 +118,7 @@ cp .aide/docs/core/README.template.md README.md
 Instead of copying AIDE files and manually replacing placeholders, keep AIDE generic and define mappings in your project's agent instructions:
 
 ```markdown
-# Create/edit docs/AGENTS.md (or equivalent agent config file)
+# Create/edit AGENTS.md in the project root (or equivalent agent config file)
 
 ## AIDE Configuration (Placeholder Mappings)
 
