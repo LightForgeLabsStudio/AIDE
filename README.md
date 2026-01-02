@@ -85,7 +85,7 @@ ln -s .aide/docs/agents docs/agents
 |-----------------|---------------|
 | `{{PROJECT_NAME}}` | YourProjectName |
 | `{{TECH_STACK}}` | Your stack (e.g., "Node.js + TypeScript") |
-| `{{IMPLEMENTATION_STATUS_DOC}}` | docs/IMPLEMENTATION_STATUS.md |
+| `{{IMPLEMENTATION_STATUS_QUERY}}` | `gh issue list --label "status:in-progress"` (see [GITHUB_QUERIES.md](docs/agents/GITHUB_QUERIES.md)) |
 | `{{RUN_ALL_TESTS_COMMAND}}` | npm test |
 ...
 ```

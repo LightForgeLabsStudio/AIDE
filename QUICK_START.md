@@ -101,15 +101,14 @@ ln -s ../../.aide/docs/agents/DOC_REVIEW_START.md docs/agents/
 Create project-specific docs from templates:
 
 ```bash
-# Implementation status tracker
-cp .aide/docs/core/IMPLEMENTATION_STATUS.template.md docs/IMPLEMENTATION_STATUS.md
-
 # Project summary
 cp .aide/docs/core/PROJECT_SUMMARY.template.md docs/PROJECT_SUMMARY.md
 
 # README
 cp .aide/docs/core/README.template.md README.md
 ```
+
+**Note:** AIDE no longer uses `IMPLEMENTATION_STATUS.md`. Use GitHub Issues/PRs/Epics for state tracking (see [GITHUB_QUERIES.md](docs/agents/GITHUB_QUERIES.md)).
 
 ### 6. Configure AIDE Placeholders
 
@@ -137,7 +136,7 @@ values for `{{PLACEHOLDERS}}`:
 ### Documentation Files
 | AIDE Placeholder | Project File |
 |-----------------|--------------|
-| `{{IMPLEMENTATION_STATUS_DOC}}` | docs/IMPLEMENTATION_STATUS.md |
+| `{{IMPLEMENTATION_STATUS_QUERY}}` | `gh issue list --label "status:in-progress"` (see [GITHUB_QUERIES.md](docs/agents/GITHUB_QUERIES.md)) |
 | `{{DEVELOPMENT_DOC}}` | docs/DEVELOPMENT.md |
 | `{{CODING_GUIDELINES_DOC}}` | docs/CODING_GUIDELINES.md |
 | `{{TESTING_POLICY_DOC}}` | docs/TESTING_POLICY.md |
@@ -179,26 +178,22 @@ If you prefer, you can copy AIDE templates and manually replace placeholders:
 
 **Note:** This approach duplicates AIDE content and won't receive framework updates automatically.
 
-### 7. Initialize Implementation Status
+### 7. Set Up GitHub State Tracking
 
-Edit `docs/IMPLEMENTATION_STATUS.md` to reflect your current project state:
+Ensure GitHub labels are configured for tracking implementation state:
 
-```markdown
-# Implementation Status
+```bash
+# Create status labels
+gh label create "status:in-progress" --description "Work currently being implemented"
+gh label create "status:ready" --description "Spec complete, ready for implementation"
+gh label create "status:blocked" --description "Blocked by dependencies or decisions"
 
-**Last Updated:** 2025-12-11
-
-## Completed Systems
-- Authentication (v1.0)
-- User profiles (v1.0)
-
-## In Progress
-- Payment integration (Stripe)
-
-## Planned Next Steps
-- Admin dashboard
-- Analytics integration
+# Agents will query GitHub for current state:
+gh issue list --label "status:in-progress" --state open
+gh pr list --state open
 ```
+
+See [.aide/docs/agents/GITHUB_QUERIES.md](.aide/docs/agents/GITHUB_QUERIES.md) for complete query reference.
 
 ### 8. Commit Initial Setup
 
@@ -208,8 +203,9 @@ git commit -m "Add AIDE framework for AI-assisted development
 
 - Add AIDE as submodule
 - Copy tech stack templates (Node.js/TypeScript)
-- Initialize IMPLEMENTATION_STATUS and PROJECT_SUMMARY
+- Initialize PROJECT_SUMMARY
 - Configure agent primers
+- Set up GitHub state tracking labels
 
 Framework provides:
 - 7-step implementation workflow
@@ -227,10 +223,10 @@ I've integrated the AIDE framework into this project. Please read:
 
 1. docs/agents/IMPLEMENTATION_START.md - For implementing features
 2. docs/agents/PR_REVIEW_START.md - For reviewing PRs
-3. docs/IMPLEMENTATION_STATUS.md - Current project state
+3. Query GitHub for current state: gh issue list --label "status:in-progress"
 4. docs/CONTRIBUTING.md - Our workflow
 
-Follow the 7-step implementation workflow for all changes.
+Follow the 9-step implementation workflow for all changes.
 ```
 
 ## Verification Checklist
@@ -243,9 +239,9 @@ Ensure you have:
 - [ ] `docs/CODING_GUIDELINES.md` (copied and customized for your stack)
 - [ ] `docs/DEVELOPMENT.md` (copied and customized for your architecture)
 - [ ] `docs/agents/` (symlinked directory or individual primer symlinks)
-- [ ] `docs/IMPLEMENTATION_STATUS.md` (instantiated from template)
 - [ ] `docs/PROJECT_SUMMARY.md` (instantiated from template)
 - [ ] `README.md` (updated with project info)
+- [ ] GitHub labels configured for state tracking (`status:in-progress`, `status:ready`, etc.)
 - [ ] All `{{PLACEHOLDERS}}` replaced with actual values
 
 ## Common Customizations
@@ -318,8 +314,8 @@ git submodule update --remote .aide
 ## Tips for Success
 
 ### Do:
-✅ Follow the 7-step workflow consistently
-✅ Update IMPLEMENTATION_STATUS.md after every PR merge
+✅ Follow the 9-step workflow consistently
+✅ Update GitHub issues/PRs after every merge (mark issues completed, update epic progress)
 ✅ Use agent primers to guide AI behavior
 ✅ Customize templates to fit your team's style
 ✅ Keep documentation lean and reference-based

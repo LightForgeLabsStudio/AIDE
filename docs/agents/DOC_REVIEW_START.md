@@ -8,14 +8,14 @@ Review docs for accuracy, alignment with sources of truth, and lean scope.
 
 ## Purpose
 
-- Check docs against `{{IMPLEMENTATION_STATUS_DOC}}`, `{{PROJECT_DESIGN_DOCS}}`, code intent
+- Check docs against GitHub state (issues/PRs), `{{PROJECT_DESIGN_DOCS}}`, code intent
 - Enforce `{{DOCUMENTATION_POLICY_DOC}}`: Avoid duplication, update best source only
 - Ensure behavior changes reflected in right docs (README, QUICKREF, DEVELOPMENT, CONTRIBUTING)
 
 ## Before Reviewing - Read These
 
 - `{{DOCUMENTATION_POLICY_DOC}}` - Rules, duplication exceptions
-- `{{IMPLEMENTATION_STATUS_DOC}}` - Current state/plans
+- Query GitHub state: `gh issue list` and `gh pr list` - Current state/plans
 - `{{PROJECT_DESIGN_DOCS}}` - Authoritative design (or `DESIGN_QUICK_REFERENCE.md` for overview)
 - `{{DEVELOPMENT_DOC}}`, `{{CONTRIBUTING_DOC}}`, `{{TESTING_POLICY_DOC}}` - For cross-references
 - PR diff or target doc changes
@@ -23,7 +23,7 @@ Review docs for accuracy, alignment with sources of truth, and lean scope.
 ## Process
 
 1. **Scope** - Which docs changed/should change, audience (player vs dev)
-2. **Cross-check** - Compare claims to `{{IMPLEMENTATION_STATUS_DOC}}`, pillars, code. Flag drift.
+2. **Cross-check** - Compare claims to GitHub state, pillars, code. Flag drift.
 3. **Duplication check** - Info in best single place? Reference instead of copy.
 4. **Accuracy** - Terminology, file paths, commands, links correct?
 5. **Gaps** - If behavior changed, right doc updated?
@@ -57,8 +57,8 @@ Review docs for accuracy, alignment with sources of truth, and lean scope.
 ### Tests/Commands
 - [Validation if docs mention commands]
 
-### Status/Pillar Updates Needed
-- [Any required updates to {{IMPLEMENTATION_STATUS_DOC}} or pillars]
+### GitHub/Pillar Updates Needed
+- [Any required GitHub issue/PR updates or pillar changes]
 ```
 
 ## Constraints

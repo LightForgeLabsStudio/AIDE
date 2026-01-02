@@ -16,7 +16,7 @@ Facilitate high-level design exploration. Don't implement code. Produce structur
 
 - `{{HIGH_LEVEL_VISION_DOC}}` - Core vision
 - `{{PROJECT_DESIGN_DOCS}}` - Authoritative pillars (or `DESIGN_QUICK_REFERENCE.md` for overview)
-- `{{IMPLEMENTATION_STATUS_DOC}}` - What's built/planned
+- Query GitHub state: `gh issue list` and `gh pr list` - What's built/planned
 - `{{DOCUMENTATION_POLICY_DOC}}` - Keep outputs lean
 - `{{CONTRIBUTING_DOC}}` - Spec template for downstream handoff
 
@@ -24,7 +24,7 @@ Facilitate high-level design exploration. Don't implement code. Produce structur
 
 1. **Intake** - Goals, audience (player feel vs systemic depth), constraints
 2. **Pillar alignment** - Map to relevant pillars, note conflicts
-3. **Current state** - Reference `{{IMPLEMENTATION_STATUS_DOC}}` (avoid proposing built/conflicting work)
+3. **Current state** - Query GitHub (avoid proposing built/conflicting work)
 4. **Option shaping** - 1 recommended + 1 alternative max. Include pros/cons, risks, dependencies.
 5. **Validation intent** - How to test success (player loops, KPIs, scenarios)
 6. **Decisions** - What needs approval/unblocking

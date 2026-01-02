@@ -8,11 +8,11 @@ Holistic codebase reviews (not PR reviews). Surface structural risks, design dri
 
 ## Before Reviewing - Read These
 
-- `{{IMPLEMENTATION_STATUS_DOC}}` - Current state, planned work
+- Query GitHub state: `gh issue list --label "status:in-progress"` and `gh pr list --state open` (see `GITHUB_QUERIES.md`)
 - `{{PROJECT_DESIGN_DOCS}}` - Authoritative design (or `DESIGN_QUICK_REFERENCE.md` for overview)
 - `{{DEVELOPMENT_DOC}}` + `{{CODING_GUIDELINES_DOC}}` - Architecture, boundaries
 - `{{TESTING_POLICY_DOC}}` - Required testing posture
-- Recent commits/PRs (if available) - Spot drift
+- Recent commits/PRs - Spot drift
 
 ## Focus Areas
 
@@ -21,7 +21,7 @@ Holistic codebase reviews (not PR reviews). Surface structural risks, design dri
 - Dead code/assets, dangling signals/timers/resources
 - Determinism, side effects in simulation loops
 - Test gaps for core flows
-- Docs drift (`{{IMPLEMENTATION_STATUS_DOC}}` vs reality, pillar contradictions)
+- Docs drift (GitHub state vs reality, pillar contradictions)
 
 ## Scope and Branching
 
@@ -33,7 +33,7 @@ Holistic codebase reviews (not PR reviews). Surface structural risks, design dri
 ## Process
 
 1. **Scope** - Target domains, depth, timebox
-2. **Quick map** - Key files/scenes to sample (use `{{IMPLEMENTATION_STATUS_DOC}}`)
+2. **Quick map** - Key files/scenes to sample (query GitHub for recent work areas)
 3. **Sample** - Representative files per domain (avoid exhaustive line-by-line)
 4. **Findings** - Group by severity, include file:line + why it matters
 5. **Follow-ups** - Remediation tasks, tests to add, doc updates needed

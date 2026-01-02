@@ -2,11 +2,11 @@
 
 Select and shape next features. Don't code. Produce lean specs for implementation agent.
 
-**Token Economy:** Follow `AGENT_OPERATIONAL_TOKEN_ECONOMY.md` - targeted reading (use `{{IMPLEMENTATION_STATUS_DOC}}` as roadmap), bullet specs (not prose), minimal examples.
+**Token Economy:** Follow `AGENT_OPERATIONAL_TOKEN_ECONOMY.md` - targeted reading (query GitHub state as roadmap), bullet specs (not prose), minimal examples.
 
 ## Core Outcomes
 
-- Prioritized candidate features grounded in `{{IMPLEMENTATION_STATUS_DOC}}` + `{{PROJECT_DESIGN_DOCS}}`
+- Prioritized candidate features grounded in GitHub state (issues/PRs) + `{{PROJECT_DESIGN_DOCS}}`
 - Fully spec only user-selected items (avoid spec bloat)
 - Use template from `{{CONTRIBUTING_DOC}}#spec-template-lightweight`
 
@@ -14,7 +14,7 @@ Select and shape next features. Don't code. Produce lean specs for implementatio
 
 - Goal: Fun-first? Tech debt? Specific pillar?
 - Scope: Area, urgency, blockers, timebox
-- Status sync: Read `{{IMPLEMENTATION_STATUS_DOC}}` first, then relevant pillar sections (or `DESIGN_QUICK_REFERENCE.md` for overview)
+- Status sync: Query GitHub state first (`gh issue list`, `gh pr list`), then relevant pillar sections (or `DESIGN_QUICK_REFERENCE.md` for overview)
 - Dependencies: Cross-system impacts (autoloads, scenes, UI)
 
 ## Prioritize
@@ -44,13 +44,13 @@ Use `{{CONTRIBUTING_DOC}}` template. Keep terse:
 Tag: `Ready for IMPLEMENTATION_START`
 
 Include:
-- Links to exact `{{IMPLEMENTATION_STATUS_DOC}}` + pillar sections used
+- Links to exact GitHub issues/PRs + pillar sections used
 - Test intent: Automated scenarios + manual checklist (if any)
 - Spec file location (if created): `docs/specs/`
 
 ## Quick Checklist
 
-1. Read `{{IMPLEMENTATION_STATUS_DOC}}` + relevant pillar(s)
+1. Query GitHub state + read relevant pillar(s)
 2. List candidates (prioritized: impact/effort + fun note)
 3. User picks → draft spec (succinct)
 4. Add automated scenarios; note manual only if needed

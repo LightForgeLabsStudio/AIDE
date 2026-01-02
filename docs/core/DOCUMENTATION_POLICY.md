@@ -64,17 +64,21 @@ All agent primer files should prioritize token efficiency to maximize context bu
 - **Use quick reference documents when available**
 - **Avoid redundant examples (one clear example > three similar ones)**
 
-### Implementation State Tracking
+### ~~Implementation State Tracking~~ (DEPRECATED)
 
-**Exception:** `{{IMPLEMENTATION_STATUS_DOC}}` (e.g., `IMPLEMENTATION_STATUS.md`, `PROJECT_STATUS.md`)
+**Former Exception:** `IMPLEMENTATION_STATUS.md` (deprecated as of AIDE v1.1)
 
-- **Purpose:** Living document tracking what's implemented, in-progress, and planned next
-- **Justification:** Provides context agents need to design coherent next features without reading entire git history
-- **Requirements:**
-  - Must be updated after each PR merge (part of merge workflow)
-  - Must track dependencies between features
-  - Must reference git history/PRs for implementation details (not duplicate them)
-  - Must prioritize planned features based on {{PROJECT_DESIGN_DOCS}} dependencies
+- **Replaced by:** GitHub Issues/PRs/Epics (query via `gh` CLI)
+- **Rationale:** Static markdown files fall out of sync. GitHub is the actual canonical state and auto-updates on PR merge.
+- **Migration:** Use GitHub CLI queries instead of reading stale markdown:
+  ```bash
+  gh issue list --label "status:in-progress" --state open  # Current work
+  gh pr list --state open                                   # Active PRs
+  gh issue list --label "status:ready" --state open        # Ready to implement
+  ```
+- **See:** [GITHUB_QUERIES.md](../agents/GITHUB_QUERIES.md) for comprehensive query reference
+
+**Recommendation:** Use GitHub as single source of truth for implementation state. Agents query current state dynamically rather than reading snapshot documents.
 
 **When to add new exceptions:**
 - Operational benefit must be significant and measurable
@@ -90,5 +94,5 @@ Replace these placeholders with your actual documentation structure:
 - `{{DEVELOPMENT_DOC}}` → `docs/DEVELOPMENT.md` or `docs/ARCHITECTURE.md`
 - `{{CONTRIBUTING_DOC}}` → `docs/CONTRIBUTING.md` or `CONTRIBUTING.md`
 - `{{SPECS_DIRECTORY}}` → `docs/specs/`, `docs/rfcs/`, `docs/adr/`
-- `{{IMPLEMENTATION_STATUS_DOC}}` → `docs/IMPLEMENTATION_STATUS.md`, `docs/STATUS.md`
+- `{{IMPLEMENTATION_STATUS_QUERY}}` → `gh issue list --label "status:in-progress"` (see [GITHUB_QUERIES.md](../agents/GITHUB_QUERIES.md))
 - `{{PROJECT_DESIGN_DOCS}}` → `docs/design/`, `docs/specs/`, `docs/architecture/`
