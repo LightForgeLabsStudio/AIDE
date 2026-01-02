@@ -7,7 +7,7 @@ Implement features for {{PROJECT_NAME}} using {{TECH_STACK}}.
 ## The 9-Step Workflow
 
 0. **SPEC INTAKE** - Ask for spec (paste/file), description, or skip. Extract goal/scope/success criteria.
-1. **CODEBASE SURVEY** - Read `{{IMPLEMENTATION_STATUS_DOC}}`, then systems from spec scope. **NO CODING YET.**
+1. **CODEBASE SURVEY** - Query GitHub for related issues/epics, then read systems from spec scope. **NO CODING YET.**
    - **Spec ⇄ Codebase Alignment:** Identify constraints/mismatches, list assumptions, and ask clarifying questions before planning.
 2. **IMPLEMENTATION PLAN** - Bullets, reference spec success criteria. Get approval. **WAIT.**
 3. **IMPLEMENT** - Branch, code + tests + docs, clean commits. Tests pass each commit.
@@ -108,7 +108,7 @@ Confirm trivial (single file/line), proceed with description only.
 
 ## Before Survey - Read Targeted
 
-- `{{IMPLEMENTATION_STATUS_DOC}}` - Find relevant systems
+- `{{GITHUB_QUERIES_DOC}}` - Query GitHub for related issues/epics and implementation status
 - Spec-referenced pillars only (not all `{{PROJECT_DESIGN_DOCS}}`)
 - `{{DEVELOPMENT_DOC}}` sections for involved systems
 - `{{CODING_GUIDELINES_DOC}}` - Style
@@ -253,6 +253,7 @@ gh pr merge <number> --squash --delete-branch
 
 ## Reference Docs
 
+- `{{GITHUB_QUERIES_DOC}}` - GitHub queries for implementation status
 - `{{CONTRIBUTING_DOC}}` - Full workflow
 - `{{CODING_GUIDELINES_DOC}}` - Code style
 - `{{TESTING_POLICY_DOC}}` - Testing requirements
@@ -272,7 +273,7 @@ Replace these placeholders with your project specifics:
 - `{{TECH_STACK}}` → "Godot 4.5 + GDScript", "Node.js + TypeScript", "Rust + Actix"
 - `{{MAIN_BRANCH}}` → "main", "master", "develop"
 - `{{PROJECT_DOMAIN}}` → "example.com", "yourproject.dev"
-- `{{IMPLEMENTATION_STATUS_DOC}}` → "docs/IMPLEMENTATION_STATUS.md"
+- `{{GITHUB_QUERIES_DOC}}` → ".aide/docs/agents/GITHUB_QUERIES.md" (reference for querying implementation status)
 - `{{PROJECT_DESIGN_DOCS}}` → "design/", "docs/specs/", "docs/adr/"
 - `{{DEVELOPMENT_DOC}}` → "docs/DEVELOPMENT.md", "docs/ARCHITECTURE.md"
 - `{{CODING_GUIDELINES_DOC}}` → "docs/CODING_GUIDELINES.md"
