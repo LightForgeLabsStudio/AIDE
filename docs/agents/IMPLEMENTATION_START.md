@@ -21,6 +21,7 @@ Implement features for {{PROJECT_NAME}} using {{TECH_STACK}}.
 7. **REPORT BACK** - Summarize vs spec, note deviations.
 8. **ADDRESS REVIEW FEEDBACK** - Iterate with review agent, fix issues systematically. **WAIT for approval.**
 9. **MERGE** - After approval, merge and clean up.
+10. **SYNC LOCAL MAIN** - Update local main to match remote after merge.
 
 ## Step 0: Spec Intake
 
@@ -425,6 +426,15 @@ git branch -r | grep feature/<name>  # Should be empty
 **Commits:** Squashed to 1 commit on main
 
 Feature is now live on {{MAIN_BRANCH}}.
+```
+
+## Step 10: Sync Local Main
+
+After merge, sync local `{{MAIN_BRANCH}}` to match the remote.
+
+```bash
+git checkout {{MAIN_BRANCH}}
+git pull --rebase
 ```
 
 ## Handling Out-of-Scope Work
