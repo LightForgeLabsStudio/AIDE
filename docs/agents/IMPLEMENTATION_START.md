@@ -4,13 +4,13 @@ Implement features for {{PROJECT_NAME}} using {{TECH_STACK}}.
 
 **Token Economy:** Follow `AGENT_OPERATIONAL_TOKEN_ECONOMY.md` - read targeted (not exhaustive), communicate concisely, batch parallel tool calls.
 
-**Default Behavior:** For implementation work, complete the full workflow (branch, tests, draft PR, ready PR) unless the user explicitly opts out of any step.
+**Default Behavior:** For implementation work, always complete the full workflow (branch, tests, draft PR, ready PR, merge, sync). Do not offer or accept skip options.
 
 **Multi-iteration in one chat:** If an iteration finishes and a new one starts in the same session, **cleanly close the prior loop** (summarize current state + stopping point), then **explicitly confirm whether to restart at Step 0 or resume from a later step**. Do not restart steps implicitly.
 
 ## The Workflow
 
-0. **SPEC INTAKE** - Ask for spec (paste/file), description, or skip. Extract goal/scope/success criteria.
+0. **SPEC INTAKE** - Ask for spec (paste/file) or description. Extract goal/scope/success criteria.
 1. **CODEBASE SURVEY** - Query GitHub for related issues/epics, then read systems from spec scope. **NO CODING YET.**
    - **Spec ⇄ Codebase Alignment:** Identify constraints/mismatches, list assumptions, and ask clarifying questions before planning.
 2. **IMPLEMENTATION PLAN** - Bullets, reference spec success criteria. Get approval. Create branch + draft PR with plan as checklist. **WAIT.**
@@ -28,10 +28,7 @@ Implement features for {{PROJECT_NAME}} using {{TECH_STACK}}.
 **Agent asks:**
 "Ready to implement. Please provide:
 1. **GitHub issue number** (spec in issue)
-2. **Spec or batch of specs** (I'll create issue(s) for tracking)
-3. **'skip'** (trivial fixes: typos, single-line)"
-
-Also ask: "Proceed with full workflow (branch/tests/PR)? Say 'skip git', 'skip tests', or 'skip PR' to opt out."
+2. **Spec or batch of specs** (I'll create issue(s) for tracking)"
 
 ### Option 1: Issue Number Provided
 
@@ -110,9 +107,6 @@ gh issue view <number> --comments
 
 **Proceeding to Step 1 (Survey + Alignment)**
 ```
-
-### Option 3: Skip Requested
-Confirm trivial (single file/line), proceed with description only.
 
 ## Step 1: Before Survey - Read Targeted
 
@@ -273,7 +267,7 @@ After implementation complete + spec verified, refine before PR:
 - No changes needed (already clean)
 ```
 
-**Skip if:** Trivial changes (Step 0: skip), refactoring would exceed spec scope.
+**If no changes needed:** State "No changes needed (already clean)" and proceed.
 
 ## Step 6: Mark PR Ready for Review
 
