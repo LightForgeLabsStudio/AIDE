@@ -8,7 +8,7 @@ Implement features for {{PROJECT_NAME}} using {{TECH_STACK}}.
 
 **Multi-iteration in one chat:** If an iteration finishes and a new one starts in the same session, **cleanly close the prior loop** (summarize current state + stopping point), then **explicitly confirm whether to restart at Step 0 or resume from a later step**. Do not restart steps implicitly.
 
-## The 9-Step Workflow
+## The Workflow
 
 0. **SPEC INTAKE** - Ask for spec (paste/file), description, or skip. Extract goal/scope/success criteria.
 1. **CODEBASE SURVEY** - Query GitHub for related issues/epics, then read systems from spec scope. **NO CODING YET.**
@@ -19,6 +19,8 @@ Implement features for {{PROJECT_NAME}} using {{TECH_STACK}}.
 5. **CODE REFINEMENT** - Cleanup, simplify, align with best practices. Check scalability.
 6. **PR READY** - Scope complete, all checklist items done, tests pass. Flip to ready for review.
 7. **REPORT BACK** - Summarize vs spec, note deviations.
+8. **ADDRESS REVIEW FEEDBACK** - Iterate with review agent, fix issues systematically. **WAIT for approval.**
+9. **MERGE** - After approval, merge and clean up.
 
 ## Step 0: Spec Intake
 
@@ -309,6 +311,120 @@ After PR is ready, report to user:
 - [What was tested]
 
 **Deviations from spec:** [None / list any]
+```
+
+## Step 8: Address Review Feedback
+
+**Implementer addresses feedback** (not reviewer). Review agent identifies issues; implementation agent fixes them.
+
+**Process:**
+
+1. **Read review comments:**
+```bash
+# Get PR review comments
+gh pr view <number> --comments
+
+# Get inline code review comments
+gh api repos/:owner/:repo/pulls/<number>/comments
+```
+
+2. **Categorize feedback by severity:**
+   - **Critical**: Blocks merge (bugs, security, broken tests)
+   - **Major**: Should fix (design violations, poor patterns, tech debt)
+   - **Minor**: Nice to have (style, naming, comments)
+
+3. **Fix systematically** (Critical → Major → Minor):
+```bash
+# For each issue
+git add <files>
+git commit -m "Fix [issue] from PR review
+
+[Details]
+
+Co-Authored-By: [Agent Name] <agent@{{PROJECT_DOMAIN}}>"
+
+git push
+```
+
+4. **Update PR checklist if new tasks added:**
+```bash
+# Add review feedback tasks to Implementation Plan section
+gh pr edit <number> --body "...
+## Implementation Plan
+- [x] Task 1 ✅
+- [x] Task 2 ✅
+- [x] Task 3 ✅
+
+## Review Feedback
+- [ ] Fix: [critical issue]
+- [ ] Refactor: [major issue]
+..."
+```
+
+5. **Re-run tests after fixes:**
+```bash
+{{RUN_ALL_TESTS_COMMAND}}
+```
+
+6. **Post summary comment:**
+```bash
+gh pr comment <number> --body "**Addressed PR Review Feedback**
+
+**Critical Fixed:**
+- ✅ [Issue] (commit: abc123)
+
+**Major Fixed:**
+- ✅ [Issue] (commit: def456)
+
+**Tests:** All passing.
+
+Ready for re-review."
+```
+
+7. **Request re-review:**
+```bash
+gh pr review <number> --request
+```
+
+**WAIT** for approval before proceeding to merge.
+
+## Step 9: Merge After Approval
+
+**Implementer merges** after approval (not reviewer).
+
+**Pre-merge checklist:**
+- [ ] PR approved by reviewer
+- [ ] All review feedback addressed
+- [ ] All tests passing
+- [ ] No merge conflicts with `{{MAIN_BRANCH}}`
+
+**Merge:**
+```bash
+# Squash merge (keeps history clean)
+gh pr merge <number> --squash --delete-branch
+
+# Or if preserving commits is important
+gh pr merge <number> --merge --delete-branch
+```
+
+**Post-merge verification:**
+```bash
+# Verify issue auto-closed
+gh issue view <issue-number>  # Should show "Closed"
+
+# Verify branch deleted
+git branch -r | grep feature/<name>  # Should be empty
+```
+
+**Report completion:**
+```markdown
+✅ **PR merged**
+
+**PR:** #<pr-number> (merged to {{MAIN_BRANCH}})
+**Issue:** #<issue-number> (closed)
+**Commits:** Squashed to 1 commit on main
+
+Feature is now live on {{MAIN_BRANCH}}.
 ```
 
 ## Handling Out-of-Scope Work
