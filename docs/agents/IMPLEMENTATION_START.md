@@ -13,13 +13,12 @@ Implement features for {{PROJECT_NAME}} using {{TECH_STACK}}.
 0. **SPEC INTAKE** - Ask for spec (paste/file), description, or skip. Extract goal/scope/success criteria.
 1. **CODEBASE SURVEY** - Query GitHub for related issues/epics, then read systems from spec scope. **NO CODING YET.**
    - **Spec ⇄ Codebase Alignment:** Identify constraints/mismatches, list assumptions, and ask clarifying questions before planning.
-2. **IMPLEMENTATION PLAN** - Bullets, reference spec success criteria. Get approval. **WAIT.**
-3. **IMPLEMENT** - Branch, code + tests + docs, clean commits. Tests pass each commit.
+2. **IMPLEMENTATION PLAN** - Bullets, reference spec success criteria. Get approval. Create branch + draft PR with plan as checklist. **WAIT.**
+3. **IMPLEMENT** - Code + tests + docs, clean commits. Tests pass each commit. **Update PR checklist as you complete tasks.**
 4. **SANITY CHECK** - Verify spec success criteria met.
 5. **CODE REFINEMENT** - Cleanup, simplify, align with best practices. Check scalability.
-6. **DRAFT PR** - Push branch, `gh pr create --draft`, spec in description.
-7. **PR READY** - Scope complete, flip to ready.
-8. **REPORT BACK** - Summarize vs spec, note deviations.
+6. **PR READY** - Scope complete, all checklist items done, tests pass. Flip to ready for review.
+7. **REPORT BACK** - Summarize vs spec, note deviations.
 
 ## Step 0: Spec Intake
 
@@ -112,12 +111,123 @@ gh issue view <number> --comments
 ### Option 3: Skip Requested
 Confirm trivial (single file/line), proceed with description only.
 
-## Before Survey - Read Targeted
+## Step 1: Before Survey - Read Targeted
 
 - `{{GITHUB_QUERIES_DOC}}` - Query GitHub for related issues/epics and implementation status
 - Spec-referenced pillars only (not all `{{PROJECT_DESIGN_DOCS}}`)
 - `{{DEVELOPMENT_DOC}}` sections for involved systems
 - `{{CODING_GUIDELINES_DOC}}` - Style
+
+## Step 2: Implementation Plan + Draft PR Setup
+
+After codebase survey, present implementation plan and get approval.
+
+**Present plan:**
+```markdown
+**Implementation Plan:**
+
+1. [Task 1] (file.ext:lines)
+2. [Task 2] (file.ext:lines)
+3. [Task 3] (file.ext:lines)
+
+**Files touched:** [list]
+**Testing:** [approach]
+
+Ready to proceed?
+```
+
+**After approval, create branch + draft PR:**
+
+```bash
+# Create feature branch (never work on main)
+git checkout -b feature/<brief-name>
+
+# Make initial commit (can be empty to establish branch)
+git commit --allow-empty -m "Start: <feature brief>
+
+Implements: #<issue-number>
+
+Co-Authored-By: [Agent Name] <agent@{{PROJECT_DOMAIN}}>"
+
+# Push and create draft PR with plan as checklist
+git push -u origin feature/<brief-name>
+
+gh pr create --draft \
+  --title "<Feature brief>" \
+  --body "$(cat <<'EOF'
+## Summary
+[1-2 sentences]
+
+**Implements:** #<issue-number>
+
+## Implementation Plan
+
+- [ ] Task 1 (file.ext:lines)
+- [ ] Task 2 (file.ext:lines)
+- [ ] Task 3 (file.ext:lines)
+
+## Testing
+- [ ] Unit tests for [scope]
+- [ ] Integration tests for [scope]
+- [ ] Manual verification: [criteria]
+
+## Files Changed
+- file1.ext - [description]
+- file2.ext - [description]
+
+---
+⚙️ [Agent Name] Implementation
+EOF
+)"
+```
+
+**Key points:**
+- Plan becomes **markdown checklist** in PR description (`- [ ]` syntax)
+- PR is **draft** (not ready for review yet)
+- Each task is **checkable** - update as you complete them
+- This PR is your **tactical tracking layer** (replaces external tools)
+
+## Step 3: Implementation
+
+Now implement the plan, updating the PR checklist as you go.
+
+**After completing each task:**
+
+```bash
+# Make focused commit
+git add <files>
+git commit -m "<Task description>
+
+<Details if needed>
+
+Co-Authored-By: [Agent Name] <agent@{{PROJECT_DOMAIN}}>"
+
+# Push
+git push
+
+# Update PR checklist (replace [ ] with [x])
+gh pr edit <number> --body "$(cat <<'EOF'
+## Summary
+[1-2 sentences]
+
+**Implements:** #<issue-number>
+
+## Implementation Plan
+
+- [x] Task 1 (file.ext:lines) ✅
+- [ ] Task 2 (file.ext:lines)
+- [ ] Task 3 (file.ext:lines)
+
+...
+EOF
+)"
+```
+
+**Or update via GitHub API for single checkbox:**
+```bash
+# Get current body, update one checkbox, push back
+# (More complex - prefer full body replacement for simplicity)
+```
 
 ## Critical Constraints
 
@@ -161,6 +271,45 @@ After implementation complete + spec verified, refine before PR:
 ```
 
 **Skip if:** Trivial changes (Step 0: skip), refactoring would exceed spec scope.
+
+## Step 6: Mark PR Ready for Review
+
+Once all checklist items are complete and tests pass, mark the PR ready.
+
+**Pre-flight checklist:**
+- [ ] All implementation plan tasks checked off in PR description
+- [ ] All tests passing (`{{RUN_ALL_TESTS_COMMAND}}`)
+- [ ] Code refinement complete (Step 5)
+- [ ] PR description updated with final summary
+- [ ] Issue reference included (`Fixes #<number>`)
+
+**Mark ready:**
+```bash
+# Flip from draft to ready
+gh pr ready <number>
+
+# Add comment summarizing completion
+gh pr comment <number> --body "All implementation tasks complete. Tests passing. Ready for review."
+```
+
+**PR is now visible to reviewers** and will auto-close the linked issue on merge.
+
+## Step 7: Report Back
+
+After PR is ready, report to user:
+
+```markdown
+✅ **Implementation complete**
+
+**PR:** #<number> (ready for review)
+**Issue:** #<issue> (will close on merge)
+
+**Summary:**
+- [What was implemented]
+- [What was tested]
+
+**Deviations from spec:** [None / list any]
+```
 
 ## Handling Out-of-Scope Work
 
