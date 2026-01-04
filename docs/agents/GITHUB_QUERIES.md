@@ -265,26 +265,129 @@ Epic description
 - All child issues completed"
 ```
 
-**Set blocked by relationship:**
+### Blocked Dependencies
 
-Add to issue body using keywords:
-- "Blocked by #42"
-- "Depends on #42"
-- "Requires #42"
+GitHub supports dependency tracking via:
+1. **`status: blocked` label** (for queries/filtering)
+2. **Issue body** (for visibility and context)
+3. **Task lists** (for auto-linking)
+
+#### Method 1: Label + Body (Recommended)
 
 ```bash
+# Mark issue as blocked
+gh issue edit 45 \
+  --add-label "status: blocked" \
+  --body "$(cat <<'EOF'
+## Description
+Implement feature X
+
+## Blocked By
+- #42 - API refactor must complete first
+- #43 - Awaiting design approval
+
+## Implementation
+Once unblocked:
+1. Step 1
+2. Step 2
+EOF
+)"
+```
+
+**Query blocked issues:**
+```bash
+# Find all blocked work
+gh issue list --label "status: blocked" --state open
+
+# Blocked issues by area
+gh issue list --label "status: blocked,area: drone-ai" --state open
+```
+
+#### Method 2: Task List Dependencies
+
+Use task lists to create `trackedIssues` relationships:
+
+```bash
+gh issue edit 100 --body "## Epic
+
+- [ ] #101 - Prerequisite (must complete first)
+- [ ] #102 - Can start in parallel
+- [ ] #103 - Depends on #101 and #102
+"
+```
+
+**Check if dependency resolved:**
+```bash
+# Check if blocking issue is closed
+gh issue view 42 --json state --jq '.state'  # "OPEN" or "CLOSED"
+```
+
+#### Method 3: Unblock Workflow
+
+When blocking issue closes, unblock dependent issues:
+
+```bash
+# Remove blocked status when dependency closes
+gh issue edit 45 --remove-label "status: blocked" --add-label "status: ready"
+
+# Update issue body to remove "Blocked by" section
 gh issue edit 45 --body "$(cat <<'EOF'
 ## Description
 Implement feature X
 
-## Blocked by
-- #42 (waiting for API refactor)
-- #43 (needs design approval)
+~~## Blocked By~~
+~~- #42 - API refactor (RESOLVED)~~
 
 ## Implementation
-...
+1. Step 1
+2. Step 2
 EOF
 )"
+```
+
+**Auto-detect blockers in comments:**
+```bash
+# Search for "blocked by" in issue comments
+gh issue view 45 --comments | grep -i "blocked by"
+```
+
+#### Finding Cross-Epic Dependencies
+
+```bash
+# Epic #100 blocks Epic #90
+gh api graphql -f query='
+{
+  repository(owner: "OWNER", name: "REPO") {
+    epic100: issue(number: 100) {
+      number
+      title
+      state
+      subIssues(first: 50) {
+        nodes {
+          number
+          title
+          state
+          labels(first: 10) {
+            nodes { name }
+          }
+        }
+      }
+    }
+    epic90: issue(number: 90) {
+      number
+      title
+      state
+      labels(first: 10) { nodes { name } }
+      body
+    }
+  }
+}
+' --jq '
+  if .data.repository.epic90.labels.nodes | map(.name) | contains(["status: blocked"])
+  then "Epic #90 is blocked. Check body for dependencies."
+  else "Epic #90 is not blocked."
+  end
+'
 ```
 
 **Query with owner/repo from current directory:**
