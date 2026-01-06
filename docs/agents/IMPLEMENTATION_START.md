@@ -529,6 +529,7 @@ gh pr merge <number> --squash --delete-branch
 ## Reference Docs
 
 - `{{GITHUB_QUERIES_DOC}}` - GitHub queries for implementation status
+- `BEADS_USAGE.md` - AI working memory and task tracking with bd (beads)
 - `{{CONTRIBUTING_DOC}}` - Full workflow
 - `{{CODING_GUIDELINES_DOC}}` - Code style
 - `{{TESTING_POLICY_DOC}}` - Testing requirements
