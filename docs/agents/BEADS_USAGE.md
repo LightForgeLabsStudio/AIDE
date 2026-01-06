@@ -32,21 +32,21 @@ AI working memory and tactical task tracking alongside GitHub Issues.
 
 **Use bd for:**
 - ✅ Discovering new work during implementation ("Found bug X while implementing Y")
-- ✅ Decomposing large tasks into dependency chains
+- ✅ Decomposing GitHub issues into tactical steps
 - ✅ Tracking blockers ("Can't implement auth until crypto lib is added")
 - ✅ Recording TODOs that span multiple sessions
 - ✅ Finding next available work (`bd ready`)
-
-**Use TodoWrite for:**
-- ✅ Single-session execution tracking (current PR checklist)
-- ✅ Simple linear task lists (no dependencies)
+- ✅ Cross-session context recovery
 
 **Use GitHub Issues for:**
-- ✅ User-facing features and bugs
+- ✅ User-facing features and bugs (with full specs)
 - ✅ Epic-level tracking with sub-issues
 - ✅ Team communication and PR links
+- ✅ Permanent record of work (survives PR merge)
 
-**Rule of thumb:** If it needs to survive compaction/session end and has dependencies → bd. If it's just execution tracking → TodoWrite.
+**Rule of thumb:**
+- GitHub = Strategic source of truth (permanent, human-facing)
+- Beads = AI working memory (ephemeral, agent-facing)
 
 ## Essential Commands
 
@@ -154,20 +154,99 @@ bd sync --status
 
 ## Beads + GitHub Workflow
 
-**Example: Implementing GitHub Issue #98 (Epic: Content Pipeline)**
+**Example: Implementing GitHub Issue #93 (ContentDB)**
 
-1. **Read GitHub Issue #98** - Get spec (goal, scope, success criteria)
+1. **Read GitHub Issue #93** - Get spec (goal, scope, success criteria)
 2. **Check beads for related work** - `bd ready`, `bd list`
-3. **Decompose into bd tasks**:
+3. **Decompose into bd tasks** (link to GitHub):
    ```bash
-   bd create "Parse ResourceDef JSONL schema" --type task --priority 1
-   bd create "Validate ResourceDef on load" --type task --priority 1
-   bd create "Integrate ResourceDef with ContentDB" --type task --priority 2
-   # Add dependencies
-   bd dep add <integrate-id> <validate-id>  # Integration blocked by validation
+   bd create "Implement ContentDB.load()" \
+     --type task --priority 1 --external-ref "gh-93"
+   bd create "Add ContentDB validation" \
+     --type task --priority 1 --external-ref "gh-93"
+   bd create "Write ContentDB tests" \
+     --type task --priority 1 --external-ref "gh-93"
    ```
 4. **Work through bd ready queue** - Claim, implement, close each task
-5. **Close GitHub Issue #98** - When all bd tasks complete and spec criteria met
+5. **Close GitHub Issue #93** - When all bd tasks complete and spec criteria met
+
+## Linking Beads to GitHub
+
+**Use `--external-ref` to create traceable links:**
+
+```bash
+# Link to GitHub issue
+bd create "Implement ContentDB.load()" \
+  --type task --priority 1 \
+  --external-ref "gh-93" \
+  -d "Core loading logic from GitHub issue #93"
+
+# Link to PR
+bd create "Fix validation bug from review" \
+  --type bug --priority 0 \
+  --external-ref "pr-145"
+
+# Link to Epic
+bd create "Add schema validation library" \
+  --type blocker --priority 0 \
+  --external-ref "epic-91"
+```
+
+**Find beads by GitHub reference:**
+
+```bash
+bd search "gh-93"      # All beads for issue #93
+bd search "pr-145"     # All beads for PR #145
+bd list | grep "gh-"   # All GitHub-linked beads
+```
+
+## Beads Lifecycle & Cleanup
+
+**When to close beads:**
+
+1. **After PR merge**
+   ```bash
+   bd close lfe-abc lfe-def --reason "PR #145 merged to main"
+   ```
+
+2. **When promoted to GitHub**
+   ```bash
+   gh issue create --title "Bug: ContentDB crash" --body "..."
+   bd close lfe-abc --reason "Promoted to GitHub issue #150"
+   ```
+
+3. **When work is abandoned**
+   ```bash
+   bd close lfe-abc --reason "No longer relevant"
+   ```
+
+**Multi-PR beads (exception):**
+- Blockers or cross-cutting work may span multiple PRs
+- Keep open until fully resolved
+- Use `--external-ref "epic-XX"` for Epic-level tracking
+
+## Promotion Pattern (Beads → GitHub)
+
+**Promote when:**
+- Needs team discussion
+- Requires spec/design work
+- Affects multiple PRs
+- Critical or widespread bug
+
+**Process:**
+
+```bash
+# 1. Discover in beads
+bd create "Bug: ContentDB crashes on missing file" \
+  --type bug --priority 0 --external-ref "gh-93"
+
+# 2. Promote to GitHub
+gh issue create --title "Bug: ContentDB crashes on missing file" \
+  --body "Discovered during #93..." --label "bug,priority: high"
+
+# 3. Close beads with reference
+bd close lfe-abc --reason "Promoted to GitHub issue #150"
+```
 
 ## Session Close Protocol
 
