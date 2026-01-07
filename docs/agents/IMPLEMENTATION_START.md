@@ -280,11 +280,24 @@ After implementation complete + spec verified, refine before PR:
 Once all checklist items are complete and tests pass, mark the PR ready.
 
 **Pre-flight checklist:**
-- [ ] All beads tasks closed (`bd list --status=open` should be empty for this work)
+
 - [ ] All tests passing (`{{RUN_ALL_TESTS_COMMAND}}`)
 - [ ] Code refinement complete (Step 5)
 - [ ] PR description reflects final implementation
 - [ ] Issue reference included (`Fixes #<number>`)
+
+**Clean up beads (on feature branch):**
+```bash
+# Close any remaining beads for this work
+bd list --status=open | grep "gh-<issue-number>"
+bd close <task-id> <task-id> --reason "Completed in PR #<pr-number>"
+
+# Sync beads (commits to feature branch, NOT main)
+bd sync
+
+# Push feature branch (includes beads cleanup commit)
+git push
+```
 
 **Mark ready:**
 ```bash
@@ -416,10 +429,8 @@ gh issue view <issue-number>  # Should show "Closed"
 # Verify branch deleted
 git branch -r | grep feature/<name>  # Should be empty
 
-# Clean up beads (close any remaining tasks for this PR)
-bd list --status=open | grep "gh-<issue-number>"  # Check for stragglers
-bd close <task-id> <task-id> --reason "PR #<pr-number> merged to {{MAIN_BRANCH}}"
-bd sync  # Sync beads changes
+# Verify beads cleaned up (should be empty - closed in Step 6)
+bd list --status=open | grep "gh-<issue-number>"  # Should show nothing
 ```
 
 **Report completion:**
