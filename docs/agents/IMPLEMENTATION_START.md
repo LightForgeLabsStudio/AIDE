@@ -293,11 +293,12 @@ bd list --status=open | grep "gh-<issue-number>"
 bd close <task-id> <task-id> --reason "Completed in PR #<pr-number>"
 
 # Sync beads (commits to feature branch, NOT main)
-bd sync
+bd sync --sandbox
 
 # Push feature branch (includes beads cleanup commit)
 git push
 ```
+**Gate:** Do not merge until `bd sync --sandbox` completes successfully on the feature branch.
 
 **Mark ready:**
 ```bash
@@ -411,6 +412,7 @@ gh pr review <number> --request
 - [ ] All review feedback addressed
 - [ ] All tests passing
 - [ ] No merge conflicts with `{{MAIN_BRANCH}}`
+- [ ] `bd sync --sandbox` completed successfully on feature branch
 
 **Merge:**
 ```bash
