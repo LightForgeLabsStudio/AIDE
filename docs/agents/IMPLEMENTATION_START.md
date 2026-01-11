@@ -13,14 +13,14 @@ Implement features for {{PROJECT_NAME}} using {{TECH_STACK}}.
 0. **SPEC INTAKE** - Ask for spec (paste/file) or description. Extract goal/scope/success criteria.
 1. **CODEBASE SURVEY** - Query GitHub for related issues/epics, then read systems from spec scope. **NO CODING YET.**
    - **Spec ⇄ Codebase Alignment:** Identify constraints/mismatches, list assumptions, and ask clarifying questions before planning.
-2. **IMPLEMENTATION PLAN** - Bullets, reference spec success criteria. Get approval. Create branch + draft PR with static plan. **WAIT.**
-3. **IMPLEMENT** - Code + tests + docs, clean commits. Tests pass each commit. **Track progress in beads (bd).**
+2. **IMPLEMENTATION PLAN** - Bullets, reference spec success criteria. Get approval. Create branch + draft PR with plan as checklist. **WAIT.**
+3. **IMPLEMENT** - Code + tests + docs, clean commits. Tests pass each commit. **Update PR checklist as you complete tasks.**
 4. **SANITY CHECK** - Verify spec success criteria met.
 5. **CODE REFINEMENT** - Cleanup, simplify, align with best practices. Check scalability.
-6. **PR READY** - Scope complete, tests pass. Flip to ready for review.
+6. **PR READY** - All checklist items complete, tests pass. Flip to ready for review.
 7. **REPORT BACK** - Summarize vs spec, note deviations.
 8. **ADDRESS REVIEW FEEDBACK** - Iterate with review agent, fix issues systematically. **WAIT for approval.**
-9. **MERGE** - After approval, merge and clean up beads.
+9. **MERGE** - After approval, squash merge to main.
 10. **SYNC LOCAL MAIN** - Update local main to match remote after merge.
 
 ## Step 0: Spec Intake
@@ -159,14 +159,14 @@ gh pr create --draft \
 
 ## Implementation Plan
 
-- Task 1 (file.ext:lines)
-- Task 2 (file.ext:lines)
-- Task 3 (file.ext:lines)
+- [ ] Task 1 (file.ext:lines)
+- [ ] Task 2 (file.ext:lines)
+- [ ] Task 3 (file.ext:lines)
 
 ## Testing
-- Unit tests for [scope]
-- Integration tests for [scope]
-- Manual verification: [criteria]
+- [ ] Unit tests for [scope]
+- [ ] Integration tests for [scope]
+- [ ] Manual verification: [criteria]
 
 ## Files Changed
 - file1.ext - [description]
@@ -179,34 +179,19 @@ EOF
 ```
 
 **Key points:**
-- Plan becomes **static record** in PR description (bullets, not checkboxes)
+- Plan becomes **markdown checklist** in PR description (`- [ ]` syntax)
 - PR is **draft** (not ready for review yet)
-- Progress tracked in **beads (bd)**, not in PR description
-- PR description shows what was approved, beads shows what's done
+- Each task is **checkable** - update as you complete them
+- This PR checklist is your **tactical tracking layer**
 
 ## Step 3: Implementation
 
-Now implement the plan, tracking progress in beads.
+Now implement the plan, updating the PR checklist as you go.
 
-**Create beads tasks from plan:**
-
-```bash
-# Decompose GitHub issue into tactical beads tasks
-bd create "Task 1 description" --type task --priority 1 --external-ref "gh-<issue-number>"
-bd create "Task 2 description" --type task --priority 1 --external-ref "gh-<issue-number>"
-bd create "Task 3 description" --type task --priority 1 --external-ref "gh-<issue-number>"
-
-# Check what's ready to work
-bd ready
-```
-
-**Implement each task:**
+**After completing each task:**
 
 ```bash
-# Claim work
-bd update <task-id> --status in_progress
-
-# Make focused commits
+# Make focused commit
 git add <files>
 git commit -m "<Task description>
 
@@ -217,20 +202,33 @@ Co-Authored-By: [Agent Name] <agent@{{PROJECT_DOMAIN}}>"
 # Push
 git push
 
-# Complete task
-bd close <task-id> --reason "Done in commit <sha>"
+# Update PR checklist (replace [ ] with [x])
+gh pr edit <number> --body "$(cat <<'EOF'
+## Summary
+[1-2 sentences]
+
+**Implements:** #<issue-number>
+
+## Implementation Plan
+
+- [x] Task 1 (file.ext:lines) ✅
+- [ ] Task 2 (file.ext:lines)
+- [ ] Task 3 (file.ext:lines)
+
+...
+EOF
+)"
 ```
 
-**Discover new work during implementation:**
+**Or update via GitHub web UI:**
+- Navigate to PR
+- Edit description
+- Check off completed tasks
+- Save
 
-```bash
-# Found a bug while implementing
-bd create "Bug: Race condition in JobSystem" --type bug --priority 1 --external-ref "gh-<issue-number>"
-
-# Note blocker
-bd create "Need crypto library before auth" --type blocker --priority 0
-bd dep add <auth-task-id> <crypto-task-id>
-```
+**Track discovered work:**
+- Create GitHub issues for out-of-scope bugs/features (see "Handling Out-of-Scope Work" below)
+- Add new tasks to PR checklist if within scope
 
 ## Critical Constraints
 
@@ -281,24 +279,11 @@ Once all checklist items are complete and tests pass, mark the PR ready.
 
 **Pre-flight checklist:**
 
+- [ ] All implementation plan tasks checked off in PR description
 - [ ] All tests passing (`{{RUN_ALL_TESTS_COMMAND}}`)
 - [ ] Code refinement complete (Step 5)
-- [ ] PR description reflects final implementation
+- [ ] PR description updated with final summary
 - [ ] Issue reference included (`Fixes #<number>`)
-
-**Clean up beads (on feature branch):**
-```bash
-# Close any remaining beads for this work
-bd list --status=open | grep "gh-<issue-number>"
-bd close <task-id> <task-id> --reason "Completed in PR #<pr-number>"
-
-# Sync beads (commits to feature branch, NOT main)
-bd sync --sandbox
-
-# Push feature branch (includes beads cleanup commit)
-git push
-```
-**Gate:** Do not merge until `bd sync --sandbox` completes successfully on the feature branch.
 
 **Mark ready:**
 ```bash
@@ -412,7 +397,6 @@ gh pr review <number> --request
 - [ ] All review feedback addressed
 - [ ] All tests passing
 - [ ] No merge conflicts with `{{MAIN_BRANCH}}`
-- [ ] `bd sync --sandbox` completed successfully on feature branch
 
 **Merge:**
 ```bash
@@ -430,9 +414,6 @@ gh issue view <issue-number>  # Should show "Closed"
 
 # Verify branch deleted
 git branch -r | grep feature/<name>  # Should be empty
-
-# Verify beads cleaned up (should be empty - closed in Step 6)
-bd list --status=open | grep "gh-<issue-number>"  # Should show nothing
 ```
 
 **Report completion:**
@@ -460,14 +441,8 @@ git pull --rebase
 **If you discover bugs or issues outside the current spec:**
 
 1. **Document** the problem clearly
-2. **Track in beads** (for AI context) OR **create GitHub issue** (for team visibility):
+2. **Create GitHub issue** to track it:
    ```bash
-   # Option A: Track in beads (tactical, AI-only)
-   bd create "Bug: Pathfinding fails on diagonal obstacles" \
-     --type bug --priority 2 \
-     -d "Found during #<issue-number>, needs separate fix"
-
-   # Option B: Promote to GitHub (requires team discussion/spec)
    gh issue create \
      --title "[Bug]: Brief description" \
      --body "Description, reproduction steps, code location" \
@@ -476,13 +451,8 @@ git pull --rebase
 3. **Comment in PR** that issue was discovered and tracked
 4. **Continue** with current implementation (don't expand scope)
 
-**Promotion criteria (beads → GitHub):**
-- Needs team discussion or spec work
-- Affects multiple PRs or systems
-- Critical or widespread bug
-
 **Example:**
-> Note: Discovered pathfinding issue with diagonal obstacles during testing. Tracked in beads (lfe-xyz). Out of scope for this PR.
+> Note: Discovered pathfinding issue with diagonal obstacles during testing. Created #42 to track. Out of scope for this PR.
 
 **Don't:**
 - ❌ Fix out-of-scope bugs in current PR (expands scope)
