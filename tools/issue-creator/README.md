@@ -103,7 +103,7 @@ See [issue-creator.config.example.json](issue-creator.config.example.json) for f
 
 ## Usage
 
-### Basic Usage
+### Create Mode (Default)
 
 ```bash
 # Create issues from spec file
@@ -111,7 +111,49 @@ python .aide/tools/issue-creator/issue-creator.py specs.md
 
 # Read from stdin
 cat specs.md | python .aide/tools/issue-creator/issue-creator.py
+
+# Show help
+python .aide/tools/issue-creator/issue-creator.py --help
 ```
+
+### Update Mode
+
+Update existing issues instead of creating new ones.
+
+**Update single issue:**
+
+```bash
+# Update issue #171 with first spec in file
+python .aide/tools/issue-creator/issue-creator.py specs.md --update 171
+```
+
+**Update Epic + children:**
+
+```bash
+# Update Epic #170 and all children (matches by order)
+python .aide/tools/issue-creator/issue-creator.py specs.md --update-epic 170
+```
+
+**Auto-update with metadata:**
+
+```bash
+# Update issues based on issue_number field in specs
+python .aide/tools/issue-creator/issue-creator.py specs.md --update-auto
+```
+
+**Spec file for auto-update:**
+
+```markdown
+## Issue: [Chore] Updated Title
+issue_number: 171
+priority: high
+area: docs
+
+### Goal
+Updated description
+```
+
+The `issue_number: N` field tells the tool which issue to update.
 
 ### With Agent
 
