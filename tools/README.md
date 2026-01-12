@@ -7,7 +7,7 @@ Command-line tools for streamlining AI-assisted development workflows.
 ### [issue-creator](issue-creator/)
 Batch create GitHub issues with Epic/child relationships from formatted spec files.
 
-**Quick Start:** [Use the Custom GPT](YOUR_CUSTOM_GPT_LINK_HERE) to format specs, then run:
+**Quick Start:** [Use the Custom GPT](https://chatgpt.com/g/g-696532cabeac81918a55b5f62eb9b8fd-issue-spec-formatter-aide) to format specs, then run:
 ```bash
 python .aide/tools/issue-creator/issue-creator.py specs.md
 ```

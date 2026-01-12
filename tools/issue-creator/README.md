@@ -8,7 +8,7 @@ Batch create GitHub issues with Epic/child relationships from formatted spec fil
 
 **Option A: Use the Custom GPT (Recommended)**
 
-1. [Use the official Custom GPT](YOUR_CUSTOM_GPT_LINK_HERE) (requires ChatGPT Plus)
+1. [Use the official Custom GPT](https://chatgpt.com/g/g-696532cabeac81918a55b5f62eb9b8fd-issue-spec-formatter-aide) (requires ChatGPT Plus)
 2. Generate specs in design session
 3. Custom GPT formats as markdown → download Canvas as `specs.md`
 4. Run tool:
