@@ -66,4 +66,4 @@ Replace these placeholders:
 - `{{Component Type 1/2/3}}` → Your architecture's main components
 - `{{Component Name 1/2/3}}` → Specific key components in your project
 - `{{Domain}}` → "Web", "Game", "CLI", "Mobile", "Backend"
-- `{{PROJECT_DESIGN_DOCS}}` → "docs/design/", "docs/specs/"
+- `{{PROJECT_DESIGN_DOCS}}` → "docs/design/", "docs/architecture/"

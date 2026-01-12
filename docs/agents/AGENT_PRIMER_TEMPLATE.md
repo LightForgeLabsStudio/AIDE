@@ -31,7 +31,7 @@ Use this skeleton to create new agent primers. Keep it concise, explicit, and en
 
 ## Output and Handoff
 - Artifacts to produce (reports, specs, comments), required tags (e.g., “Ready for IMPLEMENTATION_START”).
-- File locations (e.g., `docs/specs/`, `docs/reports/`).
+- File locations (e.g., `docs/contracts/`, `docs/reports/`).
 - Links to relevant status/pillar lines used.
 
 ## Constraints

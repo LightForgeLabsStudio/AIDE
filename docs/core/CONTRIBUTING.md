@@ -78,7 +78,7 @@ All PRs require review before merging. See [agents/PR_REVIEW_START.md](../agents
 - Implementation approach: brief outline (systems touched, data/flows, tests to add)
 - Impacted files: key modules/components/scripts
 
-Keep specs in PR/commit descriptions or a short note; create `{{SPECS_DIRECTORY}}/<feature>.md` only for bigger features when requested.
+Specs live in GitHub Epics + child Issues. PR descriptions summarize the implementation approach and link to the issue.
 
 ## Testing Requirements
 
@@ -97,6 +97,7 @@ See [DOCUMENTATION_POLICY.md](DOCUMENTATION_POLICY.md) for complete documentatio
 - Update relevant docs when behavior changes (README, {{DEVELOPMENT_DOC}}, design docs)
 - Avoid duplicating information across files; use references
 - Only create new spec files when explicitly requested
+- System invariants live in {{CONTRACTS_DIRECTORY}} (if used); avoid restating them elsewhere
 
 ## Code Standards
 
@@ -132,5 +133,5 @@ Replace these placeholders:
 - `{{LANGUAGE}}` → `TypeScript`, `Python`, `Rust`, `GDScript`
 - `{{FRAMEWORK}}` → `React`, `Django`, `Actix`, `Godot`
 - `{{DEVELOPMENT_DOC}}` → `docs/DEVELOPMENT.md`, `docs/ARCHITECTURE.md`
-- `{{SPECS_DIRECTORY}}` → `docs/specs/`, `docs/rfcs/`, `docs/adr/`
-- `{{PROJECT_DESIGN_DOCS}}` → `docs/design/`, `docs/specs/`, `docs/architecture/`
+- `{{CONTRACTS_DIRECTORY}}` → `docs/contracts/`
+- `{{PROJECT_DESIGN_DOCS}}` → `docs/design/`, `docs/architecture/`
