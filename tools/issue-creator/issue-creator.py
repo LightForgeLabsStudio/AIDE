@@ -5,9 +5,10 @@ Issue Creator - Batch create GitHub issues with Epic/child relationships
 Part of the AIDE framework. Project-specific config in issue-creator.config.json
 
 Usage:
-    ./issue-creator.py spec.md
-    ./issue-creator.py < spec.md
-    cat spec.md | ./issue-creator.py
+    ./issue-creator.py spec.md                    # Create new issues
+    ./issue-creator.py spec.md --update 171       # Update issue #171
+    ./issue-creator.py spec.md --update-epic 170  # Update Epic #170 + children
+    ./issue-creator.py --help                     # Show help
 """
 
 import sys
@@ -15,6 +16,7 @@ import os
 import json
 import re
 import subprocess
+import argparse
 from typing import Dict, List, Optional
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -29,6 +31,7 @@ class IssueSpec:
     parent_title: Optional[str] = None
     blocks: List[str] = field(default_factory=list)
     blocked_by: List[str] = field(default_factory=list)
+    issue_number: Optional[int] = None  # For update mode
 
 class IssueCreator:
     DEFAULT_CONFIG = {
@@ -125,6 +128,9 @@ class IssueCreator:
             blocked_match = re.search(r'^blocked_by:\s*(.+?)$', section, re.MULTILINE | re.IGNORECASE)
             blocked_by = [b.strip() for b in blocked_match.group(1).split(',')] if blocked_match else []
 
+            issue_num_match = re.search(r'^issue_number:\s*(\d+)', section, re.MULTILINE | re.IGNORECASE)
+            issue_number = int(issue_num_match.group(1)) if issue_num_match else None
+
             # Infer areas from content
             inferred_areas = self.infer_areas(section)
             areas = list(set(explicit_areas + inferred_areas))
@@ -140,7 +146,8 @@ class IssueCreator:
                 is_epic=is_epic,
                 parent_title=current_epic if not is_epic else None,
                 blocks=blocks,
-                blocked_by=blocked_by
+                blocked_by=blocked_by,
+                issue_number=issue_number
             )
 
             specs.append(spec)
@@ -244,6 +251,147 @@ class IssueCreator:
             capture_output=True, text=True, check=True
         )
 
+    def update_issue(self, issue_num: int, spec: IssueSpec):
+        """Update existing GitHub issue"""
+        labels = []
+
+        # Type label
+        if spec.is_epic:
+            labels.append(self.config['epic_label'])
+        else:
+            labels.append(self.config['enhancement_label'])
+
+        # Priority
+        labels.append(f'priority:{spec.priority}')
+
+        # Areas
+        for area in spec.areas:
+            labels.append(f'area:{area}')
+
+        # Status
+        if spec.blocked_by:
+            labels.append(self.config['default_status_blocked'])
+        else:
+            labels.append(self.config['default_status_ready'])
+
+        # Add blocked-by section to body if needed
+        body = spec.body
+        if spec.blocked_by:
+            blocked_section = "\n\n## Blocked By\n" + "\n".join(
+                f"- {dep}" for dep in spec.blocked_by
+            )
+            body += blocked_section
+
+        # Build title (preserve existing title prefix if it exists)
+        if spec.is_epic and not spec.title.startswith('[Epic]'):
+            title = f"[Epic]: {spec.title}"
+        elif not spec.is_epic and not spec.title.startswith('['):
+            title = f"[Feature]: {spec.title}"
+        else:
+            title = spec.title
+
+        # Update issue via gh CLI
+        cmd = [
+            'gh', 'issue', 'edit', str(issue_num),
+            '--title', title,
+            '--body', body,
+        ]
+
+        # Remove all existing labels and add new ones
+        # Note: gh doesn't have a --set-labels, so we use --add-label for new labels
+        # The user should manually remove old labels if needed, or we could query first
+        for label in labels:
+            cmd.extend(['--add-label', label])
+
+        result = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8')
+
+        if result.returncode != 0:
+            print(f"Error updating issue #{issue_num}: {result.stderr}", file=sys.stderr)
+            raise subprocess.CalledProcessError(result.returncode, cmd, result.stdout, result.stderr)
+
+    def get_epic_children(self, epic_num: int) -> List[int]:
+        """Get child issue numbers for an Epic"""
+        query = f'''{{
+          repository(owner: "{self.repo_info['owner']}", name: "{self.repo_info['repo']}") {{
+            issue(number: {epic_num}) {{
+              trackedIssues(first: 100) {{
+                nodes {{
+                  number
+                }}
+              }}
+            }}
+          }}
+        }}'''
+
+        result = subprocess.run(
+            ['gh', 'api', 'graphql', '-f', f'query={query}'],
+            capture_output=True, text=True, check=True
+        )
+
+        data = json.loads(result.stdout)
+        tracked_issues = data['data']['repository']['issue'].get('trackedIssues', {}).get('nodes', [])
+        return [issue['number'] for issue in tracked_issues]
+
+    def process_updates(self, specs: List[IssueSpec], update_mode: str, target_issue: Optional[int] = None):
+        """Update existing issues"""
+        if update_mode == 'single' and target_issue:
+            # Update single issue
+            spec = specs[0] if specs else None
+            if not spec:
+                print("No issue spec found in file", file=sys.stderr)
+                sys.exit(1)
+
+            print(f"Updating issue #{target_issue}...")
+            self.update_issue(target_issue, spec)
+            print(f"[OK] Updated #{target_issue}: {spec.title}")
+
+        elif update_mode == 'epic' and target_issue:
+            # Update Epic + all children
+            epic_spec = next((s for s in specs if s.is_epic), None)
+            if not epic_spec:
+                print("No Epic found in spec file", file=sys.stderr)
+                sys.exit(1)
+
+            print(f"Updating Epic #{target_issue}...")
+            self.update_issue(target_issue, epic_spec)
+            print(f"[OK] Updated Epic #{target_issue}: {epic_spec.title}")
+            print()
+
+            # Get existing children
+            children = self.get_epic_children(target_issue)
+            child_specs = [s for s in specs if not s.is_epic]
+
+            if len(child_specs) != len(children):
+                print(f"[WARN] Spec has {len(child_specs)} children, Epic #{target_issue} has {len(children)} children")
+                print(f"  Will update first {min(len(child_specs), len(children))} children")
+
+            # Update children (match by order)
+            for i, child_num in enumerate(children):
+                if i < len(child_specs):
+                    spec = child_specs[i]
+                    print(f"Updating child #{child_num}...")
+                    self.update_issue(child_num, spec)
+                    print(f"  [OK] Updated #{child_num}: {spec.title}")
+
+        elif update_mode == 'auto':
+            # Update issues based on issue_number field in specs
+            updated_count = 0
+            for spec in specs:
+                if spec.issue_number:
+                    print(f"Updating issue #{spec.issue_number}...")
+                    self.update_issue(spec.issue_number, spec)
+                    print(f"[OK] Updated #{spec.issue_number}: {spec.title}")
+                    updated_count += 1
+                else:
+                    print(f"[WARN] No issue_number for: {spec.title} (skipped)", file=sys.stderr)
+
+            if updated_count == 0:
+                print("No issues updated. Add 'issue_number: N' to spec sections.", file=sys.stderr)
+                sys.exit(1)
+
+            print()
+            print(f"Summary: Updated {updated_count} issue(s)")
+
     def process_specs(self, specs: List[IssueSpec]):
         """Create all issues and set up relationships"""
         print(f"Creating {len(specs)} issues...")
@@ -296,12 +444,56 @@ class IssueCreator:
             print(f"  #{num}: {title}")
 
 def main():
-    if len(sys.argv) > 1:
-        with open(sys.argv[1], 'r', encoding='utf-8') as f:
+    parser = argparse.ArgumentParser(
+        description='Batch create or update GitHub issues with Epic/child relationships',
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog='''
+Examples:
+  # Create new issues from spec file
+  %(prog)s specs.md
+
+  # Update single issue
+  %(prog)s specs.md --update 171
+
+  # Update Epic and all children (matches by order)
+  %(prog)s specs.md --update-epic 170
+
+  # Auto-update issues (requires issue_number: N in spec)
+  %(prog)s specs.md --update-auto
+
+  # Read from stdin
+  cat specs.md | %(prog)s
+
+Spec file format:
+  See .aide/docs/ISSUE_CREATOR_GUIDE.md for complete documentation.
+  See .aide/tools/issue-creator/example-spec.md for examples.
+
+Update mode metadata:
+  Add to any issue section in spec file:
+    issue_number: 171
+
+  Then run: %(prog)s specs.md --update-auto
+        '''
+    )
+
+    parser.add_argument('spec_file', nargs='?', help='Spec file path (or read from stdin)')
+    parser.add_argument('--update', type=int, metavar='NUM', help='Update single issue NUM with first spec in file')
+    parser.add_argument('--update-epic', type=int, metavar='NUM', help='Update Epic NUM and all children (matches by order)')
+    parser.add_argument('--update-auto', action='store_true', help='Update issues based on issue_number metadata in specs')
+
+    args = parser.parse_args()
+
+    # Read spec file
+    if args.spec_file:
+        with open(args.spec_file, 'r', encoding='utf-8') as f:
             content = f.read()
     else:
+        if sys.stdin.isatty():
+            parser.print_help()
+            sys.exit(0)
         content = sys.stdin.read()
 
+    # Parse specs
     creator = IssueCreator()
     specs = creator.parse_spec_file(content)
 
@@ -309,7 +501,16 @@ def main():
         print("No issues found in spec file", file=sys.stderr)
         sys.exit(1)
 
-    creator.process_specs(specs)
+    # Determine mode
+    if args.update:
+        creator.process_updates(specs, 'single', args.update)
+    elif args.update_epic:
+        creator.process_updates(specs, 'epic', args.update_epic)
+    elif args.update_auto:
+        creator.process_updates(specs, 'auto')
+    else:
+        # Create mode (default)
+        creator.process_specs(specs)
 
 if __name__ == '__main__':
     main()
