@@ -18,3 +18,7 @@ desktop.ini
 # Project-specific tool configs (not part of AIDE framework)
 *.config.json
 !*.config.example.json
+
+# User-generated spec files for issue-creator (one-time use)
+tools/*_specs_*.md
+tools/aide_issue_specs_*.md
