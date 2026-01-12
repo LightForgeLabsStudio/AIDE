@@ -6,7 +6,7 @@ Batch create GitHub issues with Epic/child relationships and automatic area infe
 
 ```bash
 # Setup (one-time)
-cp .aide/tools/issue-creator.config.example.json .aide/issue-creator.config.json
+cp .aide/tools/issue-creator.config.example.json issue-creator.config.json
 
 # Make executable
 chmod +x .aide/tools/issue-creator.py
@@ -109,7 +109,7 @@ You can override or supplement with explicit `area:` field.
 
 ## Configuration
 
-### Project Config: `.aide/issue-creator.config.json`
+### Project Config: `issue-creator.config.json`
 
 ```json
 {

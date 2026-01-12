@@ -2,7 +2,7 @@
 """
 Issue Creator - Batch create GitHub issues with Epic/child relationships
 
-Part of the AIDE framework. Project-specific config in .aide/issue-creator.config.json
+Part of the AIDE framework. Project-specific config in issue-creator.config.json
 
 Usage:
     ./issue-creator.py spec.md
@@ -47,8 +47,9 @@ class IssueCreator:
 
     def _load_config(self) -> Dict:
         """Load project-specific config, fall back to defaults"""
-        # Look for config in .aide/ directory
+        # Look for config in project root, then .aide/ directory
         config_paths = [
+            Path('issue-creator.config.json'),  # Project root (recommended)
             Path('.aide/issue-creator.config.json'),
             Path('.aide/tools/issue-creator.config.json'),
         ]
@@ -64,7 +65,7 @@ class IssueCreator:
                     return config
 
         print("⚠ No config found, using defaults (no area inference)", file=sys.stderr)
-        print("  Create .aide/issue-creator.config.json to customize", file=sys.stderr)
+        print("  Create issue-creator.config.json in project root to customize", file=sys.stderr)
         return self.DEFAULT_CONFIG
 
     def _get_repo_info(self) -> Dict[str, str]:
