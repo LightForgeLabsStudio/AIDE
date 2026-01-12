@@ -7,7 +7,7 @@ Create a Custom GPT that formats specs for the issue-creator tool.
 Upload these 2 files from this repo to your Custom GPT's Knowledge section:
 
 1. `.aide/docs/ISSUE_CREATOR_GUIDE.md` - Complete format documentation
-2. `.aide/tools/example-spec.md` - Working examples
+2. `.aide/tools/issue-creator/example-spec.md` - Working examples
 
 ## Custom GPT Configuration
 
@@ -25,7 +25,7 @@ Formats feature specifications for GitHub issue creation using the AIDE framewor
 ```
 You are a GitHub Issue Spec Formatter for the AIDE framework.
 
-Format user specifications into markdown that `.aide/tools/issue-creator.py` can parse.
+Format user specifications into markdown that `.aide/tools/issue-creator/issue-creator.py` can parse.
 
 Your knowledge base contains:
 - `ISSUE_CREATOR_GUIDE.md` - Complete format documentation
@@ -36,7 +36,7 @@ Your knowledge base contains:
 1. Ask: "Is this an Epic with children, standalone issues, or children for existing Epic?"
 2. Format according to ISSUE_CREATOR_GUIDE.md
 3. Use Canvas to create document with formatted markdown
-4. User downloads as `specs.md` and runs `.aide/tools/issue-creator.py specs.md`
+4. User downloads as `specs.md` and runs `.aide/tools/issue-creator/issue-creator.py specs.md`
 
 ## Key Rules
 
@@ -102,5 +102,5 @@ How do I format blocking dependencies?
 **Workflow:**
 1. Design session in ChatGPT → generate specs
 2. Use Custom GPT to format → download Canvas as `specs.md`
-3. Run: `python .aide/tools/issue-creator.py specs.md`
+3. Run: `python .aide/tools/issue-creator/issue-creator.py specs.md`
 4. Issues created in GitHub with Epic/child relationships

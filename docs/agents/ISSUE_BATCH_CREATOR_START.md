@@ -70,7 +70,7 @@ blocked_by: Exact Issue Title
 
 **References:**
 - See `.aide/docs/ISSUE_CREATOR_GUIDE.md` for complete format documentation
-- See `.aide/tools/example-spec.md` for working examples
+- See `.aide/tools/issue-creator/example-spec.md` for working examples
 - See `.aide/docs/CUSTOM_GPT_SETUP.md` for Custom GPT workflow
 
 ## Step 1: Spec Intake
@@ -93,7 +93,7 @@ Execute the issue-creator tool immediately. **No pre-flight checks, no label val
 
 **Command:**
 ```bash
-python .aide/tools/issue-creator.py <spec-file-path>
+python .aide/tools/issue-creator/issue-creator.py <spec-file-path>
 ```
 
 **Tool behavior:**
@@ -121,7 +121,7 @@ The tool will fail with clear error messages. Fix the error, then re-run the too
 ```bash
 # Convert file to UTF-8 explicitly
 iconv -f UTF-16 -t UTF-8 <spec-file> -o <spec-file>.utf8
-python .aide/tools/issue-creator.py <spec-file>.utf8
+python .aide/tools/issue-creator/issue-creator.py <spec-file>.utf8
 ```
 
 ### Error: Label not found
@@ -146,7 +146,7 @@ gh label create "priority:medium" --description "Moderate importance" --color "f
 gh label create "priority:low" --description "Nice to have" --color "0e8a16"
 
 # Re-run tool
-python .aide/tools/issue-creator.py <spec-file-path>
+python .aide/tools/issue-creator/issue-creator.py <spec-file-path>
 ```
 
 ### Error: GitHub API rate limit
@@ -269,9 +269,9 @@ gh issue delete <number>
 ## Reference Docs
 
 - `.aide/docs/ISSUE_CREATOR_GUIDE.md` - Complete format documentation
-- `.aide/tools/example-spec.md` - Working examples with Epic, children, dependencies
+- `.aide/tools/issue-creator/example-spec.md` - Working examples with Epic, children, dependencies
 - `.aide/docs/CUSTOM_GPT_SETUP.md` - Custom GPT workflow for formatting specs
-- `.aide/tools/issue-creator.py` - The tool itself (Python 3)
+- `.aide/tools/issue-creator/issue-creator.py` - The tool itself (Python 3)
 
 ## Common Workflows
 
@@ -296,7 +296,7 @@ Spec file has only `## Issue:` headings (no `## [Epic]:`):
 Spec file has `## Issue:` headings referencing existing Epic:
 1. Read spec file
 2. Check Epic exists: `gh issue view <epic-number>`
-3. Run tool with Epic number: `python .aide/tools/issue-creator.py <spec-file> --epic <epic-number>`
+3. Run tool with Epic number: `python .aide/tools/issue-creator/issue-creator.py <spec-file> --epic <epic-number>`
 4. Verify children linked to Epic
 5. Report results
 

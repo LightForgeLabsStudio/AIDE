@@ -9,19 +9,19 @@ Batch create GitHub issues with Epic/child relationships and automatic area infe
 cp .aide/tools/issue-creator.config.example.json issue-creator.config.json
 
 # Make executable
-chmod +x .aide/tools/issue-creator.py
+chmod +x .aide/tools/issue-creator/issue-creator.py
 
 # Create issues from file
-.aide/tools/issue-creator.py specs.md
+.aide/tools/issue-creator/issue-creator.py specs.md
 
 # Create issues from stdin (paste spec, then Ctrl+D / Ctrl+Z)
-.aide/tools/issue-creator.py
+.aide/tools/issue-creator/issue-creator.py
 
 # Pipe from clipboard (macOS)
-pbpaste | .aide/tools/issue-creator.py
+pbpaste | .aide/tools/issue-creator/issue-creator.py
 
 # Pipe from clipboard (Windows PowerShell)
-Get-Clipboard | .aide/tools/issue-creator.py
+Get-Clipboard | .aide/tools/issue-creator/issue-creator.py
 ```
 
 ## Spec File Format
@@ -184,7 +184,7 @@ Create specs in ChatGPT, export to markdown file.
 
 ### Step 2: Batch Create Issues
 ```bash
-.aide/tools/issue-creator.py design-session-specs.md
+.aide/tools/issue-creator/issue-creator.py design-session-specs.md
 ```
 
 ### Step 3: Implement (Implementation Agent)
@@ -221,7 +221,7 @@ PR review agent reads spec from issue #141 (not PR description).
 ### Dry Run (Preview)
 Add `--dry-run` flag (future feature):
 ```bash
-.aide/tools/issue-creator.py --dry-run specs.md
+.aide/tools/issue-creator/issue-creator.py --dry-run specs.md
 ```
 
 ### Custom Label Prefix

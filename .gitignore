@@ -20,5 +20,5 @@ desktop.ini
 !*.config.example.json
 
 # User-generated spec files for issue-creator (one-time use)
-tools/*_specs_*.md
-tools/aide_issue_specs_*.md
+tools/issue-creator/*_specs_*.md
+tools/issue-creator/aide_issue_specs_*.md

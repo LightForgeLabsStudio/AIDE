@@ -1,0 +1,43 @@
+# AIDE Tools
+
+Command-line tools for streamlining AI-assisted development workflows.
+
+## Available Tools
+
+### [issue-creator](issue-creator/)
+Batch create GitHub issues with Epic/child relationships from formatted spec files.
+
+**Quick Start:** [Use the Custom GPT](YOUR_CUSTOM_GPT_LINK_HERE) to format specs, then run:
+```bash
+python .aide/tools/issue-creator/issue-creator.py specs.md
+```
+
+See [issue-creator/README.md](issue-creator/README.md) for details.
+
+### [init-project](init-project/)
+Initialize AIDE framework in a new or existing project.
+
+```bash
+bash .aide/tools/init-project/init-project.sh
+```
+
+See [init-project/README.md](init-project/README.md) for details.
+
+## Tool Organization
+
+Each tool has its own subdirectory with:
+- `README.md` - Usage documentation
+- Tool scripts/executables
+- Configuration examples
+- Example files
+
+This structure makes it easy to extract tools into separate submodules if needed.
+
+## Contributing Tools
+
+When adding new tools:
+1. Create subdirectory: `.aide/tools/your-tool/`
+2. Add `README.md` with usage instructions
+3. Add tool to this file's "Available Tools" section
+4. Update `.aide/README.md` to mention the tool
+5. Consider creating an agent primer in `.aide/docs/agents/`
