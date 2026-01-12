@@ -2,16 +2,16 @@
 
 Batch create GitHub issues with Epic/child relationships from formatted spec files for {{PROJECT_NAME}}.
 
-**Token Economy:** This tool exists to save agent tokens. Run the tool, handle errors systematically, report results concisely.
+**Token Economy:** This tool exists to save agent tokens. **DO NOT read spec files.** Run the tool, handle errors from tool output, verify via GitHub API only.
 
-**Default Behavior:** Run tool → handle errors → verify results → clean up. No skip options.
+**Default Behavior:** Get file path → run tool → handle errors → verify via GitHub → clean up. No validation, no spec reading.
 
 ## The Workflow
 
-1. **SPEC INTAKE** - Locate or receive spec file formatted for issue-creator tool
-2. **PRE-FLIGHT CHECK** - Verify format, check for missing labels
-3. **RUN TOOL** - Execute issue-creator.py with error handling
-4. **VERIFY RESULTS** - Check Epic/child relationships, fix title formatting if needed
+1. **SPEC INTAKE** - Get spec file path from user
+2. **RUN TOOL** - Execute issue-creator.py immediately (no reading, no validation)
+3. **HANDLE ERRORS** - If tool fails, fix errors (create labels, fix format issues reported by tool)
+4. **VERIFY RESULTS** - Check Epic/child relationships via GitHub API, fix title formatting if needed
 5. **CLEAN UP** - Remove temp files, report completion
 
 ## Spec File Format
@@ -83,71 +83,13 @@ blocked_by: Exact Issue Title
 - `.aide/tools/aide_issue_specs_*.md` (user-generated, gitignored)
 - Any path provided by user
 
-**Read spec file:**
-```bash
-cat <spec-file-path>
-```
+**DO NOT read the spec file.** The Custom GPT already validated format. If format is wrong, the tool will fail with a clear error message.
 
-**Quick validation:**
-- Has `## [Epic]:` heading (if Epic with children)
-- Has `## Issue:` headings with type tags
-- Has `---` separators between issues
-- Has metadata lines (priority, area)
+**Immediately proceed to Step 2 (Run Tool).**
 
-## Step 2: Pre-Flight Check
+## Step 2: Run Tool
 
-Before running the tool, check for potential issues that will cause failures.
-
-**Check required labels exist:**
-
-```bash
-# Epic label (required for Epics)
-gh label list --search "Epic"
-
-# Common area labels
-gh label list --search "area:"
-
-# Common priority labels
-gh label list --search "priority:"
-```
-
-**If labels missing, create them:**
-
-```bash
-# Epic label (purple, high visibility)
-gh label create "Epic" --description "Parent issue grouping related work" --color "7057ff"
-
-# Area labels (light blue)
-gh label create "area:docs" --description "Documentation" --color "c5def5"
-gh label create "area:job-system" --description "Job assignment" --color "c5def5"
-# ... create other area labels as needed
-
-# Priority labels (traffic light colors)
-gh label create "priority:high" --description "Should address soon" --color "d93f0b"
-gh label create "priority:medium" --description "Moderate importance" --color "fbca04"
-gh label create "priority:low" --description "Nice to have" --color "0e8a16"
-```
-
-**Check area labels from spec:**
-```bash
-# Extract area values from spec
-grep "^area:" <spec-file> | cut -d: -f2 | tr ',' '\n' | sed 's/^ *//' | sort -u
-
-# Cross-check with existing labels
-gh label list --search "area:"
-```
-
-**Report pre-flight status:**
-```markdown
-**Pre-flight check:**
-- ✅ Spec format valid
-- ✅ Required labels exist (Epic, area:*, priority:*)
-- ⚠️ Missing labels: [list] (will create)
-```
-
-## Step 3: Run Tool
-
-Execute the issue-creator tool with proper error handling.
+Execute the issue-creator tool immediately. **No pre-flight checks, no label validation.** If labels are missing, the tool will fail with a clear error message and you'll create them in Step 3.
 
 **Command:**
 ```bash
@@ -159,6 +101,14 @@ python .aide/tools/issue-creator.py <spec-file-path>
 - **Phase 2**: Links Epic/child relationships via GraphQL `addSubIssue` mutation
 - **Phase 3**: Reports blocking dependencies (must be manually resolved)
 - **Output**: Issue URLs, Epic/child relationships, blocking dependencies
+
+**If tool succeeds**: Proceed to Step 3 (Verify Results).
+
+**If tool fails**: See error handling below, fix errors, then re-run tool.
+
+## Step 3: Handle Errors (if tool failed)
+
+The tool will fail with clear error messages. Fix the error, then re-run the tool.
 
 **Common errors and fixes:**
 
@@ -179,7 +129,25 @@ python .aide/tools/issue-creator.py <spec-file>.utf8
 
 **Cause:** Missing GitHub label.
 
-**Fix:** Create missing label (see Pre-Flight Check), then re-run tool.
+**Fix:** Create missing label, then re-run tool.
+
+```bash
+# Epic label (purple, high visibility)
+gh label create "Epic" --description "Parent issue grouping related work" --color "7057ff"
+
+# Area labels (light blue)
+gh label create "area:docs" --description "Documentation" --color "c5def5"
+gh label create "area:job-system" --description "Job assignment" --color "c5def5"
+# ... create any area labels mentioned in error
+
+# Priority labels (traffic light colors)
+gh label create "priority:high" --description "Should address soon" --color "d93f0b"
+gh label create "priority:medium" --description "Moderate importance" --color "fbca04"
+gh label create "priority:low" --description "Nice to have" --color "0e8a16"
+
+# Re-run tool
+python .aide/tools/issue-creator.py <spec-file-path>
+```
 
 ### Error: GitHub API rate limit
 **Symptom:** `API rate limit exceeded`
