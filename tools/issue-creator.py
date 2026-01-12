@@ -61,10 +61,10 @@ class IssueCreator:
                     # Merge with defaults
                     config = self.DEFAULT_CONFIG.copy()
                     config.update(user_config)
-                    print(f"✓ Loaded config from {path}", file=sys.stderr)
+                    print(f"[OK] Loaded config from {path}", file=sys.stderr)
                     return config
 
-        print("⚠ No config found, using defaults (no area inference)", file=sys.stderr)
+        print("[WARN] No config found, using defaults (no area inference)", file=sys.stderr)
         print("  Create issue-creator.config.json in project root to customize", file=sys.stderr)
         return self.DEFAULT_CONFIG
 
@@ -192,7 +192,11 @@ class IssueCreator:
             '--label', ','.join(labels)
         ]
 
-        result = subprocess.run(cmd, capture_output=True, text=True, check=True)
+        result = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8')
+
+        if result.returncode != 0:
+            print(f"Error creating issue: {result.stderr}", file=sys.stderr)
+            raise subprocess.CalledProcessError(result.returncode, cmd, result.stdout, result.stderr)
 
         # Extract issue number from URL
         url = result.stdout.strip()
@@ -251,10 +255,10 @@ class IssueCreator:
             self.created_issues[spec.title] = issue_num
 
             if spec.is_epic:
-                print(f"✓ Created Epic #{issue_num}: {spec.title}")
+                print(f"[OK] Created Epic #{issue_num}: {spec.title}")
             else:
                 areas_str = ', '.join(spec.areas) if spec.areas else 'none'
-                print(f"  ✓ Created #{issue_num}: {spec.title} (priority: {spec.priority}, areas: {areas_str})")
+                print(f"  [OK] Created #{issue_num}: {spec.title} (priority: {spec.priority}, areas: {areas_str})")
 
         print()
 
@@ -267,7 +271,7 @@ class IssueCreator:
                     child_num = self.created_issues[spec.title]
 
                     self.add_child_to_parent(parent_num, child_num)
-                    print(f"  ✓ Linked #{child_num} as child of #{parent_num}")
+                    print(f"  [OK] Linked #{child_num} as child of #{parent_num}")
             print()
 
         # Phase 3: Report blocking relationships
@@ -277,7 +281,7 @@ class IssueCreator:
             for spec in blocked_issues:
                 issue_num = self.created_issues[spec.title]
                 blockers = ', '.join(spec.blocked_by)
-                print(f"  ⚠ #{issue_num} blocked by: {blockers}")
+                print(f"  [WARN] #{issue_num} blocked by: {blockers}")
             print()
 
         print("Summary:")
@@ -293,7 +297,7 @@ class IssueCreator:
 
 def main():
     if len(sys.argv) > 1:
-        with open(sys.argv[1], 'r') as f:
+        with open(sys.argv[1], 'r', encoding='utf-8') as f:
             content = f.read()
     else:
         content = sys.stdin.read()
