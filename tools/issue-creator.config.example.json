@@ -1,0 +1,17 @@
+{
+  "area_keywords": {
+    "job-system": ["job", "jobs", "task", "assignment", "work queue"],
+    "drone-ai": ["drone", "pathfinding", "navigation", "ai", "behavior"],
+    "resources": ["resource", "inventory", "material", "storage"],
+    "buildings": ["building", "structure", "production", "factory"],
+    "ui": ["ui", "hud", "interface", "menu", "panel", "widget"],
+    "combat": ["combat", "weapon", "damage", "attack", "defense"],
+    "testing": ["test", "testing", "unit test", "integration test"],
+    "tooling": ["tool", "workflow", "automation", "cli"]
+  },
+  "default_priority": "medium",
+  "default_status_ready": "status:ready",
+  "default_status_blocked": "status:blocked",
+  "epic_label": "Epic",
+  "enhancement_label": "enhancement"
+}

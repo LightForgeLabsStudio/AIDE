@@ -14,3 +14,7 @@ desktop.ini
 *.tmp
 *.bak
 *.log
+
+# Project-specific tool configs (not part of AIDE framework)
+*.config.json
+!*.config.example.json
