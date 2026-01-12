@@ -26,11 +26,9 @@ Implement features for {{PROJECT_NAME}} using {{TECH_STACK}}.
 ## Step 0: Spec Intake
 
 **Agent asks:**
-"Ready to implement. Please provide:
-1. **GitHub issue number** (spec in issue)
-2. **Spec or batch of specs** (I'll create issue(s) for tracking)"
+"Ready to implement. Please provide **GitHub issue number** containing the spec."
 
-### Option 1: Issue Number Provided
+### Reading the Issue
 
 **Read issue:**
 ```bash
@@ -44,34 +42,7 @@ Extract: goal, scope, out-of-scope, success criteria, pillar refs from issue des
 gh issue edit <number> --add-label "status: in-progress"
 ```
 
-### Option 2: Spec or Batch of Specs Provided
-
-**Single spec:** Create one tracking issue.
-**Batch of specs:** Iterate through list (markdown sections, numbered, etc.), create issue for each.
-
-**For each spec:**
-```bash
-gh issue create \
-  --title "[Feature]: <brief title>" \
-  --body "<full spec>" \
-  --label "enhancement,priority: <level>,area: <system>,status: ready"
-```
-
-**If batch, output table:**
-```
-Created 5 issues:
-- #42: Job Priority System (priority: high, area: job-system)
-- #43: Drone Cargo Visualization (priority: medium, area: drone-ai, ui)
-- #44: Building Health Indicators (priority: low, area: buildings, ui)
-```
-
-**If batch, ask:** "Which issue would you like to implement first?"
-
-**Extract from issue:** goal, scope, out-of-scope, success criteria, pillar refs.
-
-**Continue with Option 1** workflow (mark in-progress, alignment, etc.).
-
-### Spec ⇄ Codebase Alignment (All Options)
+### Spec ⇄ Codebase Alignment
 
 **Before planning:** Do a brief alignment pass:
 - Call out spec items that conflict with known architecture/engine constraints
