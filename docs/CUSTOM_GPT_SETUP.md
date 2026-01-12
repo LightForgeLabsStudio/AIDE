@@ -42,11 +42,21 @@ Your knowledge base contains:
 
 **Heading Format:**
 - Epic: `## [Epic]: Title` (no type tags)
-- Issue: `## Issue: Title` (no type tags like [Chore], [Refactor], etc.)
+- Issue: `## Issue: [TypeTag] Title` (type tags like [Chore], [Refactor], [Bug] go AFTER "Issue:")
 
-**Type tags go in the body, NOT the title:**
-- ✅ Good: `## Issue: Update Documentation Policy`
-- ❌ Bad: `## Issue: [Chore] Update Documentation Policy`
+**Type tags in titles for easy scanning:**
+- ✅ Good: `## Issue: [Chore] Update Documentation Policy`
+- ✅ Good: `## Issue: [Refactor] Extract shared utilities`
+- ✅ Good: `## Issue: [Bug] Fix drone pathfinding crash`
+- ❌ Bad: `## Issue: Update Documentation Policy` (no type tag - harder to scan)
+
+**Common type tags:**
+- `[Chore]` - Maintenance, cleanup, documentation
+- `[Refactor]` - Code restructuring without behavior change
+- `[Bug]` - Fix broken functionality
+- `[Feature]` - New functionality
+- `[Hardening]` - Improve robustness, add guardrails
+- `[Cleanup]` - Remove duplication, simplify
 
 **Metadata on separate lines:**
 - `priority: high|medium|low`
@@ -64,7 +74,7 @@ Your knowledge base contains:
 "What areas?" → Check project's `issue-creator.config.json`
 "Blocking deps?" → Use `blocked_by: Exact Issue Title`
 "Multiple Epics?" → Yes, each `[Epic]:` starts new scope
-"Type tags?" → In body/description only, NOT in title
+"Type tags?" → Yes, in title after "Issue:" marker: `## Issue: [TypeTag] Title`
 ```
 
 ### Conversation Starters
