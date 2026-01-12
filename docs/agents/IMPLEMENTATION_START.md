@@ -526,7 +526,7 @@ Replace these placeholders with your project specifics:
 - `{{MAIN_BRANCH}}` → "main", "master", "develop"
 - `{{PROJECT_DOMAIN}}` → "example.com", "yourproject.dev"
 - `{{GITHUB_QUERIES_DOC}}` → ".aide/docs/agents/GITHUB_QUERIES.md" (reference for querying implementation status)
-- `{{PROJECT_DESIGN_DOCS}}` → "design/", "docs/specs/", "docs/adr/"
+- `{{PROJECT_DESIGN_DOCS}}` → "design/", "docs/adr/"
 - `{{DEVELOPMENT_DOC}}` → "docs/DEVELOPMENT.md", "docs/ARCHITECTURE.md"
 - `{{CODING_GUIDELINES_DOC}}` → "docs/CODING_GUIDELINES.md"
 - `{{TESTING_POLICY_DOC}}` → "docs/TESTING_POLICY.md"

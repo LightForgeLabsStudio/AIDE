@@ -37,7 +37,7 @@ Use `{{CONTRIBUTING_DOC}}` template. Keep terse:
 - Extend existing systems (new systems require approval)
 - Don't modify tests without approval
 - Avoid autoloads unless requested/approved
-- Align with `{{DOCUMENTATION_POLICY_DOC}}`: Lean specs, store large specs in `docs/specs/` when requested
+- Align with `{{DOCUMENTATION_POLICY_DOC}}`: Lean specs live in GitHub Epics + child Issues unless a project explicitly requests local spec files
 
 ## Handoff to Implementation
 
@@ -46,7 +46,7 @@ Tag: `Ready for IMPLEMENTATION_START`
 Include:
 - Links to exact GitHub issues/PRs + pillar sections used
 - Test intent: Automated scenarios + manual checklist (if any)
-- Spec file location (if created): `docs/specs/`
+- Spec location: GitHub Epics + child Issues
 
 ## Quick Checklist
 

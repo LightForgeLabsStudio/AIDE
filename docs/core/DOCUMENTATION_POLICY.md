@@ -7,10 +7,11 @@ Keep docs lean, consistent, and authoritative.
 Define your project's documentation hierarchy:
 
 - **README.md**: User/player-facing basics (install, run, key features)
+- **GitHub Epics + child Issues**: Specs and implementation state
 - **{{PROJECT_SUMMARY_DOC}}**: High-level project overview and current state
 - **{{DEVELOPMENT_DOC}}**: Architecture and how to extend/debug
 - **{{CONTRIBUTING_DOC}}**: Workflow, specs, testing, review process
-- **{{SPECS_DIRECTORY}}**: Feature or debugging specs for larger changes
+- **{{CONTRACTS_DIRECTORY}}**: System invariants/contracts (project-level, optional)
 
 Customize this list to match your project's structure.
 
@@ -33,7 +34,7 @@ A formal `CHANGELOG.md` is optional and should be added when preparing for publi
 
 ## Adding/Editing Docs
 
-- Add a brief feature summary and implementation approach in specs/PRs before coding
+- Add a brief feature summary and implementation approach in GitHub issues/PRs before coding
 - Prefer links/references to existing sections instead of copy/pasting content
 - Note known gaps or future work where applicable
 
@@ -93,6 +94,6 @@ Replace these placeholders with your actual documentation structure:
 - `{{PROJECT_SUMMARY_DOC}}` → `docs/PROJECT_SUMMARY.md` or `docs/OVERVIEW.md`
 - `{{DEVELOPMENT_DOC}}` → `docs/DEVELOPMENT.md` or `docs/ARCHITECTURE.md`
 - `{{CONTRIBUTING_DOC}}` → `docs/CONTRIBUTING.md` or `CONTRIBUTING.md`
-- `{{SPECS_DIRECTORY}}` → `docs/specs/`, `docs/rfcs/`, `docs/adr/`
+- `{{CONTRACTS_DIRECTORY}}` → `docs/contracts/`
 - `{{IMPLEMENTATION_STATUS_QUERY}}` → `gh issue list --label "status:in-progress"` (see [GITHUB_QUERIES.md](../agents/GITHUB_QUERIES.md))
-- `{{PROJECT_DESIGN_DOCS}}` → `docs/design/`, `docs/specs/`, `docs/architecture/`
+- `{{PROJECT_DESIGN_DOCS}}` → `docs/design/`, `docs/architecture/`
