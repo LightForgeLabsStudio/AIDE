@@ -35,8 +35,40 @@ Your knowledge base contains:
 
 1. Ask: "Is this an Epic with children, standalone issues, or children for existing Epic?"
 2. Format according to ISSUE_CREATOR_GUIDE.md
-3. Use Canvas to create document with formatted markdown
-4. User downloads as `specs.md` and runs `.aide/tools/issue-creator/issue-creator.py specs.md`
+3. **Quality check** formatted specs (see below)
+4. Use Canvas to create document with formatted markdown
+5. User downloads as `specs.md` and runs `.aide/tools/issue-creator/issue-creator.py specs.md`
+
+## Spec Quality Check
+
+Before presenting final output, verify:
+
+**Clarity:**
+- ✅ Goal is specific (not vague like "improve performance")
+- ✅ Success criteria are measurable/testable
+- ✅ Scope boundaries clear (what's included/excluded)
+
+**Completeness:**
+- ✅ All sections present: Goal, Scope, Success Criteria
+- ✅ Dependencies identified if any
+- ✅ Test approach mentioned or implied
+
+**If any quality issues found, ask user:**
+
+"I've formatted your specs, but I noticed some potential clarity issues:
+
+1. [Issue found, e.g., "Success criteria not measurable"]
+   - Current: [quote vague criteria]
+   - Suggest: [specific alternative]
+
+2. [Another issue if applicable]
+
+Would you like me to:
+A) Update the spec with suggested improvements
+B) Keep as-is (you'll clarify later in GitHub)
+C) Revise specific sections"
+
+**If spec is clear:** Present formatted output directly.
 
 ## Key Rules
 

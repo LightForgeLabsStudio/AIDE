@@ -39,8 +39,48 @@ Extract: goal, scope, out-of-scope, success criteria, pillar refs from issue des
 
 **Mark in progress:**
 ```bash
-gh issue edit <number> --add-label "status: in-progress"
+gh issue edit <number> --add-label "status:in-progress"
 ```
+
+### Spec Quality Check
+
+Before planning, verify spec quality. If issues found, post questions to issue and wait for clarification.
+
+**Clarity checklist:**
+- [ ] Goal is clear and specific (not vague)?
+- [ ] Success criteria are measurable (testable)?
+- [ ] Scope boundaries defined (in-scope vs out-of-scope)?
+
+**Completeness checklist:**
+- [ ] All required sections present (Goal, Scope, Success Criteria)?
+- [ ] Dependencies identified?
+- [ ] Test approach mentioned or implied?
+
+**Feasibility checklist:**
+- [ ] Conflicts with existing architecture?
+- [ ] Relies on unbuilt dependencies?
+- [ ] Reasonable scope for single PR (not too large)?
+
+**If any issues found:**
+- Post specific questions to issue (use format below)
+- Mark what's unclear and why it matters
+- Suggest alternatives if applicable
+- **Wait for user clarification** before proceeding
+
+**Example clarification comment:**
+```bash
+gh issue comment <number> --body "**Spec Quality Check - Clarification needed:**
+
+**Issue:** Success criteria not measurable
+- Current: \"Improve performance\"
+- Suggest: \"Reduce job assignment time from 50ms to <20ms\"
+
+**Context:** Measurable criteria help verify implementation success and guide testing.
+
+Please update spec with specific metrics or expected behavior."
+```
+
+**If spec is clear:** Proceed to alignment check.
 
 ### Spec ⇄ Codebase Alignment
 
