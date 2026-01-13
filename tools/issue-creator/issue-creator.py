@@ -374,23 +374,50 @@ class IssueCreator:
                     print(f"  [OK] Updated #{child_num}: {spec.title}")
 
         elif update_mode == 'auto':
-            # Update issues based on issue_number field in specs
+            # Update/create issues based on issue_number field in specs
             updated_count = 0
+            created_count = 0
+            epic_spec = next((s for s in specs if s.is_epic), None)
+            epic_num = epic_spec.issue_number if epic_spec else None
+
+            # First, update Epic if present
+            if epic_spec and epic_spec.issue_number:
+                print(f"Updating Epic #{epic_spec.issue_number}...")
+                self.update_issue(epic_spec.issue_number, epic_spec)
+                print(f"[OK] Updated Epic #{epic_spec.issue_number}: {epic_spec.title}")
+                print()
+
+            # Then process children
             for spec in specs:
+                if spec.is_epic:
+                    continue  # Already handled above
+
                 if spec.issue_number:
+                    # Update existing issue
                     print(f"Updating issue #{spec.issue_number}...")
                     self.update_issue(spec.issue_number, spec)
                     print(f"[OK] Updated #{spec.issue_number}: {spec.title}")
                     updated_count += 1
                 else:
-                    print(f"[WARN] No issue_number for: {spec.title} (skipped)", file=sys.stderr)
+                    # Create new issue
+                    print(f"Creating new issue: {spec.title}...")
+                    issue_num = self.create_issue(spec)
+                    self.created_issues[spec.title] = issue_num
+                    print(f"[OK] Created #{issue_num}: {spec.title}")
 
-            if updated_count == 0:
-                print("No issues updated. Add 'issue_number: N' to spec sections.", file=sys.stderr)
+                    # Link to Epic if present
+                    if epic_num:
+                        self.add_child_to_parent(epic_num, issue_num)
+                        print(f"  [OK] Linked #{issue_num} to Epic #{epic_num}")
+
+                    created_count += 1
+
+            if updated_count == 0 and created_count == 0:
+                print("No issues updated or created.", file=sys.stderr)
                 sys.exit(1)
 
             print()
-            print(f"Summary: Updated {updated_count} issue(s)")
+            print(f"Summary: Updated {updated_count}, Created {created_count} issue(s)")
 
     def process_specs(self, specs: List[IssueSpec]):
         """Create all issues and set up relationships"""
@@ -461,6 +488,9 @@ Examples:
   # Auto-update issues (requires issue_number: N in spec)
   %(prog)s specs.md --update-auto
 
+  # Create new issue and add to Epic #170
+  %(prog)s new_child.md --add-child 170
+
   # Read from stdin
   cat specs.md | %(prog)s
 
@@ -480,6 +510,7 @@ Update mode metadata:
     parser.add_argument('--update', type=int, metavar='NUM', help='Update single issue NUM with first spec in file')
     parser.add_argument('--update-epic', type=int, metavar='NUM', help='Update Epic NUM and all children (matches by order)')
     parser.add_argument('--update-auto', action='store_true', help='Update issues based on issue_number metadata in specs')
+    parser.add_argument('--add-child', type=int, metavar='EPIC_NUM', help='Create new issue from spec and link to Epic EPIC_NUM')
 
     args = parser.parse_args()
 
@@ -508,6 +539,23 @@ Update mode metadata:
         creator.process_updates(specs, 'epic', args.update_epic)
     elif args.update_auto:
         creator.process_updates(specs, 'auto')
+    elif args.add_child:
+        # Add child to existing Epic
+        spec = specs[0] if specs else None
+        if not spec:
+            print("No issue spec found in file", file=sys.stderr)
+            sys.exit(1)
+        if spec.is_epic:
+            print("Error: Spec is an Epic, expected a regular issue", file=sys.stderr)
+            sys.exit(1)
+
+        print(f"Creating new issue...")
+        issue_num = creator.create_issue(spec)
+        print(f"[OK] Created #{issue_num}: {spec.title}")
+
+        print(f"Linking to Epic #{args.add_child}...")
+        creator.add_child_to_parent(args.add_child, issue_num)
+        print(f"[OK] Linked #{issue_num} to Epic #{args.add_child}")
     else:
         # Create mode (default)
         creator.process_specs(specs)
