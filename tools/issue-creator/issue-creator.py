@@ -267,28 +267,57 @@ class IssueCreator:
             capture_output=True, text=True, check=True
         )
 
+    def get_issue_labels(self, issue_num: int) -> List[str]:
+        """Get current labels on an issue"""
+        result = subprocess.run(
+            ['gh', 'issue', 'view', str(issue_num), '--json', 'labels'],
+            capture_output=True, text=True, encoding='utf-8', check=True
+        )
+        data = json.loads(result.stdout)
+        return [label['name'] for label in data.get('labels', [])]
+
     def update_issue(self, issue_num: int, spec: IssueSpec):
         """Update existing GitHub issue"""
-        labels = []
+        # Get current labels to determine what to remove
+        try:
+            current_labels = self.get_issue_labels(issue_num)
+        except:
+            current_labels = []
+
+        # Build new label set
+        new_labels = []
 
         # Type label
         if spec.is_epic:
-            labels.append(self.config['epic_label'])
+            new_labels.append(self.config['epic_label'])
         else:
-            labels.append(self.config['enhancement_label'])
+            new_labels.append(self.config['enhancement_label'])
 
         # Priority
-        labels.append(f'priority:{spec.priority}')
+        new_labels.append(f'priority:{spec.priority}')
 
         # Areas
         for area in spec.areas:
-            labels.append(f'area:{area}')
+            new_labels.append(f'area:{area}')
 
         # Status
         if spec.blocked_by:
-            labels.append(self.config['default_status_blocked'])
+            new_labels.append(self.config['default_status_blocked'])
         else:
-            labels.append(self.config['default_status_ready'])
+            new_labels.append(self.config['default_status_ready'])
+
+        # Determine which status labels to remove (stale ones)
+        status_labels_to_remove = [
+            'status:needs-spec',
+            'status:blocked',
+            'status:ready',
+            'status:in-progress',
+            'status:on-hold',
+        ]
+        labels_to_remove = [
+            label for label in current_labels
+            if label in status_labels_to_remove and label not in new_labels
+        ]
 
         # Add blocked-by section to body if needed
         body = spec.body
@@ -313,10 +342,12 @@ class IssueCreator:
             '--body', body,
         ]
 
-        # Remove all existing labels and add new ones
-        # Note: gh doesn't have a --set-labels, so we use --add-label for new labels
-        # The user should manually remove old labels if needed, or we could query first
-        for label in labels:
+        # Remove stale status labels
+        for label in labels_to_remove:
+            cmd.extend(['--remove-label', label])
+
+        # Add new labels
+        for label in new_labels:
             cmd.extend(['--add-label', label])
 
         result = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8')
