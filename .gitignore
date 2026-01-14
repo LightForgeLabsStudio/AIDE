@@ -22,3 +22,4 @@ desktop.ini
 # User-generated spec files for issue-creator (one-time use)
 tools/issue-creator/*_specs_*.md
 tools/issue-creator/aide_issue_specs_*.md
+tools/issue-creator/specs.md
