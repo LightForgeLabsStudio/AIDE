@@ -40,7 +40,7 @@ Batch create GitHub issues with Epic/child relationships from formatted spec fil
 Epic description
 
 ### Success Criteria
-- [ ] Criterion 1
+- Criterion 1
 
 ---
 
@@ -52,7 +52,7 @@ area: system-name
 Issue description
 
 ### Success Criteria
-- [ ] Criterion 1
+- Criterion 1
 
 ---
 ```
@@ -62,7 +62,7 @@ Issue description
 - Issue: `## Issue: [TypeTag] Title` (type tags go AFTER "Issue:")
 - Section separator: `---`
 - Metadata: `priority:`, `area:`, `blocked_by:` on separate lines
-- Success criteria: `- [ ]` checkbox format
+- Success criteria: Plain bullets `- item` (NO checklists - those belong in PRs)
 
 **Common type tags:**
 - `[Chore]` - Maintenance, cleanup, documentation

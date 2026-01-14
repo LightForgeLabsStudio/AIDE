@@ -28,6 +28,15 @@ Get-Clipboard | .aide/tools/issue-creator/issue-creator.py
 
 Issues are separated by `---` or `## Issue:` markers.
 
+**IMPORTANT: No Checklists in Issues**
+
+- ❌ Do NOT use `- [ ]` checkbox format in Issues
+- ✅ Use plain bullets `- item` for all lists
+- **Issues** = Descriptive (intent, scope, acceptance criteria)
+- **PRs** = Executable (progress tracking, task checklists)
+
+The tool will warn if checklists are detected.
+
 ### Example: Epic with Children
 
 ```markdown
@@ -41,8 +50,8 @@ Complete overhaul of job assignment and priority system.
 - Cancellation support
 
 ### Success Criteria
-- [ ] All child issues completed
-- [ ] Performance maintained
+- All child issues completed
+- Performance maintained
 
 ---
 
@@ -59,8 +68,8 @@ area: job-system
 - Update drone job selection logic
 
 ### Success Criteria
-- [ ] High priority jobs claimed first
-- [ ] Tests verify priority sorting
+- High priority jobs claimed first
+- Tests verify priority sorting
 
 ---
 
@@ -74,8 +83,8 @@ blocked_by: Job Priority System
 - Refund partial resources
 
 ### Success Criteria
-- [ ] Jobs can be cancelled mid-execution
-- [ ] Resources properly refunded
+- Jobs can be cancelled mid-execution
+- Resources properly refunded
 ```
 
 ## Spec Fields

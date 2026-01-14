@@ -97,6 +97,22 @@ class IssueCreator:
 
         return sorted(areas)
 
+    def check_for_checklists(self, content: str) -> List[str]:
+        """Check for checklist patterns and return warnings"""
+        warnings = []
+        checklist_pattern = re.compile(r'^(\s*)-\s*\[\s*\]', re.MULTILINE)
+        matches = checklist_pattern.findall(content)
+
+        if matches:
+            count = len(re.findall(r'-\s*\[\s*\]', content))
+            warnings.append(
+                f"[WARN] Found {count} checklist item(s) '- [ ]' in spec.\n"
+                f"       Issues should use plain bullets '- item', not checklists.\n"
+                f"       Checklists belong in PRs (progress tracking), not Issues (descriptive).\n"
+                f"       The tool will proceed, but consider fixing the spec format."
+            )
+        return warnings
+
     def parse_spec_file(self, content: str) -> List[IssueSpec]:
         """Parse spec file into IssueSpec objects"""
         specs = []
@@ -531,6 +547,12 @@ Update mode metadata:
     if not specs:
         print("No issues found in spec file", file=sys.stderr)
         sys.exit(1)
+
+    # Check for checklists (warning only)
+    checklist_warnings = creator.check_for_checklists(content)
+    for warning in checklist_warnings:
+        print(warning, file=sys.stderr)
+        print()
 
     # Determine mode
     if args.update:

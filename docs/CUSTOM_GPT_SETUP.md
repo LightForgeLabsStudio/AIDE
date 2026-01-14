@@ -43,6 +43,10 @@ Your knowledge base contains:
 
 Before presenting final output, verify:
 
+**Format validation (MUST PASS):**
+- ❌ No checklists (`- [ ]`) - convert to plain bullets (`- item`)
+- ✅ All lists use plain bullets only
+
 **Clarity:**
 - ✅ Goal is specific (not vague like "improve performance")
 - ✅ Success criteria are measurable/testable
@@ -97,7 +101,12 @@ C) Revise specific sections"
 
 **Sections separated by:** `---`
 
-**Success criteria use:** `- [ ]` checkbox format
+**CRITICAL - No Checklists in Issues:**
+- ❌ NEVER use `- [ ]` checkbox format in Issues
+- ✅ Use plain bullets `- item` for all lists
+- Issues are descriptive (intent, scope, acceptance)
+- PRs are executable (progress tracking, task checklists)
+- If you see `- [ ]` in your output, this is an ERROR - convert to `- item`
 
 **Reference ISSUE_CREATOR_GUIDE.md for all format details**
 

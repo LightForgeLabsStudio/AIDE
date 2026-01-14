@@ -25,8 +25,8 @@ The issue-creator tool expects markdown files with this structure:
 Epic description
 
 ### Success Criteria
-- [ ] Criterion 1
-- [ ] Criterion 2
+- Criterion 1
+- Criterion 2
 
 ---
 
@@ -41,8 +41,8 @@ Issue description
 What this issue includes
 
 ### Success Criteria
-- [ ] Criterion 1
-- [ ] Criterion 2
+- Criterion 1
+- Criterion 2
 
 ---
 
@@ -58,7 +58,7 @@ blocked_by: Exact Issue Title
 - Issue heading: `## Issue: [TypeTag] Title` (type tags like [Chore], [Refactor], [Bug] go AFTER "Issue:")
 - Section separator: `---`
 - Metadata on separate lines: `priority:`, `area:`, `blocked_by:`
-- Success criteria: `- [ ]` checkbox format
+- Success criteria: Plain bullets `- item` (NO checklists `- [ ]`)
 
 **Common type tags:**
 - `[Chore]` - Maintenance, cleanup, documentation

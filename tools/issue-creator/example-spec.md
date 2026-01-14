@@ -15,9 +15,9 @@ Complete overhaul of the job assignment and priority system to enable more flexi
 - UI indicators for job status
 
 ### Success Criteria
-- [ ] All child issues completed
-- [ ] Performance maintained (no regression in job assignment speed)
-- [ ] Backward compatible with existing save files
+- All child issues completed
+- Performance maintained (no regression in job assignment speed)
+- Backward compatible with existing save files
 
 ### Pillar References
 - Pillar 2: Sector Logistics (job management is core to logistics)
@@ -44,10 +44,10 @@ area: job-system
 - No changes to resource requirements
 
 ### Success Criteria
-- [ ] Drones claim highest priority job first when multiple available
-- [ ] Priority UI indicators show correct priority level
-- [ ] Tests verify priority sorting logic
-- [ ] Manual test: High priority job claimed before low priority job
+- Drones claim highest priority job first when multiple available
+- Priority UI indicators show correct priority level
+- Tests verify priority sorting logic
+- Manual test: High priority job claimed before low priority job
 
 ---
 
@@ -72,11 +72,11 @@ blocked_by: Job Priority System
 - No cancel history/logging
 
 ### Success Criteria
-- [ ] Jobs can be cancelled at any stage (queued, in-progress)
-- [ ] Resources properly refunded (full or partial)
-- [ ] Drones reassigned to new jobs immediately
-- [ ] Tests verify refund calculations
-- [ ] Manual test: Cancel job mid-execution, verify drone picks new job
+- Jobs can be cancelled at any stage (queued, in-progress)
+- Resources properly refunded (full or partial)
+- Drones reassigned to new jobs immediately
+- Tests verify refund calculations
+- Manual test: Cancel job mid-execution, verify drone picks new job
 
 ---
 
@@ -100,10 +100,10 @@ area: job-system, ui
 - No filtering/search functionality
 
 ### Success Criteria
-- [ ] Job status clearly visible at a glance
-- [ ] Priority color coding intuitive
-- [ ] Assigned drone shown for in-progress jobs
-- [ ] Tooltip shows complete job info on hover
+- Job status clearly visible at a glance
+- Priority color coding intuitive
+- Assigned drone shown for in-progress jobs
+- Tooltip shows complete job info on hover
 
 ---
 
@@ -125,6 +125,6 @@ area: job-system
 - No changes to job data structures
 
 ### Success Criteria
-- [ ] 50% reduction in time spent in assign_jobs() for 100+ job queues
-- [ ] No regressions in assignment correctness
-- [ ] Performance tests verify improvements
+- 50% reduction in time spent in assign_jobs() for 100+ job queues
+- No regressions in assignment correctness
+- Performance tests verify improvements
