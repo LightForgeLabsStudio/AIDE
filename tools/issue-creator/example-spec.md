@@ -20,6 +20,8 @@ Default: feature if no marker.
 - Only Epics get title prefixes (other types use labels)
 - Tool automatically sets GitHub issue type field via GraphQL after creation
 - Type mapping configured in `issue-creator.config.json`
+- Blocking relationships set via GraphQL (`addBlockedBy` mutation) - visible in issue UI Relationships dropdown
+- Issues with `blocked_by:` field automatically get `status:blocked` label
 
 ---
 

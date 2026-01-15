@@ -260,15 +260,8 @@ class IssueCreator:
         else:
             labels.append(self.config['default_status_ready'])
 
-        # Add blocked-by section to body if needed
-        body = spec.body
-        if spec.blocked_by:
-            blocked_section = "\n\n## Blocked By\n" + "\n".join(
-                f"- {dep}" for dep in spec.blocked_by
-            )
-            body += blocked_section
-
         # Build title (only Epic gets prefix, others use labels)
+        body = spec.body
         if spec.issue_type == "epic":
             title = f"[Epic]: {spec.title}"
         else:
@@ -328,6 +321,30 @@ class IssueCreator:
             issue {{
               number
               title
+            }}
+          }}
+        }}'''
+
+        subprocess.run(
+            ['gh', 'api', 'graphql', '-f', f'query={mutation}'],
+            capture_output=True, text=True, check=True
+        )
+
+    def add_blocking_relationship(self, blocked_issue_num: int, blocking_issue_num: int):
+        """Add 'blocked by' relationship via addBlockedBy mutation"""
+        blocked_id = self.get_issue_id(blocked_issue_num)
+        blocking_id = self.get_issue_id(blocking_issue_num)
+
+        mutation = f'''mutation {{
+          addBlockedBy(input: {{
+            issueId: "{blocked_id}"
+            blockingIssueId: "{blocking_id}"
+          }}) {{
+            issue {{
+              number
+            }}
+            blockingIssue {{
+              number
             }}
           }}
         }}'''
@@ -459,15 +476,8 @@ class IssueCreator:
         else:
             labels.append(self.config['default_status_ready'])
 
-        # Add blocked-by section to body if needed
-        body = spec.body
-        if spec.blocked_by:
-            blocked_section = "\n\n## Blocked By\n" + "\n".join(
-                f"- {dep}" for dep in spec.blocked_by
-            )
-            body += blocked_section
-
         # Build title (only Epic gets prefix, others use labels)
+        body = spec.body
         if spec.issue_type == "epic":
             title = f"[Epic]: {spec.title}"
         else:
@@ -648,14 +658,19 @@ class IssueCreator:
                     print(f"  [OK] Linked #{child_num} as child of #{parent_num}")
             print()
 
-        # Phase 3: Report blocking relationships
+        # Phase 3: Set blocking relationships
         blocked_issues = [s for s in specs if s.blocked_by]
         if blocked_issues:
-            print("Blocked issues (set via labels and body):")
+            print("Setting up blocking relationships...")
             for spec in blocked_issues:
-                issue_num = self.created_issues[spec.title]
-                blockers = ', '.join(spec.blocked_by)
-                print(f"  [WARN] #{issue_num} blocked by: {blockers}")
+                blocked_issue_num = self.created_issues[spec.title]
+                for blocker_title in spec.blocked_by:
+                    if blocker_title in self.created_issues:
+                        blocking_issue_num = self.created_issues[blocker_title]
+                        self.add_blocking_relationship(blocked_issue_num, blocking_issue_num)
+                        print(f"  [OK] #{blocked_issue_num} blocked by #{blocking_issue_num}")
+                    else:
+                        print(f"  [WARN] #{blocked_issue_num} blocker not found: {blocker_title}", file=sys.stderr)
             print()
 
         print("Summary:")
