@@ -28,6 +28,7 @@ class IssueSpec:
     priority: str = "medium"
     areas: List[str] = field(default_factory=list)
     is_epic: bool = False
+    issue_type: str = "feature"  # epic, feature, bug, technical-debt, chore, documentation, research
     parent_title: Optional[str] = None
     blocks: List[str] = field(default_factory=list)
     blocked_by: List[str] = field(default_factory=list)
@@ -40,12 +41,27 @@ class IssueCreator:
         "default_status_ready": "status:ready",
         "default_status_blocked": "status:blocked",
         "epic_label": "Epic",
-        "enhancement_label": "enhancement"
+        "enhancement_label": "enhancement",
+        "bug_label": "bug",
+        "technical_debt_label": "technical-debt",
+        "chore_label": "chore",
+        "documentation_label": "documentation",
+        "research_label": "research",
+        "issue_type_mapping": {
+            "epic": "Epic",
+            "feature": "Feature",
+            "bug": "Bug",
+            "technical-debt": "Technical Debt",
+            "chore": "Chore",
+            "documentation": "Documentation",
+            "research": "Research"
+        }
     }
 
     def __init__(self):
         self.config = self._load_config()
         self.repo_info = self._get_repo_info()
+        self.issue_types = self._get_issue_types()
         self.created_issues = {}
 
     def _load_config(self) -> Dict:
@@ -82,6 +98,28 @@ class IssueCreator:
             'owner': data['owner']['login'],
             'repo': data['name']
         }
+
+    def _get_issue_types(self) -> Dict[str, str]:
+        """Query org issue types and return name->ID mapping"""
+        query = f'''{{
+          organization(login: "{self.repo_info['owner']}") {{
+            issueTypes(first: 25) {{
+              nodes {{
+                id
+                name
+              }}
+            }}
+          }}
+        }}'''
+
+        result = subprocess.run(
+            ['gh', 'api', 'graphql', '-f', f'query={query}'],
+            capture_output=True, text=True, check=True
+        )
+
+        data = json.loads(result.stdout)
+        types = data['data']['organization']['issueTypes']['nodes']
+        return {t['name']: t['id'] for t in types}
 
     def infer_areas(self, text: str) -> List[str]:
         """Infer area labels from content using config keywords"""
@@ -125,7 +163,29 @@ class IssueCreator:
 
             is_epic = '[Epic]' in section or 'Epic:' in section
 
-            title_match = re.search(r'^#+\s*(?:\[Epic\]:?\s*)?(.+?)$', section, re.MULTILINE)
+            # Detect issue type from markers
+            issue_type = "feature"  # default
+            if is_epic:
+                issue_type = "epic"
+            elif '[Bug]' in section or 'Bug:' in section:
+                issue_type = "bug"
+            elif '[Tech Debt]' in section or 'Tech Debt:' in section:
+                issue_type = "technical-debt"
+            elif '[Technical Debt]' in section or 'Technical Debt:' in section:
+                issue_type = "technical-debt"
+            elif '[Chore]' in section or 'Chore:' in section:
+                issue_type = "chore"
+            elif '[Documentation]' in section or 'Documentation:' in section:
+                issue_type = "documentation"
+            elif '[Docs]' in section or 'Docs:' in section:
+                issue_type = "documentation"
+            elif '[Research]' in section or 'Research:' in section:
+                issue_type = "research"
+
+            title_match = re.search(
+                r'^#+\s*(?:\[(?:Epic|Bug|Tech Debt|Technical Debt|Feature|Chore|Documentation|Docs|Research)\]:?\s*)?(.+?)$',
+                section, re.MULTILINE
+            )
             if not title_match:
                 continue
 
@@ -160,6 +220,7 @@ class IssueCreator:
                 priority=priority,
                 areas=areas,
                 is_epic=is_epic,
+                issue_type=issue_type,
                 parent_title=current_epic if not is_epic else None,
                 blocks=blocks,
                 blocked_by=blocked_by,
@@ -175,10 +236,16 @@ class IssueCreator:
         labels = []
 
         # Type label
-        if spec.is_epic:
-            labels.append(self.config['epic_label'])
-        else:
-            labels.append(self.config['enhancement_label'])
+        type_label_map = {
+            "epic": self.config['epic_label'],
+            "bug": self.config['bug_label'],
+            "technical-debt": self.config['technical_debt_label'],
+            "chore": self.config['chore_label'],
+            "documentation": self.config['documentation_label'],
+            "research": self.config['research_label'],
+            "feature": self.config['enhancement_label']
+        }
+        labels.append(type_label_map.get(spec.issue_type, self.config['enhancement_label']))
 
         # Priority
         labels.append(f'priority:{spec.priority}')
@@ -201,11 +268,11 @@ class IssueCreator:
             )
             body += blocked_section
 
-        # Build title
-        if spec.is_epic:
+        # Build title (only Epic gets prefix, others use labels)
+        if spec.issue_type == "epic":
             title = f"[Epic]: {spec.title}"
         else:
-            title = f"[Feature]: {spec.title}"
+            title = spec.title
 
         # Create issue via gh CLI
         cmd = [
@@ -224,6 +291,9 @@ class IssueCreator:
         # Extract issue number from URL
         url = result.stdout.strip()
         issue_num = int(url.split('/')[-1])
+
+        # Set GitHub issue type
+        self.set_issue_type(issue_num, spec.issue_type)
 
         return issue_num
 
@@ -267,57 +337,127 @@ class IssueCreator:
             capture_output=True, text=True, check=True
         )
 
-    def get_issue_labels(self, issue_num: int) -> List[str]:
-        """Get current labels on an issue"""
+    def set_issue_type(self, issue_num: int, issue_type: str):
+        """Set GitHub issue type via updateIssueIssueType mutation"""
+        # Get mapped type name from config
+        type_name = self.config['issue_type_mapping'].get(issue_type)
+        if not type_name:
+            return  # No type mapping configured
+
+        # Get type ID from cached org types
+        type_id = self.issue_types.get(type_name)
+        if not type_id:
+            print(f"[WARN] Issue type '{type_name}' not found in org", file=sys.stderr)
+            return
+
+        # Get issue GraphQL ID
+        issue_id = self.get_issue_id(issue_num)
+
+        mutation = f'''mutation {{
+          updateIssueIssueType(input: {{
+            issueId: "{issue_id}"
+            issueTypeId: "{type_id}"
+          }}) {{
+            issue {{
+              number
+              issueType {{
+                name
+              }}
+            }}
+          }}
+        }}'''
+
+        subprocess.run(
+            ['gh', 'api', 'graphql', '-f', f'query={mutation}'],
+            capture_output=True, text=True, check=True
+        )
+
+    def infer_type_from_labels(self, labels: List[str]) -> str:
+        """Infer issue_type from labels"""
+        # Map label names to internal issue types
+        label_to_type = {
+            self.config['epic_label']: 'epic',
+            self.config['bug_label']: 'bug',
+            self.config['technical_debt_label']: 'technical-debt',
+            self.config['chore_label']: 'chore',
+            self.config['documentation_label']: 'documentation',
+            self.config['research_label']: 'research',
+            self.config['enhancement_label']: 'feature',
+        }
+
+        for label in labels:
+            if label in label_to_type:
+                return label_to_type[label]
+
+        # Default to feature if no type label found
+        return 'feature'
+
+    def sync_types(self, issue_numbers: List[int]):
+        """Sync GitHub issue types based on labels for given issues"""
+        print(f"Syncing types for {len(issue_numbers)} issue(s)...")
+        print()
+
+        synced_count = 0
+        skipped_count = 0
+
+        for issue_num in issue_numbers:
+            try:
+                # Get current labels
+                labels = self.get_current_labels(issue_num)
+
+                # Infer type from labels
+                issue_type = self.infer_type_from_labels(labels)
+                type_name = self.config['issue_type_mapping'].get(issue_type)
+
+                # Set GitHub issue type
+                print(f"#{issue_num}: Setting type to '{type_name}' (from labels: {', '.join(labels)})")
+                self.set_issue_type(issue_num, issue_type)
+                synced_count += 1
+
+            except Exception as e:
+                print(f"[ERROR] Failed to sync #{issue_num}: {e}", file=sys.stderr)
+                skipped_count += 1
+
+        print()
+        print(f"Summary: Synced {synced_count} issue(s), skipped {skipped_count}")
+
+    def get_current_labels(self, issue_num: int) -> List[str]:
+        """Get current labels for an issue"""
         result = subprocess.run(
             ['gh', 'issue', 'view', str(issue_num), '--json', 'labels'],
-            capture_output=True, text=True, encoding='utf-8', check=True
+            capture_output=True, text=True, check=True
         )
         data = json.loads(result.stdout)
         return [label['name'] for label in data.get('labels', [])]
 
     def update_issue(self, issue_num: int, spec: IssueSpec):
         """Update existing GitHub issue"""
-        # Get current labels to determine what to remove
-        try:
-            current_labels = self.get_issue_labels(issue_num)
-        except:
-            current_labels = []
-
-        # Build new label set
-        new_labels = []
+        labels = []
 
         # Type label
-        if spec.is_epic:
-            new_labels.append(self.config['epic_label'])
-        else:
-            new_labels.append(self.config['enhancement_label'])
+        type_label_map = {
+            "epic": self.config['epic_label'],
+            "bug": self.config['bug_label'],
+            "technical-debt": self.config['technical_debt_label'],
+            "chore": self.config['chore_label'],
+            "documentation": self.config['documentation_label'],
+            "research": self.config['research_label'],
+            "feature": self.config['enhancement_label']
+        }
+        labels.append(type_label_map.get(spec.issue_type, self.config['enhancement_label']))
 
         # Priority
-        new_labels.append(f'priority:{spec.priority}')
+        labels.append(f'priority:{spec.priority}')
 
         # Areas
         for area in spec.areas:
-            new_labels.append(f'area:{area}')
+            labels.append(f'area:{area}')
 
         # Status
         if spec.blocked_by:
-            new_labels.append(self.config['default_status_blocked'])
+            labels.append(self.config['default_status_blocked'])
         else:
-            new_labels.append(self.config['default_status_ready'])
-
-        # Determine which status labels to remove (stale ones)
-        status_labels_to_remove = [
-            'status:needs-spec',
-            'status:blocked',
-            'status:ready',
-            'status:in-progress',
-            'status:on-hold',
-        ]
-        labels_to_remove = [
-            label for label in current_labels
-            if label in status_labels_to_remove and label not in new_labels
-        ]
+            labels.append(self.config['default_status_ready'])
 
         # Add blocked-by section to body if needed
         body = spec.body
@@ -327,13 +467,22 @@ class IssueCreator:
             )
             body += blocked_section
 
-        # Build title (preserve existing title prefix if it exists)
-        if spec.is_epic and not spec.title.startswith('[Epic]'):
+        # Build title (only Epic gets prefix, others use labels)
+        if spec.issue_type == "epic":
             title = f"[Epic]: {spec.title}"
-        elif not spec.is_epic and not spec.title.startswith('['):
-            title = f"[Feature]: {spec.title}"
         else:
             title = spec.title
+
+        # Get current labels and preserve custom ones
+        current_labels = self.get_current_labels(issue_num)
+        managed_prefixes = ('priority:', 'area:', 'status:', 'Epic',
+                           'enhancement', 'bug', 'technical-debt')
+        custom_labels = [l for l in current_labels
+                        if not any(l.startswith(p) or l == p
+                                  for p in managed_prefixes)]
+
+        # Combine managed labels with custom labels
+        all_labels = labels + custom_labels
 
         # Update issue via gh CLI
         cmd = [
@@ -342,12 +491,12 @@ class IssueCreator:
             '--body', body,
         ]
 
-        # Remove stale status labels
-        for label in labels_to_remove:
-            cmd.extend(['--remove-label', label])
+        # Remove all existing managed labels, then add all labels
+        for label in current_labels:
+            if any(label.startswith(p) or label == p for p in managed_prefixes):
+                cmd.extend(['--remove-label', label])
 
-        # Add new labels
-        for label in new_labels:
+        for label in all_labels:
             cmd.extend(['--add-label', label])
 
         result = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8')
@@ -355,6 +504,9 @@ class IssueCreator:
         if result.returncode != 0:
             print(f"Error updating issue #{issue_num}: {result.stderr}", file=sys.stderr)
             raise subprocess.CalledProcessError(result.returncode, cmd, result.stdout, result.stderr)
+
+        # Set GitHub issue type
+        self.set_issue_type(issue_num, spec.issue_type)
 
     def get_epic_children(self, epic_num: int) -> List[int]:
         """Get child issue numbers for an Epic"""
@@ -558,8 +710,23 @@ Update mode metadata:
     parser.add_argument('--update-epic', type=int, metavar='NUM', help='Update Epic NUM and all children (matches by order)')
     parser.add_argument('--update-auto', action='store_true', help='Update issues based on issue_number metadata in specs')
     parser.add_argument('--add-child', type=int, metavar='EPIC_NUM', help='Create new issue from spec and link to Epic EPIC_NUM')
+    parser.add_argument('--sync-types', type=str, metavar='NUMS', help='Sync GitHub issue types from labels for comma-separated issue numbers (e.g. 42,43,44)')
 
     args = parser.parse_args()
+
+    # Initialize creator
+    creator = IssueCreator()
+
+    # Handle --sync-types mode (doesn't require spec file)
+    if args.sync_types:
+        try:
+            issue_numbers = [int(n.strip()) for n in args.sync_types.split(',')]
+        except ValueError:
+            print("Error: --sync-types requires comma-separated issue numbers (e.g. 42,43,44)", file=sys.stderr)
+            sys.exit(1)
+
+        creator.sync_types(issue_numbers)
+        sys.exit(0)
 
     # Read spec file
     if args.spec_file:
@@ -572,7 +739,6 @@ Update mode metadata:
         content = sys.stdin.read()
 
     # Parse specs
-    creator = IssueCreator()
     specs = creator.parse_spec_file(content)
 
     if not specs:
