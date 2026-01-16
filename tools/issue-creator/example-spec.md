@@ -75,7 +75,7 @@ area: job-system
 ## Issue: Job Cancellation
 priority: medium
 area: job-system
-blocked_by: Job Priority System
+blocked_by: Issue: Job Priority System
 
 ### Goals
 - Cancel jobs that are in progress

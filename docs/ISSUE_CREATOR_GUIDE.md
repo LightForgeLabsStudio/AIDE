@@ -76,7 +76,7 @@ area: job-system
 ## Issue: Job Cancellation
 priority: medium
 area: job-system
-blocked_by: Job Priority System
+blocked_by: Issue: Job Priority System
 
 ### Goals
 - Cancel jobs in progress
@@ -97,8 +97,8 @@ Add these as `key: value` lines at the start of each section:
 
 - `priority: high|medium|low` (default: `medium`)
 - `area: system-name` (comma-separated for multiple areas)
-- `blocked_by: Issue Title` (references another issue in same batch)
-- `blocks: Issue Title` (references another issue in same batch)
+- `blocked_by: Issue Title` (must match exact heading text, including `Issue:` prefix if present)
+- `blocks: Issue Title` (must match exact heading text, including `Issue:` prefix if present)
 
 ### Epic Marker
 Use `[Epic]:` in title or `## [Epic]: Title` to create an Epic issue:
@@ -154,8 +154,8 @@ Setting up relationships...
   ✓ Linked #141 as child of #140
   ✓ Linked #142 as child of #140
 
-Blocked issues (set via labels and body):
-  ⚠ #142 blocked by: Job Priority System
+Setting up blocking relationships...
+  ✓ #142 blocked by #141
 
 Summary:
   Created 3 issues
@@ -175,10 +175,11 @@ Issue numbers:
 - Query: `gh api graphql -f query='{...see GITHUB_QUERIES.md...}'`
 
 ### Blocking Dependencies
-- `blocked_by: Issue Title` adds:
-  - `status:blocked` label
-  - "Blocked By" section in issue body
-  - Dependency tracking for queries
+- `blocked_by: Issue Title` creates GitHub blocking relationship via GraphQL:
+  - Sets blocking relationship via `addBlockedBy` mutation
+  - Visible in issue UI "Relationships" dropdown
+  - Adds `status:blocked` label for filtering
+  - Prevents closing blocked issues in GitHub UI
 
 ### Label Automation
 - **Type**: `Epic` or `enhancement`
