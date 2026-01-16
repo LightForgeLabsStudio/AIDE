@@ -188,6 +188,10 @@ Issue numbers:
   - Prevents closing blocked issues in GitHub UI
 - Run `--update-blockers` to reapply those blocking relationships after you modify a spec without recreating issues.
 
+### Manual Linking
+- Use `--link-child PARENT:CHILD` to link an existing issue to an Epic via `addSubIssue`.
+- Use `--link-blocker BLOCKED:BLOCKER` to add a blocking relationship directly without re-running the spec.
+
 ### Idempotent Reruns
 - The tool now detects existing issue titles and updates them instead of creating duplicates. Retitling an issue (e.g., `Issue: [Feature] Foo`) affects the matched title, so keep spec headings aligned with the issue names you expect.
 - `blocked_by` entries must use the final issue titles (including `[Feature]`, `[Hardening]`, etc.) so the tool can find the blocker when reapplying dependencies.

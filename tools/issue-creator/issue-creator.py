@@ -17,7 +17,7 @@ import json
 import re
 import subprocess
 import argparse
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 from dataclasses import dataclass, field
 from pathlib import Path
 
@@ -63,6 +63,32 @@ class IssueCreator:
         self.repo_info = self._get_repo_info()
         self.issue_types = self._get_issue_types()
         self.created_issues = {}
+
+    def _format_title(self, title: str, issue_type: str) -> str:
+        """Return the final GitHub title (epics get the prefix)."""
+        return f"[Epic]: {title}" if issue_type == "epic" else title
+
+    def format_issue_title(self, spec: IssueSpec) -> str:
+        """Return the formatted title for a spec."""
+        return self._format_title(spec.title, spec.issue_type)
+
+    def find_issue_by_title(self, title: str) -> Optional[int]:
+        """Return an existing issue number by exact title (searches open+closed)."""
+        if not title:
+            return None
+
+        result = subprocess.run(
+            ['gh', 'issue', 'list', '--state', 'all', '--search', title,
+             '--json', 'number,title', '--limit', '100'],
+            capture_output=True, text=True, encoding='utf-8', check=True
+        )
+        issues = json.loads(result.stdout)
+
+        normalized = title.strip()
+        for issue in issues:
+            if issue['title'].strip() == normalized:
+                return issue['number']
+        return None
 
     def _load_config(self) -> Dict:
         """Load project-specific config, fall back to defaults"""
@@ -212,7 +238,7 @@ class IssueCreator:
             areas = list(set(explicit_areas + inferred_areas))
 
             if is_epic:
-                current_epic = title
+                current_epic = self._format_title(title, issue_type)
 
             spec = IssueSpec(
                 title=title,
@@ -262,18 +288,17 @@ class IssueCreator:
 
         # Build title (only Epic gets prefix, others use labels)
         body = spec.body
-        if spec.issue_type == "epic":
-            title = f"[Epic]: {spec.title}"
-        else:
-            title = spec.title
+        title = self.format_issue_title(spec)
 
         # Create issue via gh CLI
         cmd = [
             'gh', 'issue', 'create',
             '--title', title,
             '--body', body,
-            '--label', ','.join(labels)
         ]
+
+        for label in labels:
+            cmd.extend(['--label', label])
 
         result = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8')
 
@@ -289,6 +314,23 @@ class IssueCreator:
         self.set_issue_type(issue_num, spec.issue_type)
 
         return issue_num
+
+    def ensure_issue_for_spec(self, spec: IssueSpec) -> Tuple[int, bool]:
+        """Create the issue unless it already exists, returning (number, created)."""
+        formatted_title = self.format_issue_title(spec)
+
+        if spec.issue_number:
+            self.update_issue(spec.issue_number, spec)
+            return spec.issue_number, False
+
+        existing = self.find_issue_by_title(formatted_title)
+        if existing:
+            print(f"[WARN] Issue '{formatted_title}' already exists as #{existing}; updating instead of creating.", file=sys.stderr)
+            self.update_issue(existing, spec)
+            return existing, False
+
+        issue_num = self.create_issue(spec)
+        return issue_num, True
 
     def get_issue_id(self, issue_num: int) -> str:
         """Get GraphQL node ID for issue number"""
@@ -325,10 +367,13 @@ class IssueCreator:
           }}
         }}'''
 
-        subprocess.run(
+        result = subprocess.run(
             ['gh', 'api', 'graphql', '-f', f'query={mutation}'],
-            capture_output=True, text=True, check=True
+            capture_output=True, text=True, check=False
         )
+
+        if result.returncode != 0:
+            print(f"[WARN] Unable to link #{child_num} to #{parent_num}: {result.stderr}", file=sys.stderr)
 
     def add_blocking_relationship(self, blocked_issue_num: int, blocking_issue_num: int):
         """Add 'blocked by' relationship via addBlockedBy mutation"""
@@ -349,10 +394,37 @@ class IssueCreator:
           }}
         }}'''
 
-        subprocess.run(
+        result = subprocess.run(
             ['gh', 'api', 'graphql', '-f', f'query={mutation}'],
-            capture_output=True, text=True, check=True
+            capture_output=True, text=True, check=False
         )
+
+        if result.returncode != 0:
+            print(f"[WARN] Unable to add blocker #{blocking_issue_num} -> #{blocked_issue_num}: {result.stderr}", file=sys.stderr)
+
+    def link_blocker_pair(self, blocked_num: int, blocking_num: int):
+        """Explicitly link blocked -> blocking issues."""
+        try:
+            self.add_blocking_relationship(blocked_num, blocking_num)
+            print(f"[OK] Linked #{blocking_num} as blocker of #{blocked_num}")
+        except subprocess.CalledProcessError as exc:
+            print(f"[ERROR] Failed to link blocker #{blocking_num} -> #{blocked_num}: {exc.stderr}", file=sys.stderr)
+
+    def link_child_pair(self, parent_num: int, child_num: int):
+        """Explicitly link child to epic."""
+        try:
+            self.add_child_to_parent(parent_num, child_num)
+            print(f"[OK] Linked #{child_num} as child of Epic #{parent_num}")
+        except subprocess.CalledProcessError as exc:
+            print(f"[ERROR] Failed to link child #{child_num} to Epic #{parent_num}: {exc.stderr}", file=sys.stderr)
+
+    @staticmethod
+    def parse_link_arg(value: str) -> Tuple[int, int]:
+        """Parse LINK text 'A:B' into ints."""
+        if ':' not in value:
+            raise ValueError("Link arguments must use the format A:B")
+        left, right = value.split(':', 1)
+        return int(left), int(right)
 
     def set_issue_type(self, issue_num: int, issue_type: str):
         """Set GitHub issue type via updateIssueIssueType mutation"""
@@ -628,6 +700,29 @@ class IssueCreator:
             print()
             print(f"Summary: Updated {updated_count}, Created {created_count} issue(s)")
 
+    def process_blockers(self, specs: List[IssueSpec]):
+        """Apply blocked_by relationships for existing issues"""
+        blocked_specs = [s for s in specs if s.blocked_by]
+        if not blocked_specs:
+            print("No blocked_by entries found in spec.", file=sys.stderr)
+            return
+
+        for spec in blocked_specs:
+            formatted_title = self.format_issue_title(spec)
+            issue_num = spec.issue_number or self.find_issue_by_title(formatted_title)
+            if not issue_num:
+                print(f"[WARN] Could not find issue '{formatted_title}' to update blockers.", file=sys.stderr)
+                continue
+
+            self.update_issue(issue_num, spec)
+            for blocker_title in spec.blocked_by:
+                blocking_num = self.find_issue_by_title(blocker_title)
+                if not blocking_num:
+                    print(f"[WARN] Could not resolve blocker '{blocker_title}' for #{issue_num}", file=sys.stderr)
+                    continue
+                self.add_blocking_relationship(issue_num, blocking_num)
+                print(f"  [OK] #{issue_num} blocked by #{blocking_num}")
+
     def process_specs(self, specs: List[IssueSpec]):
         """Create all issues and set up relationships"""
         print(f"Creating {len(specs)} issues...")
@@ -635,14 +730,17 @@ class IssueCreator:
 
         # Phase 1: Create all issues
         for spec in specs:
-            issue_num = self.create_issue(spec)
-            self.created_issues[spec.title] = issue_num
+            formatted_title = self.format_issue_title(spec)
+            issue_num, created = self.ensure_issue_for_spec(spec)
+            self.created_issues[formatted_title] = issue_num
 
             if spec.is_epic:
-                print(f"[OK] Created Epic #{issue_num}: {spec.title}")
+                action = "Created" if created else "Updated"
+                print(f"[OK] {action} Epic #{issue_num}: {formatted_title}")
             else:
                 areas_str = ', '.join(spec.areas) if spec.areas else 'none'
-                print(f"  [OK] Created #{issue_num}: {spec.title} (priority: {spec.priority}, areas: {areas_str})")
+                action = "Created" if created else "Updated"
+                print(f"  [OK] {action} #{issue_num}: {formatted_title} (priority: {spec.priority}, areas: {areas_str})")
 
         print()
 
@@ -652,7 +750,10 @@ class IssueCreator:
             for spec in specs:
                 if spec.parent_title and spec.parent_title in self.created_issues:
                     parent_num = self.created_issues[spec.parent_title]
-                    child_num = self.created_issues[spec.title]
+                    child_title = self.format_issue_title(spec)
+                    child_num = self.created_issues.get(child_title)
+                    if child_num is None:
+                        continue
 
                     self.add_child_to_parent(parent_num, child_num)
                     print(f"  [OK] Linked #{child_num} as child of #{parent_num}")
@@ -663,7 +764,10 @@ class IssueCreator:
         if blocked_issues:
             print("Setting up blocking relationships...")
             for spec in blocked_issues:
-                blocked_issue_num = self.created_issues[spec.title]
+                blocked_title = self.format_issue_title(spec)
+                blocked_issue_num = self.created_issues.get(blocked_title)
+                if blocked_issue_num is None:
+                    continue
                 for blocker_title in spec.blocked_by:
                     if blocker_title in self.created_issues:
                         blocking_issue_num = self.created_issues[blocker_title]
@@ -702,6 +806,9 @@ Examples:
   # Auto-update issues (requires issue_number: N in spec)
   %(prog)s specs.md --update-auto
 
+  # Update blocking relationships without creating issues
+  %(prog)s specs.md --update-blockers
+
   # Create new issue and add to Epic #170
   %(prog)s new_child.md --add-child 170
 
@@ -726,6 +833,9 @@ Update mode metadata:
     parser.add_argument('--update-auto', action='store_true', help='Update issues based on issue_number metadata in specs')
     parser.add_argument('--add-child', type=int, metavar='EPIC_NUM', help='Create new issue from spec and link to Epic EPIC_NUM')
     parser.add_argument('--sync-types', type=str, metavar='NUMS', help='Sync GitHub issue types from labels for comma-separated issue numbers (e.g. 42,43,44)')
+    parser.add_argument('--update-blockers', action='store_true', help='Update blocked_by relationships for issues described in the spec')
+    parser.add_argument('--link-blocker', action='append', metavar='BLOCKED:BLOCKER', help='Explicitly link two existing issues via blocking (can be repeated)')
+    parser.add_argument('--link-child', action='append', metavar='PARENT:CHILD', help='Explicitly link an existing child to an Epic (can be repeated)')
 
     args = parser.parse_args()
 
@@ -741,6 +851,24 @@ Update mode metadata:
             sys.exit(1)
 
         creator.sync_types(issue_numbers)
+        sys.exit(0)
+
+    # Handle explicit linking
+    if args.link_blocker or args.link_child:
+        if args.link_blocker:
+            for value in args.link_blocker:
+                try:
+                    blocked, blocker = creator.parse_link_arg(value)
+                    creator.link_blocker_pair(blocked, blocker)
+                except ValueError as exc:
+                    print(f"[ERROR] Invalid --link-blocker value '{value}': {exc}", file=sys.stderr)
+        if args.link_child:
+            for value in args.link_child:
+                try:
+                    parent, child = creator.parse_link_arg(value)
+                    creator.link_child_pair(parent, child)
+                except ValueError as exc:
+                    print(f"[ERROR] Invalid --link-child value '{value}': {exc}", file=sys.stderr)
         sys.exit(0)
 
     # Read spec file
@@ -773,6 +901,8 @@ Update mode metadata:
         creator.process_updates(specs, 'epic', args.update_epic)
     elif args.update_auto:
         creator.process_updates(specs, 'auto')
+    elif args.update_blockers:
+        creator.process_blockers(specs)
     elif args.add_child:
         # Add child to existing Epic
         spec = specs[0] if specs else None

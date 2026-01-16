@@ -27,9 +27,19 @@ Batch create GitHub issues with Epic/child relationships from formatted spec fil
 - ✅ Links Epic/child relationships via GitHub GraphQL API
 - ✅ Infers labels from metadata (priority, area)
 - ✅ Reports blocking dependencies
-- ✅ Idempotent (safe to re-run after failures)
+- ✅ Idempotent reruns (updates existing issues, and `--update-blockers` reapplies dependencies)
 - ✅ UTF-8 support (handles curly quotes from ChatGPT)
 - ✅ Windows + Mac + Linux compatible
+
+## Manual Links
+
+```bash
+# Link existing issues via CLI without rerunning specs
+python .aide/tools/issue-creator/issue-creator.py --link-blocker 232:231
+python .aide/tools/issue-creator/issue-creator.py --link-child 227:232
+```
+
+Use `PARENT:CHILD` to call the GraphQL `addSubIssue` mutation or `BLOCKED:BLOCKER` for `addBlockedBy`.
 
 ## Spec File Format
 
@@ -155,6 +165,15 @@ Updated description
 
 The `issue_number: N` field tells the tool which issue to update.
 
+### Reapply blockers
+
+```bash
+# Reapply blocked_by relationships defined in the spec to existing issues
+python .aide/tools/issue-creator/issue-creator.py specs.md --update-blockers
+```
+
+Ensure each `blocked_by` entry uses the final issue titles (including `[Feature]`, `[Hardening]`, etc.) so the tool can locate the blocker automatically.
+
 ### With Agent
 
 Use the Issue Batch Creator agent:
@@ -182,9 +201,10 @@ Agent workflow:
 - Links child issues to Epic via GraphQL `addSubIssue` mutation
 - Epic URL is added to each child's description
 
-**Phase 3: Report Dependencies**
-- Reports `blocked_by` dependencies (cannot auto-link - GitHub limitation)
-- User must manually track blocking relationships
+**Phase 3: Apply Dependencies**
+- Reads `blocked_by` metadata and invokes the `addBlockedBy` GraphQL mutation
+- Adds `status:blocked` label and a “Blocked by” section in the issue body
+- Re-run with `--update-blockers` to refresh these relationships on existing issues
 
 ## Common Errors
 
