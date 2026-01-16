@@ -1,5 +1,9 @@
 # Issue Creator Tool Guide
 
+> **Writing specs?** See [SPEC_WRITING_GUIDE.md](SPEC_WRITING_GUIDE.md) for format rules and patterns.
+>
+> This guide covers tool usage and technical reference.
+
 Batch create GitHub issues with Epic/child relationships and automatic area inference.
 
 ## Quick Start
@@ -23,6 +27,8 @@ pbpaste | .aide/tools/issue-creator/issue-creator.py
 # Pipe from clipboard (Windows PowerShell)
 Get-Clipboard | .aide/tools/issue-creator/issue-creator.py
 ```
+
+If you need to rerun the tool, it now detects existing issue titles and updates them instead of creating duplicates. Use `--update-blockers` to reapply `blocked_by` relationships defined in the spec without recreating issues.
 
 ## Spec File Format
 
@@ -180,6 +186,11 @@ Issue numbers:
   - Visible in issue UI "Relationships" dropdown
   - Adds `status:blocked` label for filtering
   - Prevents closing blocked issues in GitHub UI
+- Run `--update-blockers` to reapply those blocking relationships after you modify a spec without recreating issues.
+
+### Idempotent Reruns
+- The tool now detects existing issue titles and updates them instead of creating duplicates. Retitling an issue (e.g., `Issue: [Feature] Foo`) affects the matched title, so keep spec headings aligned with the issue names you expect.
+- `blocked_by` entries must use the final issue titles (including `[Feature]`, `[Hardening]`, etc.) so the tool can find the blocker when reapplying dependencies.
 
 ### Label Automation
 - **Type**: `Epic` or `enhancement`

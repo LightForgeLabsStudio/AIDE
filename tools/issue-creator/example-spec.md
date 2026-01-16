@@ -1,27 +1,8 @@
 # Example Issue Spec
 
-This example demonstrates creating an Epic with child issues, including blocking dependencies, area inference, and different issue types.
+This example demonstrates creating an Epic with child issues, including blocking dependencies and area inference.
 
-## Issue Types
-
-Supported types (detected from markers in spec):
-
-- `[Epic]:` or `Epic:` - Parent issue grouping work (label: `Epic`, type: Epic, title prefix: `[Epic]:`)
-- `[Feature]:` - Feature/enhancement (label: `enhancement`, type: Feature, no prefix)
-- `[Bug]:` - Bug report (label: `bug`, type: Bug, no prefix)
-- `[Tech Debt]:` or `[Technical Debt]:` - Technical debt (label: `technical-debt`, type: Technical Debt, no prefix)
-- `[Chore]:` - Maintenance work/config (label: `chore`, type: Chore, no prefix)
-- `[Documentation]:` or `[Docs]:` - Documentation (label: `documentation`, type: Documentation, no prefix)
-- `[Research]:` - Spikes/investigations (label: `research`, type: Research, no prefix)
-
-Default: feature if no marker.
-
-**Note:**
-- Only Epics get title prefixes (other types use labels)
-- Tool automatically sets GitHub issue type field via GraphQL after creation
-- Type mapping configured in `issue-creator.config.json`
-- Blocking relationships set via GraphQL (`addBlockedBy` mutation) - visible in issue UI Relationships dropdown
-- Issues with `blocked_by:` field automatically get `status:blocked` label
+> **For complete format documentation, see [SPEC_WRITING_GUIDE.md](../../docs/SPEC_WRITING_GUIDE.md)**
 
 ---
 
