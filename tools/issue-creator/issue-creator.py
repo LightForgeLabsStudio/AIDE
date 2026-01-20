@@ -64,6 +64,17 @@ class IssueCreator:
         self.issue_types = self._get_issue_types()
         self.created_issues = {}
 
+    @staticmethod
+    def _normalize_title(title: str) -> str:
+        """Normalize headings like 'Issue: [Feature] Foo' to '[Feature] Foo'."""
+        value = title.strip()
+        if value.lower().startswith("issue:"):
+            value = value[6:].lstrip()
+        if value.startswith("[") and "]:" in value:
+            tag, rest = value.split("]:", 1)
+            value = f"{tag}]{rest}".strip()
+        return value
+
     def _format_title(self, title: str, issue_type: str) -> str:
         """Return the final GitHub title (epics get the prefix)."""
         return f"[Epic]: {title}" if issue_type == "epic" else title
@@ -89,6 +100,66 @@ class IssueCreator:
             if issue['title'].strip() == normalized:
                 return issue['number']
         return None
+
+    def ensure_labels(self, labels: List[str]):
+        """Ensure labels exist in the repo before creating issues."""
+        result = subprocess.run(
+            ['gh', 'label', 'list', '--json', 'name'],
+            capture_output=True, text=True, check=True
+        )
+        existing = {label['name'] for label in json.loads(result.stdout)}
+        missing = [label for label in labels if label not in existing]
+
+        for label in missing:
+            description = "Auto-created by issue-creator"
+            color = "c5def5"
+            if label == self.config.get('epic_label'):
+                description = "Parent issue grouping related work"
+                color = "7057ff"
+            elif label.startswith("priority:"):
+                color = "fbca04"
+            elif label.startswith("status:"):
+                color = "0e8a16"
+            elif label in (
+                self.config.get('bug_label'),
+                self.config.get('technical_debt_label'),
+                self.config.get('chore_label'),
+                self.config.get('documentation_label'),
+                self.config.get('research_label'),
+                self.config.get('enhancement_label')
+            ):
+                color = "cfd3d7"
+
+            subprocess.run(
+                ['gh', 'label', 'create', label, '--description', description, '--color', color],
+                capture_output=True, text=True
+            )
+
+    def labels_for_spec(self, spec: IssueSpec) -> List[str]:
+        """Compute labels the tool will apply for a spec."""
+        labels = []
+        type_label_map = {
+            "epic": self.config['epic_label'],
+            "bug": self.config['bug_label'],
+            "technical-debt": self.config['technical_debt_label'],
+            "chore": self.config['chore_label'],
+            "documentation": self.config['documentation_label'],
+            "research": self.config['research_label'],
+            "feature": self.config['enhancement_label']
+        }
+        labels.append(type_label_map.get(spec.issue_type, self.config['enhancement_label']))
+        labels.append(f'priority:{spec.priority}')
+        for area in spec.areas:
+            labels.append(f'area:{area}')
+        labels.append(self.config['default_status_blocked'] if spec.blocked_by else self.config['default_status_ready'])
+        return labels
+
+    def ensure_labels_for_specs(self, specs: List[IssueSpec]):
+        """Preflight and create any labels needed for specs."""
+        label_set = set()
+        for spec in specs:
+            label_set.update(self.labels_for_spec(spec))
+        self.ensure_labels(sorted(label_set))
 
     def _load_config(self) -> Dict:
         """Load project-specific config, fall back to defaults"""
@@ -215,7 +286,7 @@ class IssueCreator:
             if not title_match:
                 continue
 
-            title = title_match.group(1).strip()
+            title = self._normalize_title(title_match.group(1).strip())
 
             # Extract fields
             priority_match = re.search(r'^priority:\s*(\w+)', section, re.MULTILINE | re.IGNORECASE)
@@ -789,6 +860,11 @@ class IssueCreator:
             print(f"  #{num}: {title}")
 
 def main():
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+        sys.stderr.reconfigure(encoding='utf-8')
+    except Exception:
+        pass
     parser = argparse.ArgumentParser(
         description='Batch create or update GitHub issues with Epic/child relationships',
         formatter_class=argparse.RawDescriptionHelpFormatter,
@@ -893,6 +969,10 @@ Update mode metadata:
     for warning in checklist_warnings:
         print(warning, file=sys.stderr)
         print()
+
+    # Preflight labels for spec-driven runs
+    if not (args.sync_types or args.link_blocker or args.link_child):
+        creator.ensure_labels_for_specs(specs)
 
     # Determine mode
     if args.update:

@@ -196,6 +196,12 @@ Issue numbers:
 - The tool now detects existing issue titles and updates them instead of creating duplicates. Retitling an issue (e.g., `Issue: [Feature] Foo`) affects the matched title, so keep spec headings aligned with the issue names you expect.
 - `blocked_by` entries must use the final issue titles (including `[Feature]`, `[Hardening]`, etc.) so the tool can find the blocker when reapplying dependencies.
 
+### Label Preflight
+- The tool now preflights all labels referenced by the spec and creates missing labels automatically before creating issues.
+
+### Title Normalization
+- Spec headings like `Issue: [Feature] Foo` are normalized to `[Feature] Foo` for consistent issue titles.
+
 ### Label Automation
 - **Type**: `Epic` or `enhancement`
 - **Priority**: `priority:high|medium|low`

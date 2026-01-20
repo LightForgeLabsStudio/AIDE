@@ -28,6 +28,8 @@ Batch create GitHub issues with Epic/child relationships from formatted spec fil
 - ✅ Infers labels from metadata (priority, area)
 - ✅ Reports blocking dependencies
 - ✅ Idempotent reruns (updates existing issues, and `--update-blockers` reapplies dependencies)
+- ✅ Preflights and creates missing labels needed by specs
+- ✅ Normalizes redundant “Issue:”/“[Type]:” title prefixes
 - ✅ UTF-8 support (handles curly quotes from ChatGPT)
 - ✅ Windows + Mac + Linux compatible
 
