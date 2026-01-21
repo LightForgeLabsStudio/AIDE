@@ -293,6 +293,7 @@ Once all checklist items are complete and tests pass, mark the PR ready.
 - [ ] All implementation plan tasks checked off in PR description
 - [ ] All tests passing (`{{RUN_ALL_TESTS_COMMAND}}`)
 - [ ] Linting passing (`{{LINT_COMMAND}}`)
+- [ ] Smoke tests passing (`{{SMOKE_TEST_COMMAND}}`)
 - [ ] Code refinement complete (Step 5)
 - [ ] PR description updated with final summary
 - [ ] Issue reference included (`Fixes #<number>`)
@@ -303,7 +304,7 @@ Once all checklist items are complete and tests pass, mark the PR ready.
 gh pr ready <number>
 
 # Add comment summarizing completion
-gh pr comment <number> --body "All implementation tasks complete. Tests and linting passing. Ready for review."
+gh pr comment <number> --body "All implementation tasks complete. Tests, linting, and smoke tests passing. Ready for review."
 ```
 
 **PR is now visible to reviewers** and will auto-close the linked issue on merge.
@@ -373,11 +374,12 @@ gh pr edit <number> --body "...
 ..."
 ```
 
-5. **Re-run tests and linting after fixes:**
+5. **Re-run tests, linting, and smoke tests after fixes:**
 
 ```bash
 {{RUN_ALL_TESTS_COMMAND}}
 {{LINT_COMMAND}}
+{{SMOKE_TEST_COMMAND}}
 ```
 
 6. **Post summary comment:**
@@ -392,6 +394,7 @@ gh pr comment <number> --body "**Addressed PR Review Feedback**
 
 **Tests:** All passing.
 **Linting:** Passing.
+**Smoke tests:** Passing.
 
 Ready for re-review."
 ```
@@ -412,6 +415,7 @@ gh pr review <number> --request
 - [ ] All review feedback addressed
 - [ ] All tests passing
 - [ ] Linting passing
+- [ ] Smoke tests passing
 - [ ] No merge conflicts with `{{MAIN_BRANCH}}`
 
 **Merge:**
@@ -514,7 +518,7 @@ git commit -m "Add job prioritization (refs #42)"
 2. Read inline comments: `gh api repos/:owner/:repo/pulls/<number>/comments`
 3. Fix systematically: Critical → Major → Minor
 4. Commit with reference: `"Fix [issue] from PR review"`
-5. Re-run tests and linting
+5. Re-run tests, linting, and smoke tests
 6. Post summary comment with fixes + test status
 7. Request re-review
 
@@ -527,6 +531,7 @@ git commit -m "Add job prioritization (refs #42)"
 
 **Tests:** All passing.
 **Linting:** Passing.
+**Smoke tests:** Passing.
 
 Ready for re-review.
 ```
@@ -545,8 +550,8 @@ gh pr merge <number> --squash --delete-branch
 3. Resolve conflicts, test
 4. `git add . && git commit -m "Merge {{MAIN_BRANCH}} to resolve conflicts"`
 5. `git push`
-6. Re-run `{{RUN_ALL_TESTS_COMMAND}}` and `{{LINT_COMMAND}}`
-7. Comment: "Resolved conflicts. Tests and linting passing."
+6. Re-run `{{RUN_ALL_TESTS_COMMAND}}`, `{{LINT_COMMAND}}`, and `{{SMOKE_TEST_COMMAND}}`
+7. Comment: "Resolved conflicts. Tests, linting, and smoke tests passing."
 
 ## Reference Docs
 
@@ -583,3 +588,4 @@ Replace these placeholders with your project specifics:
 - `{{RUN_ALL_TESTS_COMMAND}}` → "cmd /c run_tests.bat", "npm test", "cargo test"
 - `{{RUN_UNIT_TESTS_COMMAND}}` → "Godot_v4.5.1_console.exe --headless -s addons/gut/gut_cmdln.gd"
 - `{{LINT_COMMAND}}` → "cmd /c lint.bat", "npm run lint", "cargo clippy"
+- `{{SMOKE_TEST_COMMAND}}` → "cmd /c smoke_test.bat", "npm run smoke", "cargo run --example smoke_test"
