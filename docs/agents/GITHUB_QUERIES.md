@@ -469,7 +469,7 @@ gh api graphql -f query='
 
 ## Workflow Integration
 
-### Step 0: Spec Intake (IMPLEMENTATION_START.md)
+### Step 0: Spec Intake (`implementation/STEP_0_SPEC_INTAKE.md`)
 
 ```bash
 # Read issue spec
