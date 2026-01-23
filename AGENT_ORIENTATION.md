@@ -74,6 +74,36 @@ Reference implementations. Copy and customize, do not follow directly.
 
 ---
 
+## Documentation Loading Policy (Always-Load vs On-Demand)
+
+To enforce token discipline, agent-facing documentation is classified by when it should be loaded.
+
+### Always-loaded (minimal, authoritative)
+Load these by default at session start:
+
+- Project `AGENT_ORIENTATION.md` or `AGENTS.md` (Tier 1 authority and placeholder mappings)
+- This document: `AGENT_ORIENTATION.md` (AIDE entry + authority model)
+
+### Stage-loaded (situational, load only when you reach the stage)
+Load these only when the current task/stage needs them:
+
+- Role primer for the active role (for example, `docs/agents/IMPLEMENTATION_START.md`)
+- `docs/agents/AGENT_OPERATIONAL_TOKEN_ECONOMY.md` when doing implementation/review work
+- `docs/agents/GITHUB_QUERIES.md` when querying issues/PRs via `gh`
+- `docs/agents/GITHUB_LABELS.md` when applying/creating labels
+- `docs/agents/PLACEHOLDER_CONTRACTS.md` when validating or authoring project placeholder mappings
+
+### Reference-only (on-demand deep reads)
+Load only when explicitly needed for a decision or template:
+
+- `docs/core/` templates
+- `docs/examples/` examples
+- Any long-form guidance not required to execute the current stage
+
+Rule of thumb: default startup should not preload deep reference material. Prefer targeted reads linked from the current role/stage doc.
+
+---
+
 ## Required Project Contracts
 
 Projects using AIDE MUST provide configuration. See [PLACEHOLDER_CONTRACTS.md](docs/agents/PLACEHOLDER_CONTRACTS.md) for:
