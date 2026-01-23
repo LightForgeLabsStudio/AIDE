@@ -1,5 +1,7 @@
 # AIDE: AI-Assisted Development Environment
 
+> **AI Agents:** Start with [AGENT_ORIENTATION.md](AGENT_ORIENTATION.md) for roles, authority hierarchy, and entry workflow.
+
 **A universal framework for AI-assisted software development workflows.**
 
 AIDE provides battle-tested processes, agent primers, and documentation templates for teams building software with AI assistance. Language-agnostic, framework-agnostic, and adaptable to any project type.
