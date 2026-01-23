@@ -151,7 +151,7 @@ All changes require tests. No exceptions (unless you document why).
 
 AIDE defines specialized AI agent roles:
 
-- **Implementation Agent**: Builds features following the 7-step workflow
+- **Implementation Agent**: Builds features following the implementation workflow (Steps 0-10)
 - **PR Review Agent**: Reviews code for quality, architecture, and standards
 - **Documentation Agent**: Reviews docs for accuracy and consistency
 - **Codebase Review Agent**: Performs holistic codebase audits
@@ -162,17 +162,14 @@ Each role has a dedicated primer in `docs/agents/`.
 
 **Token Optimization**: All agent primers follow token economy best practices (see `docs/agents/AGENT_TOKEN_ECONOMY.md`) to maximize context budget for code analysis and implementation. Target 150-500 tokens per primer depending on complexity.
 
-## The 7-Step Implementation Workflow
+## Implementation Workflow (Canonical)
 
-1. **Codebase Survey** - Understand current state (no coding yet)
-2. **Implementation Plan** - Design approach, get approval
-3. **Git-First Development** - Branch, draft PR, clean commits
-4. **Testing** - Automated tests, manual verification
-5. **Sanity Check** - Edge cases, gameplay/user testing
-6. **PR Ready** - Complete scope, passing tests, docs updated
-7. **Review & Merge** - Feedback loop, merge on approval
+The canonical implementation workflow lives in the Implementation Agent primer index:
 
-See [docs/agents/IMPLEMENTATION_START.md](docs/agents/IMPLEMENTATION_START.md) for full details.
+- [docs/agents/IMPLEMENTATION_START.md](docs/agents/IMPLEMENTATION_START.md) (index)
+- [docs/agents/implementation/](docs/agents/implementation/) (stage-scoped step docs)
+
+To avoid duplication and drift, this README does not restate the step-by-step instructions.
 
 ## Philosophy
 
@@ -188,7 +185,7 @@ AIDE emerged from real-world experience building software with AI agents. Key in
 
 ### Lightborn Exile: Divinity Engine (Godot/GDScript)
 A roguelike factory survival game built entirely with AI-assisted development using AIDE workflows. Demonstrates:
-- 7-step implementation workflow
+- Implementation workflow (Steps 0-10)
 - PR review process with inline comments
 - Documentation review and accuracy checks
 - Design workshop for feature planning

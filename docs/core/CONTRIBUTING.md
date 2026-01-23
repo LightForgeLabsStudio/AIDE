@@ -4,12 +4,11 @@ Minimal, repeatable workflow to keep changes consistent and documented.
 
 ## Official Workflow
 
-**All contributors and agents must follow the 7-Step Workflow documented in [agents/IMPLEMENTATION_START.md](../agents/IMPLEMENTATION_START.md).**
+**All contributors and agents must follow the implementation workflow (Steps 0-10) documented in [agents/IMPLEMENTATION_START.md](../agents/IMPLEMENTATION_START.md).**
 
-The workflow ensures consistent, reviewable changes:
-1. Codebase Survey → 2. Implementation Plan → 3. Git-First Development → 4. Sanity Check → 5. PR Draft → 6. Update Docs → 7. Report Back
+To reduce duplication and drift, this file does not restate the step-by-step workflow. Use the primer index as the single source of truth, and load only the step document for the stage you are currently executing.
 
-See [agents/IMPLEMENTATION_START.md](../agents/IMPLEMENTATION_START.md) for complete details.
+See [agents/IMPLEMENTATION_START.md](../agents/IMPLEMENTATION_START.md) (index) and [agents/implementation/](../agents/implementation/) (step docs) for complete details.
 
 ---
 
@@ -113,7 +112,7 @@ See [CODING_GUIDELINES.md](CODING_GUIDELINES.md) for complete coding standards.
 ## Reference Documentation
 
 **Workflow & Process:**
-- [agents/IMPLEMENTATION_START.md](../agents/IMPLEMENTATION_START.md) - 7-Step implementation workflow
+- [agents/IMPLEMENTATION_START.md](../agents/IMPLEMENTATION_START.md) - Implementation workflow (index)
 - [agents/PR_REVIEW_START.md](../agents/PR_REVIEW_START.md) - PR review workflow
 - [TESTING_POLICY.md](TESTING_POLICY.md) - Testing requirements and standards
 - [DOCUMENTATION_POLICY.md](DOCUMENTATION_POLICY.md) - Documentation standards
