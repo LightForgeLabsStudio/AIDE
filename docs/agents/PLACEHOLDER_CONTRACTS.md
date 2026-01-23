@@ -44,6 +44,39 @@ These placeholders are used in core agent primers and **must** be mapped for pro
 
 ---
 
+## Required Label Conventions
+
+AIDE workflows rely on GitHub labels for issue/PR state tracking. Projects **must** configure these labels.
+
+### Status Labels (Required)
+
+| Label | Purpose | Used By |
+|-------|---------|---------|
+| `status:ready` | Spec complete, ready for implementation | Implementation Agent |
+| `status:in-progress` | Currently being worked on | Implementation Agent |
+| `status:needs-review` | Awaiting PR review | PR Review Agent |
+| `status:blocked` | Blocked by dependencies | All agents |
+
+### Category Labels (Recommended)
+
+| Label Type | Examples | Purpose |
+|------------|----------|---------|
+| `area:*` | `area:ui`, `area:api`, `area:docs` | Filter by system/component |
+| `priority:*` | `priority:high`, `priority:medium`, `priority:low` | Triage ordering |
+| Type | `bug`, `enhancement`, `technical-debt` | Issue classification |
+
+### Label Setup
+
+```bash
+# Create required status labels
+gh label create "status:ready" --description "Ready for implementation"
+gh label create "status:in-progress" --description "Currently being worked on"
+gh label create "status:needs-review" --description "Awaiting review"
+gh label create "status:blocked" --description "Blocked by dependencies"
+```
+
+---
+
 ## Optional Placeholders (Templates Only)
 
 These placeholders appear in example templates but are **not required** for core primer operation. Map them only if using the corresponding templates.

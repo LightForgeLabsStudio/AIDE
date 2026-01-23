@@ -76,11 +76,11 @@ Reference implementations. Copy and customize, do not follow directly.
 
 ## Required Project Contracts
 
-Projects using AIDE MUST provide placeholder mappings. See [PLACEHOLDER_CONTRACTS.md](docs/agents/PLACEHOLDER_CONTRACTS.md) for:
+Projects using AIDE MUST provide configuration. See [PLACEHOLDER_CONTRACTS.md](docs/agents/PLACEHOLDER_CONTRACTS.md) for:
 
-- Complete list of required vs optional placeholders
-- Declaration format and location requirements
-- Validation checklist
+- Required vs optional placeholder mappings
+- Required GitHub label conventions (status, area, priority)
+- Declaration format and validation checklist
 
 ---
 
