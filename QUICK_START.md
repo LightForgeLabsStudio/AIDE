@@ -208,7 +208,7 @@ git commit -m "Add AIDE framework for AI-assisted development
 - Set up GitHub state tracking labels
 
 Framework provides:
-- 7-step implementation workflow
+- Implementation workflow (Steps 0-10)
 - PR review process
 - Documentation standards
 - Testing policy"
@@ -221,12 +221,12 @@ Once setup is complete, share this with your AI assistant:
 ```
 I've integrated the AIDE framework into this project. Please read:
 
-1. docs/agents/IMPLEMENTATION_START.md - For implementing features
+1. docs/agents/IMPLEMENTATION_START.md - For implementing features (index)
 2. docs/agents/PR_REVIEW_START.md - For reviewing PRs
 3. Query GitHub for current state: gh issue list --label "status:in-progress"
 4. docs/CONTRIBUTING.md - Our workflow
 
-Follow the 9-step implementation workflow for all changes.
+Follow the implementation workflow (Steps 0-10) for all changes.
 ```
 
 ## Verification Checklist
@@ -300,7 +300,7 @@ git submodule update --remote .aide
 
 ## Next Steps
 
-1. **Read the 7-Step Workflow**: [docs/agents/IMPLEMENTATION_START.md](docs/agents/IMPLEMENTATION_START.md)
+1. **Read the implementation workflow index**: [docs/agents/IMPLEMENTATION_START.md](docs/agents/IMPLEMENTATION_START.md)
 2. **Start Your First Feature**: Follow the workflow with your AI agent
 3. **Review Your First PR**: Use [docs/agents/PR_REVIEW_START.md](docs/agents/PR_REVIEW_START.md)
 4. **Customize Further**: Adapt templates to your team's needs
@@ -314,7 +314,7 @@ git submodule update --remote .aide
 ## Tips for Success
 
 ### Do:
-✅ Follow the 9-step workflow consistently
+✅ Follow the implementation workflow consistently
 ✅ Update GitHub issues/PRs after every merge (mark issues completed, update epic progress)
 ✅ Use agent primers to guide AI behavior
 ✅ Customize templates to fit your team's style
