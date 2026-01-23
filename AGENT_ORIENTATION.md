@@ -76,13 +76,11 @@ Reference implementations. Copy and customize, do not follow directly.
 
 ## Required Project Contracts
 
-Projects using AIDE MUST provide:
+Projects using AIDE MUST provide placeholder mappings. See [PLACEHOLDER_CONTRACTS.md](docs/agents/PLACEHOLDER_CONTRACTS.md) for:
 
-- [ ] Placeholder mapping table (all `{{PLACEHOLDERS}}` resolved)
-- [ ] Document authority hierarchy (what is binding vs reference)
-- [ ] Test commands and policy
-- [ ] Code style rules
-- [ ] Contribution workflow
+- Complete list of required vs optional placeholders
+- Declaration format and location requirements
+- Validation checklist
 
 ---
 
