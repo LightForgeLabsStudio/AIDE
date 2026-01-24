@@ -16,6 +16,8 @@ Create a handoff artifact when work will pause, span sessions, or switch roles, 
 1) Fill the handoff template:
 - Use `docs/core/SESSION_HANDOFF.template.md`.
 - Capture decisions, open questions, and the exact next action.
+ - Prefer storing the handoff in a PR description/comment or an issue comment.
+ - If you must store it as a file, keep it local-only and ignored (do not commit).
 
 ## Exit Criteria
 - A handoff note exists and reflects the current plan and next action.

@@ -32,6 +32,8 @@ Ready to proceed?
 
 After approval, create branch + draft PR:
 
+Note: the PR body example uses a bash heredoc. For other shells, use the equivalent (e.g., PowerShell here-string) or edit the PR body in your editor.
+
 ```bash
 # Create feature branch (never work on main)
 git checkout -b feature/<brief-name>
