@@ -32,13 +32,13 @@ The script will ask:
 your-project/
 ├── .aide/                          # AIDE submodule (or clone)
 ├── docs/
-│   ├── DOCUMENTATION_POLICY.md     # → .aide/docs/core/DOCUMENTATION_POLICY.md
-│   ├── CONTRIBUTING.md             # → .aide/docs/core/CONTRIBUTING.md
+│   ├── DOCUMENTATION_POLICY.md     # -> .aide/docs/core/DOCUMENTATION_POLICY.md
+│   ├── CONTRIBUTING.md             # -> .aide/docs/core/CONTRIBUTING.md
 │   ├── TESTING_POLICY.md           # Copied from examples/{stack}/
 │   ├── CODING_GUIDELINES.md        # Copied from examples/{stack}/
 │   ├── DEVELOPMENT.md              # Copied from examples/{stack}/
 │   ├── AGENTS.md                   # Configuration mappings
-│   └── agents/                     # → .aide/docs/agents/
+│   └── agents/                     # -> .aide/docs/agents/
 ```
 
 ## Manual Setup

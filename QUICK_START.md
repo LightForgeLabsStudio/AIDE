@@ -249,7 +249,7 @@ Ensure you have:
 ### Using a Different Testing Framework
 
 Edit `docs/TESTING_POLICY.md` and update:
-- Framework name (Jest → Vitest, pytest → unittest, etc.)
+- Framework name (Jest -> Vitest, pytest -> unittest, etc.)
 - Test commands
 - Test file locations
 - Example test structure

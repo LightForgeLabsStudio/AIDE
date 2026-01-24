@@ -56,7 +56,7 @@ Godot_v4.5.1_console.exe --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests
 # Run specific unit test file
 Godot_v4.5.1_console.exe --headless -s addons/gut/gut_cmdln.gd -gtest=res://tests/unit/test_resource_manager.gd -gexit
 
-# Run from Godot Editor: Project → Tools → GUT
+# Run from Godot Editor: Project -> Tools -> GUT
 ```
 
 **Integration Tests:**
@@ -126,7 +126,7 @@ Write SceneTree integration tests for:
 - Scene loading and node hierarchy
 - Drone movement and pathfinding
 - Building placement and collision
-- Full gameplay loops (job assignment → drone movement → delivery)
+- Full gameplay loops (job assignment -> drone movement -> delivery)
 - UI interactions
 - Combat and enemy spawning
 

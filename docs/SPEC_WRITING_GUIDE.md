@@ -236,9 +236,9 @@ blocked_by: Issue: Foundation Task, Issue: Another Prerequisite
 
 The `blocked_by` value must match the **exact title** from the heading:
 
-- Heading: `## Issue: Foundation Task` → Reference: `blocked_by: Issue: Foundation Task`
-- Heading: `## Foundation Task` → Reference: `blocked_by: Foundation Task`
-- Heading: `## [Epic]: My Epic` → Reference: `blocked_by: [Epic]: My Epic`
+- Heading: `## Issue: Foundation Task` -> Reference: `blocked_by: Issue: Foundation Task`
+- Heading: `## Foundation Task` -> Reference: `blocked_by: Foundation Task`
+- Heading: `## [Epic]: My Epic` -> Reference: `blocked_by: [Epic]: My Epic`
 
 ### Limitation
 
@@ -303,7 +303,7 @@ Use these checks before submitting a spec to the `issue-creator` tool.
 
 | Check | Reason | Example |
 |-------|--------|---------|
-| **No checklists (`- [ ]`)** | Tool cannot parse checklists; use plain bullets | ❌ `- [ ] Task` → ✅ `- Task` |
+| **No checklists (`- [ ]`)** | Tool cannot parse checklists; use plain bullets | ❌ `- [ ] Task` -> ✅ `- Task` |
 | **Success criteria are testable** | Prevents unimplementable issues | ✅ "Tests verify X" / "Manual test: Y" |
 | **Scope boundaries clear** | Prevents scope bleed | Include "Non-Goals" for complex issues |
 | **Dependencies identified** | Enables blocking relationships | Use `blocked_by:` when ordering matters |

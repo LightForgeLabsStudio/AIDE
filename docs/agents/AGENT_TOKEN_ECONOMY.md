@@ -20,7 +20,7 @@ When you are implementing a new feature, it is very important that you take the 
 - Follow architectural constraints in `DEVELOPMENT.md`
 ```
 
-**Token savings:** ~70% reduction (95 tokens → 28 tokens)
+**Token savings:** ~70% reduction (95 tokens -> 28 tokens)
 
 ### 2. Bullet Points and Checklists Over Paragraphs
 
@@ -37,7 +37,7 @@ The first step in the implementation workflow is to conduct a thorough codebase 
 - Identify design/code mismatches
 ```
 
-**Token savings:** ~65% reduction (68 tokens → 24 tokens)
+**Token savings:** ~65% reduction (68 tokens -> 24 tokens)
 
 ### 3. Reference Instead of Duplicate
 
@@ -64,11 +64,11 @@ Follow `TESTING_POLICY.md` for coverage expectations, frameworks, and commands.
 
 **Quick reference:**
 - Derive test intent from spec success criteria
-- Automated tests preferred (GUT unit → integration)
+- Automated tests preferred (GUT unit -> integration)
 - Manual checklist only if automation impractical (state why in PR)
 ```
 
-**Token savings:** ~55% reduction (72 tokens → 33 tokens)
+**Token savings:** ~55% reduction (72 tokens -> 33 tokens)
 
 ### 4. Front-Load Critical Information
 
@@ -103,7 +103,7 @@ Reading 7 full design pillar documents (10,000+ tokens)
 **Use:**
 ```markdown
 Read `DESIGN_QUICK_REFERENCE.md` (500 tokens) for overview
-→ Reference specific pillar sections when implementing
+-> Reference specific pillar sections when implementing
 ```
 
 **Token savings:** 95%+ on initial context load
@@ -137,7 +137,7 @@ Co-Authored-By: [Agent Name] <agent@example.com>"
 ```
 ```
 
-**Token savings:** ~75% reduction (142 tokens → 36 tokens)
+**Token savings:** ~75% reduction (142 tokens -> 36 tokens)
 
 ## Practical Application
 
@@ -233,9 +233,9 @@ Token efficiency is a design constraint. Keep default-loaded context small and p
 Use token counting tools (e.g., `tiktoken` for GPT models) on agent primer markdown files.
 
 **Red flags:**
-- Agent primer >1000 tokens → likely contains duplicated content
-- Multiple paragraphs of prose → convert to bullets
-- Repeated phrases across sections → consolidate
+- Agent primer >1000 tokens -> likely contains duplicated content
+- Multiple paragraphs of prose -> convert to bullets
+- Repeated phrases across sections -> consolidate
 
 ## Maintenance
 
@@ -254,7 +254,7 @@ Use token counting tools (e.g., `tiktoken` for GPT models) on agent primer markd
 ## Trade-offs and Exceptions
 
 **When verbosity is acceptable:**
-- **Safety-critical constraints** (e.g., "Never modify tests without approval") → repeat in multiple sections if needed
+- **Safety-critical constraints** (e.g., "Never modify tests without approval") -> repeat in multiple sections if needed
 - **Complex examples** requiring context (limit to 1-2 per primer)
 - **Project-specific gotchas** not documented elsewhere
 

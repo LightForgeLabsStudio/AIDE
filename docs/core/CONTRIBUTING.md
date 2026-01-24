@@ -128,9 +128,9 @@ See [CODING_GUIDELINES.md](CODING_GUIDELINES.md) for complete coding standards.
 
 Replace these placeholders:
 
-- `{{MAIN_BRANCH}}` → `main`, `master`, `develop`
-- `{{LANGUAGE}}` → `TypeScript`, `Python`, `Rust`, `GDScript`
-- `{{FRAMEWORK}}` → `React`, `Django`, `Actix`, `Godot`
-- `{{DEVELOPMENT_DOC}}` → `docs/DEVELOPMENT.md`, `docs/ARCHITECTURE.md`
-- `{{CONTRACTS_DIRECTORY}}` → `docs/contracts/`
-- `{{PROJECT_DESIGN_DOCS}}` → `docs/design/`, `docs/architecture/`
+- `{{MAIN_BRANCH}}` -> `main`, `master`, `develop`
+- `{{LANGUAGE}}` -> `TypeScript`, `Python`, `Rust`, `GDScript`
+- `{{FRAMEWORK}}` -> `React`, `Django`, `Actix`, `Godot`
+- `{{DEVELOPMENT_DOC}}` -> `docs/DEVELOPMENT.md`, `docs/ARCHITECTURE.md`
+- `{{CONTRACTS_DIRECTORY}}` -> `docs/contracts/`
+- `{{PROJECT_DESIGN_DOCS}}` -> `docs/design/`, `docs/architecture/`

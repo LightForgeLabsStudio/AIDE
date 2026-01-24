@@ -116,9 +116,9 @@ Use `[Epic]:` in title or `## [Epic]: Title` to create an Epic issue:
 The tool automatically infers area labels from content keywords (configured in `.aide/issue-creator.config.json`).
 
 **Example keywords:**
-- `drone`, `pathfinding` → `area:drone-ai`
-- `job`, `assignment` → `area:job-system`
-- `ui`, `hud`, `menu` → `area:ui`
+- `drone`, `pathfinding` -> `area:drone-ai`
+- `job`, `assignment` -> `area:job-system`
+- `ui`, `hud`, `menu` -> `area:ui`
 
 You can override or supplement with explicit `area:` field.
 

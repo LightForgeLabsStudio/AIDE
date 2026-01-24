@@ -56,7 +56,7 @@
 
 **Status Workflow:**
 ```
-needs-spec → ready → in-progress → needs-review → (merged/closed)
+needs-spec -> ready -> in-progress -> needs-review -> (merged/closed)
                          ↓
                      blocked (temporary)
 ```

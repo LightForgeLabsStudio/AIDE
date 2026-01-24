@@ -28,7 +28,7 @@ Holistic codebase reviews (not PR reviews). Surface structural risks, design dri
 - Default: Review `{{MAIN_BRANCH}}` (shipped state)
 - Optional: Feature branch sweep (read-only, no report files in branch)
 - Reporting: Neutral `report/<date>-codebase-review` branch with report only
-- Remediation: Route to `DESIGN_SPEC_START` → implementation PRs
+- Remediation: Route to `DESIGN_SPEC_START` -> implementation PRs
 
 ## Process
 
