@@ -93,6 +93,12 @@ Load these only when the current task/stage needs them:
 - `docs/agents/GITHUB_LABELS.md` when applying/creating labels
 - `docs/agents/PLACEHOLDER_CONTRACTS.md` when validating or authoring project placeholder mappings
 
+### Optional (tooling/skills)
+If your tool supports reusable commands (skills), consult:
+
+- `docs/agents/COMMAND_CATALOG.md` for a tool-agnostic slash-command catalog
+- `docs/core/SESSION_HANDOFF.template.md` for a standard session handoff format
+
 ### Reference-only (on-demand deep reads)
 Load only when explicitly needed for a decision or template:
 
