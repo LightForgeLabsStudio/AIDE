@@ -47,8 +47,8 @@ This document defines **behavior and inputs/outputs**; it does not mandate an im
 - Known constraints (Tier 1 rules, design pillars, architecture)
 
 **Outputs:**
-- **Layer 1 plan** (ordered steps with exit criteria)
-- **Layer 2 detail** for the next immediate step only
+- **Layer 1 constraints** (Tier 1 rules, pillars, architecture boundaries)
+- **Layer 2 plan** (ordered steps with exit criteria)
 - Files likely touched
 - Validation commands to run (project-provided)
 - Risks/unknowns + questions (if needed)

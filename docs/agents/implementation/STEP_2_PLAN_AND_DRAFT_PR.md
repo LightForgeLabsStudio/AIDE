@@ -12,9 +12,9 @@ After codebase survey, present implementation plan and get approval.
 
 ## Two-Layer Planning
 
-**Layer 1 (approval):** A short, ordered plan with exit criteria, likely files, validation commands, and risks.
+**Layer 1 (constraints):** Capture project constraints and non-negotiables (Tier 1 rules, design pillars, architecture boundaries, determinism requirements). Keep it short and explicit.
 
-**Layer 2 (execution):** A brief breakdown for the next immediate step only. Add after approval and just before you start that step. Do not expand Layer 2 for the entire project.
+**Layer 2 (task plan):** A short, ordered plan with exit criteria, likely files, validation commands, and risks. This is the plan you seek approval for.
 
 Present plan:
 ```markdown

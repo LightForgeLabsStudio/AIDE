@@ -100,7 +100,6 @@ If your tool supports reusable commands (skills), consult:
 
 - `docs/agents/COMMAND_CATALOG.md` for a tool-agnostic slash-command catalog
 - `docs/core/SESSION_HANDOFF.template.md` for a standard session handoff format
-- `docs/core/PROJECT_CONTEXT_BUNDLE.template.md` for an optional, name-agnostic context bundle
 
 ### Reference-only (on-demand deep reads)
 Load only when explicitly needed for a decision or template:

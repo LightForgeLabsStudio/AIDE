@@ -17,9 +17,5 @@ Create a handoff artifact when work will pause, span sessions, or switch roles, 
 - Use `docs/core/SESSION_HANDOFF.template.md`.
 - Capture decisions, open questions, and the exact next action.
 
-2) If the project maintains a context bundle:
-- Link or update it using `docs/core/PROJECT_CONTEXT_BUNDLE.template.md` (optional, project-defined).
-
 ## Exit Criteria
 - A handoff note exists and reflects the current plan and next action.
-- Any optional context bundle reference is linked or updated.
