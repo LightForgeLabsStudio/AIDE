@@ -10,6 +10,12 @@ Produce a measurable plan mapped to success criteria, get approval, then open a 
 
 After codebase survey, present implementation plan and get approval.
 
+## Two-Layer Planning
+
+**Layer 1 (approval):** A short, ordered plan with exit criteria, likely files, validation commands, and risks.
+
+**Layer 2 (execution):** A brief breakdown for the next immediate step only. Add after approval and just before you start that step. Do not expand Layer 2 for the entire project.
+
 Present plan:
 ```markdown
 **Implementation Plan:**

@@ -26,22 +26,29 @@ This document defines **behavior and inputs/outputs**; it does not mandate an im
 
 **Intent:** minimal cold-start orientation and routing.
 
+**Inputs:**
+- Optional task link (issue/PR/spec) if already known.
+
 **Reads (minimum):**
 - Project `AGENT_ORIENTATION.md` (or project `AGENTS.md` if no orientation doc)
 - Project Tier 1 docs listed there (at least `AGENTS.md`)
 
 **Outputs:**
-- Which role primer to load (AIDE `docs/agents/*`)
-- What the next action is (ask for spec, request PR link, etc.)
+- Resolved role primer to load (AIDE `docs/agents/*`)
+- Required next action (request spec/PR link, or confirm starting stage)
+- Any missing inputs required to proceed
 
 ### `/plan`
 
 **Intent:** convert a task spec into a plan with explicit success criteria.
 
-**Inputs:** issue/PR description or user-provided spec.
+**Inputs:**
+- Issue/PR description or user-provided spec
+- Known constraints (Tier 1 rules, design pillars, architecture)
 
 **Outputs:**
-- Steps with ordering and exit criteria
+- **Layer 1 plan** (ordered steps with exit criteria)
+- **Layer 2 detail** for the next immediate step only
 - Files likely touched
 - Validation commands to run (project-provided)
 - Risks/unknowns + questions (if needed)
@@ -50,7 +57,13 @@ This document defines **behavior and inputs/outputs**; it does not mandate an im
 
 **Intent:** run the project's standard quality gates for the current change.
 
-**Outputs:** pass/fail summary and failing logs (if any).
+**Inputs:**
+- Current branch/commit context
+- Project-specific commands (from placeholders or docs)
+
+**Outputs:**
+- Commands executed
+- Pass/fail summary and failing logs (if any)
 
 **Notes:** use project placeholder mappings for exact commands.
 
@@ -64,7 +77,13 @@ This document defines **behavior and inputs/outputs**; it does not mandate an im
 
 **Intent:** produce a session handoff artifact for context resets or async work.
 
-**Outputs:** a filled handoff note using `docs/core/SESSION_HANDOFF.template.md`.
+**Inputs:**
+- Current stage, branch, PR, issue (if any)
+- Completed work, in-progress items, blockers
+- Next actions and validation status
+
+**Outputs:**
+- A filled handoff note using `docs/core/SESSION_HANDOFF.template.md`
 
 ### `/draft-pr` and `/ready-pr`
 
@@ -83,10 +102,17 @@ This document defines **behavior and inputs/outputs**; it does not mandate an im
 
 **Intent:** turn repeated mistakes into system improvements (constraints, docs, automation).
 
+**Inputs:**
+- Observed failure pattern (what happened, how often)
+- Evidence (issue/PR links or excerpts)
+
 **Outputs:**
 - Proposed change type (Tier 1 constraint vs Tier 2 guidance vs automation)
 - Where to apply it (file + section)
 - Example of the new rule in practice
+- Quick decision rationale (why this tier/automation)
+
+See `SYSTEM_EVOLUTION.md` for the decision tree and trigger criteria.
 
 ---
 

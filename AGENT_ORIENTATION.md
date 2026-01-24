@@ -53,6 +53,7 @@ Reference implementations. Copy and customize, do not follow directly.
 0. Spec Intake      → Get issue/spec, extract goals
 1. Codebase Survey  → Read targeted, NO CODING
 2. Plan + Draft PR  → Get approval, create branch
+2.5 Context Reset   → Handoff note if pausing or switching roles
 3. Implement        → Code + tests, clean commits
 4. Sanity Check     → Verify success criteria
 5. Refinement       → Cleanup, best practices
@@ -92,12 +93,14 @@ Load these only when the current task/stage needs them:
 - `docs/agents/GITHUB_QUERIES.md` when querying issues/PRs via `gh`
 - `docs/agents/GITHUB_LABELS.md` when applying/creating labels
 - `docs/agents/PLACEHOLDER_CONTRACTS.md` when validating or authoring project placeholder mappings
+- `docs/agents/SYSTEM_EVOLUTION.md` when applying `/evolve` or updating constraints
 
 ### Optional (tooling/skills)
 If your tool supports reusable commands (skills), consult:
 
 - `docs/agents/COMMAND_CATALOG.md` for a tool-agnostic slash-command catalog
 - `docs/core/SESSION_HANDOFF.template.md` for a standard session handoff format
+- `docs/core/PROJECT_CONTEXT_BUNDLE.template.md` for an optional, name-agnostic context bundle
 
 ### Reference-only (on-demand deep reads)
 Load only when explicitly needed for a decision or template:

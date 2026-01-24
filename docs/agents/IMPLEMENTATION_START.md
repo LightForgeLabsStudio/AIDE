@@ -17,6 +17,7 @@ Always load this index first. Then load only the step document for the stage you
 0. Spec intake - get issue/spec, extract goal/scope/success criteria
 1. Codebase survey - read targeted, no coding
 2. Implementation plan + draft PR - get approval, open draft PR with checklist, WAIT
+2.5 Context reset checkpoint - handoff note if pausing or switching sessions/roles
 3. Implement - code + tests + docs, clean commits, keep checklist updated
 4. Sanity check - verify success criteria
 5. Code refinement - cleanup, best practices, scalability
@@ -31,6 +32,7 @@ Always load this index first. Then load only the step document for the stage you
 - Step 0: `implementation/STEP_0_SPEC_INTAKE.md`
 - Step 1: `implementation/STEP_1_CODEBASE_SURVEY.md`
 - Step 2: `implementation/STEP_2_PLAN_AND_DRAFT_PR.md`
+- Step 2.5: `implementation/STEP_2_5_CONTEXT_RESET.md`
 - Step 3: `implementation/STEP_3_IMPLEMENT.md`
 - Step 4: `implementation/STEP_4_SANITY_CHECK.md`
 - Step 5: `implementation/STEP_5_REFINEMENT.md`
