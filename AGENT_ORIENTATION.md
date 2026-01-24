@@ -24,7 +24,7 @@ Project-side documents satisfy AIDE contracts. Agents MUST read project's author
 
 | Expectation | Project Must Provide |
 |-------------|---------------------|
-| Placeholder mappings | `AGENTS.md` or equivalent with `{{PLACEHOLDER}}` → value table |
+| Placeholder mappings | `AGENTS.md` or equivalent with `{{PLACEHOLDER}}` -> value table |
 | Code style rules | `{{CODING_GUIDELINES_DOC}}` |
 | Test requirements | `{{TESTING_POLICY_DOC}}` |
 | Workflow rules | `{{CONTRIBUTING_DOC}}` |
@@ -50,28 +50,28 @@ Reference implementations. Copy and customize, do not follow directly.
 ## Workflow Stages (Implementation)
 
 ```
-0. Spec Intake      → Get issue/spec, extract goals
-1. Codebase Survey  → Read targeted, NO CODING
-2. Plan + Draft PR  → Get approval, create branch
-2.5 Context Reset   → Handoff note if pausing or switching roles
-3. Implement        → Code + tests, clean commits
-4. Sanity Check     → Verify success criteria
-5. Refinement       → Cleanup, best practices
-6. PR Ready         → Mark for review
-7. Report Back      → Summarize vs spec
-8. Address Feedback → Fix review issues
-9. Merge            → After approval
-10. Sync Main       → Update local
+0. Spec Intake      -> Get issue/spec, extract goals
+1. Codebase Survey  -> Read targeted, NO CODING
+2. Plan + Draft PR  -> Get approval, create branch
+2.5 Context Reset   -> Handoff note if pausing or switching roles
+3. Implement        -> Code + tests, clean commits
+4. Sanity Check     -> Verify success criteria
+5. Refinement       -> Cleanup, best practices
+6. PR Ready         -> Mark for review
+7. Report Back      -> Summarize vs spec
+8. Address Feedback -> Fix review issues
+9. Merge            -> After approval
+10. Sync Main       -> Update local
 ```
 
 ---
 
 ## Entry Workflow
 
-1. **Project provides orientation** → Read project's `AGENT_ORIENTATION.md` or `AGENTS.md`
-2. **Resolve placeholders** → Map `{{PLACEHOLDERS}}` using project's table
-3. **Load role primer** → Read appropriate primer from `docs/agents/`
-4. **Execute workflow** → Follow primer end-to-end
+1. **Project provides orientation** -> Read project's `AGENT_ORIENTATION.md` or `AGENTS.md`
+2. **Resolve placeholders** -> Map `{{PLACEHOLDERS}}` using project's table
+3. **Load role primer** -> Read appropriate primer from `docs/agents/`
+4. **Execute workflow** -> Follow primer end-to-end
 
 ---
 
