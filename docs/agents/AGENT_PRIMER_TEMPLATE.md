@@ -52,7 +52,8 @@ Use this skeleton to create new agent primers. Keep it concise, explicit, and en
   - Reference authoritative docs instead of duplicating content
   - Front-load critical constraints
   - One clear example > multiple redundant ones
-  - Target 150-500 tokens depending on agent complexity
+  - Use token budgets by doc type (see "Token Budget Guidelines (By Document Type)")
+  - Target 150-500 tokens for role primers depending on agent complexity
 
 ## Signature/Attribution (if required)
 - Commit trailer or review prefix format.

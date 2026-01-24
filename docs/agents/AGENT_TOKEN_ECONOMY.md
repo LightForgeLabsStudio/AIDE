@@ -200,6 +200,29 @@ When creating or updating agent primer files:
 
 ## Measuring Token Efficiency
 
+## Token Budget Guidelines (By Document Type)
+
+Token efficiency is a design constraint. Keep default-loaded context small and predictable by budgeting *agent-facing documentation* by type.
+
+**Recommended budgets:**
+
+| Document Type | Load Mode | Target Size | Guidance |
+|--------------|----------|-------------|----------|
+| Project `AGENTS.md` / `AGENT_ORIENTATION.md` | Always-loaded | 300-800 tokens | Include only binding contracts, placeholder mappings, and entry workflow. Avoid deep references. |
+| Framework `AGENT_ORIENTATION.md` | Always-loaded | 200-600 tokens | Roles, authority tiers, entry workflow, doc loading policy. No deep templates. |
+| Role primer index (`*_START.md`) | Stage-loaded | 200-500 tokens | Index + workflow map + links to step docs; avoid repeating step content. |
+| Stage step docs (Step 0, Step 1, ...) | Stage-loaded | 250-700 tokens each | Purpose/prereqs/actions/exit criteria. Keep examples minimal. |
+| Reference docs | Reference-only | No strict limit | Add a short "Summary (Non-Authoritative)" <= 150-250 tokens at top; full depth below. |
+
+**Measurement heuristics (no tooling required):**
+- Rough conversion: 1 token ~= 0.75 words (English prose); tables/code can skew higher.
+- Quick sanity check: 500 tokens is often ~1 page of bullets.
+
+**Red flags:**
+- Always-loaded docs growing into "how to do everything" guides
+- Role primer index repeating the full step content
+- Reference docs that must be read to execute Step 0/1/2
+
 **Target token budgets by agent type:**
 - **Implementation agents:** 300-500 tokens (complex workflows)
 - **Review agents:** 200-400 tokens (structured evaluation)
