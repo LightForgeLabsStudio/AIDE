@@ -29,7 +29,7 @@ Technical reference for extending and debugging the Godot implementation.
 ### 4. Buildings (scenes)
 - Base building script holds name, cost, input/output inventories, production timers, docking markers, and signal hooks.
 - Building types emit jobs via the JobSystem instead of directly commanding drones.
-- Example variants: `Refinery` (Ore → Alloy), `Turret` (consumes Ammo), `Assembler`/`DroneBay` (future).
+- Example variants: `Refinery` (Ore -> Alloy), `Turret` (consumes Ammo), `Assembler`/`DroneBay` (future).
 
 ### 5. Resource Nodes (scenes)
 - Represent Ore/Mineral nodes with occupancy limits and mining timers.

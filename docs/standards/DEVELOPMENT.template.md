@@ -61,9 +61,9 @@ Technical reference for extending and debugging {{PROJECT_NAME}}.
 
 Replace these placeholders:
 
-- `{{PROJECT_NAME}}` → Your project name
-- `{{Architecture Pattern}}` → "Microservices", "MVC", "Component-Based", "Scene-Driven"
-- `{{Component Type 1/2/3}}` → Your architecture's main components
-- `{{Component Name 1/2/3}}` → Specific key components in your project
-- `{{Domain}}` → "Web", "Game", "CLI", "Mobile", "Backend"
-- `{{PROJECT_DESIGN_DOCS}}` → "docs/design/", "docs/architecture/"
+- `{{PROJECT_NAME}}` -> Your project name
+- `{{Architecture Pattern}}` -> "Microservices", "MVC", "Component-Based", "Scene-Driven"
+- `{{Component Type 1/2/3}}` -> Your architecture's main components
+- `{{Component Name 1/2/3}}` -> Specific key components in your project
+- `{{Domain}}` -> "Web", "Game", "CLI", "Mobile", "Backend"
+- `{{PROJECT_DESIGN_DOCS}}` -> "docs/design/", "docs/architecture/"

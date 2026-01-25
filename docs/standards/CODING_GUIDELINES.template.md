@@ -96,12 +96,12 @@ Follow [DOCUMENTATION_POLICY.md](../core/DOCUMENTATION_POLICY.md) for all docume
 
 Replace these placeholders:
 
-- `{{PROJECT_NAME}}` → Your project name
-- `{{LANGUAGE}}` → "TypeScript", "Python", "Rust", "GDScript"
-- `{{FRAMEWORK}}` → "React", "Django", "Actix", "Godot"
-- `{{TECH_STACK}}` → "Node.js 20 + TypeScript 5", "Python 3.11 + FastAPI"
-- `{{STYLE_GUIDE_NAME}}` → "Airbnb JavaScript Style Guide", "PEP 8", "Rust Book"
-- `{{STYLE_GUIDE_LINK}}` → URL to official style guide
-- `{{DEVELOPMENT_DOC}}` → "docs/DEVELOPMENT.md", "docs/ARCHITECTURE.md"
-- `{{PROJECT_DESIGN_DOCS}}` → "docs/design/", "docs/architecture/"
-- `{{DOMAIN_SPECIFIC_GUIDANCE}}` → Guidance specific to your domain (web, game, CLI, etc.)
+- `{{PROJECT_NAME}}` -> Your project name
+- `{{LANGUAGE}}` -> "TypeScript", "Python", "Rust", "GDScript"
+- `{{FRAMEWORK}}` -> "React", "Django", "Actix", "Godot"
+- `{{TECH_STACK}}` -> "Node.js 20 + TypeScript 5", "Python 3.11 + FastAPI"
+- `{{STYLE_GUIDE_NAME}}` -> "Airbnb JavaScript Style Guide", "PEP 8", "Rust Book"
+- `{{STYLE_GUIDE_LINK}}` -> URL to official style guide
+- `{{DEVELOPMENT_DOC}}` -> "docs/DEVELOPMENT.md", "docs/ARCHITECTURE.md"
+- `{{PROJECT_DESIGN_DOCS}}` -> "docs/design/", "docs/architecture/"
+- `{{DOMAIN_SPECIFIC_GUIDANCE}}` -> Guidance specific to your domain (web, game, CLI, etc.)

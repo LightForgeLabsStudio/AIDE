@@ -52,7 +52,7 @@ Include:
 
 1. Query GitHub state + read relevant pillar(s)
 2. List candidates (prioritized: impact/effort + fun note)
-3. User picks → draft spec (succinct)
+3. User picks -> draft spec (succinct)
 4. Add automated scenarios; note manual only if needed
 5. Tag "Ready for IMPLEMENTATION_START" + doc links
 

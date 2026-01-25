@@ -128,19 +128,19 @@ Place integration tests in: `{{INTEGRATION_TEST_PATH}}`
 
 Replace these placeholders:
 
-- `{{UNIT_TEST_FRAMEWORK}}` → "Jest", "pytest", "cargo test", "GUT"
-- `{{INTEGRATION_TEST_FRAMEWORK}}` → "Supertest", "pytest", "integration tests"
-- `{{E2E_TEST_FRAMEWORK}}` → "Playwright", "Cypress", "Selenium"
-- `{{RUN_ALL_TESTS_COMMAND}}` → "npm test", "pytest", "cargo test"
-- `{{RUN_UNIT_TESTS_COMMAND}}` → "npm run test:unit", "pytest tests/unit", "cargo test --lib"
-- `{{RUN_INTEGRATION_TESTS_COMMAND}}` → "npm run test:integration", "pytest tests/integration"
-- `{{RUN_E2E_TESTS_COMMAND}}` → "npm run test:e2e", "playwright test"
-- `{{RUN_SPECIFIC_UNIT_TEST_COMMAND}}` → Example command to run one test file
-- `{{RUN_SPECIFIC_INTEGRATION_TEST_COMMAND}}` → Example command
-- `{{UNIT_TEST_PATH}}` → "tests/unit/", "src/__tests__/", "tests/"
-- `{{INTEGRATION_TEST_PATH}}` → "tests/integration/", "e2e/"
-- `{{E2E_TEST_PATH}}` → "tests/e2e/", "playwright/"
-- `{{LANGUAGE_EXTENSION}}` → "ts", "py", "rs", "gd"
-- `{{UNIT_TEST_EXAMPLE}}` → Example test code for your language/framework
-- `{{INTEGRATION_TEST_EXAMPLE}}` → Example integration test code
-- `{{TARGET_COVERAGE}}` → "70", "80", "90"
+- `{{UNIT_TEST_FRAMEWORK}}` -> "Jest", "pytest", "cargo test", "GUT"
+- `{{INTEGRATION_TEST_FRAMEWORK}}` -> "Supertest", "pytest", "integration tests"
+- `{{E2E_TEST_FRAMEWORK}}` -> "Playwright", "Cypress", "Selenium"
+- `{{RUN_ALL_TESTS_COMMAND}}` -> "npm test", "pytest", "cargo test"
+- `{{RUN_UNIT_TESTS_COMMAND}}` -> "npm run test:unit", "pytest tests/unit", "cargo test --lib"
+- `{{RUN_INTEGRATION_TESTS_COMMAND}}` -> "npm run test:integration", "pytest tests/integration"
+- `{{RUN_E2E_TESTS_COMMAND}}` -> "npm run test:e2e", "playwright test"
+- `{{RUN_SPECIFIC_UNIT_TEST_COMMAND}}` -> Example command to run one test file
+- `{{RUN_SPECIFIC_INTEGRATION_TEST_COMMAND}}` -> Example command
+- `{{UNIT_TEST_PATH}}` -> "tests/unit/", "src/__tests__/", "tests/"
+- `{{INTEGRATION_TEST_PATH}}` -> "tests/integration/", "e2e/"
+- `{{E2E_TEST_PATH}}` -> "tests/e2e/", "playwright/"
+- `{{LANGUAGE_EXTENSION}}` -> "ts", "py", "rs", "gd"
+- `{{UNIT_TEST_EXAMPLE}}` -> Example test code for your language/framework
+- `{{INTEGRATION_TEST_EXAMPLE}}` -> Example integration test code
+- `{{TARGET_COVERAGE}}` -> "70", "80", "90"

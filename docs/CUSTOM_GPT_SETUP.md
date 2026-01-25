@@ -125,10 +125,10 @@ blocked_by: [Chore]: Add crash logging
 
 ## Common Questions
 
-"What areas?" → Check project's `issue-creator.config.json`
-"Blocking deps?" → Use `blocked_by: Exact Issue Title`
-"Multiple Epics?" → Yes, each `[Epic]:` starts new scope
-"Type tags?" → Yes, in title after "Issue:" marker: `## Issue: [TypeTag] Title`
+"What areas?" -> Check project's `issue-creator.config.json`
+"Blocking deps?" -> Use `blocked_by: Exact Issue Title`
+"Multiple Epics?" -> Yes, each `[Epic]:` starts new scope
+"Type tags?" -> Yes, in title after "Issue:" marker: `## Issue: [TypeTag] Title`
 ```
 
 ### Conversation Starters
@@ -154,7 +154,7 @@ How do I format blocking dependencies?
 3. Save and test
 
 **Workflow:**
-1. Design session in ChatGPT → generate specs
-2. Use Custom GPT to format → download Canvas as `specs.md`
+1. Design session in ChatGPT -> generate specs
+2. Use Custom GPT to format -> download Canvas as `specs.md`
 3. Run: `python .aide/tools/issue-creator/issue-creator.py specs.md`
 4. Issues created in GitHub with Epic/child relationships

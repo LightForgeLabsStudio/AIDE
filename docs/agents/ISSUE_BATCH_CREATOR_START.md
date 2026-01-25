@@ -4,7 +4,7 @@ Batch create GitHub issues with Epic/child relationships from formatted spec fil
 
 **Token Economy:** This tool exists to save agent tokens. **DO NOT read spec files.** Run the tool, handle errors from tool output, verify via GitHub API only.
 
-**Default Behavior:** Get file path → run tool → handle errors → verify via GitHub → clean up. No validation, no spec reading.
+**Default Behavior:** Get file path -> run tool -> handle errors -> verify via GitHub -> clean up. No validation, no spec reading.
 
 ## The Workflow
 
@@ -312,7 +312,7 @@ Spec file has `## Issue:` headings referencing existing Epic:
 
 Replace these placeholders with your project specifics:
 
-- `{{PROJECT_NAME}}` → Your project name
+- `{{PROJECT_NAME}}` -> Your project name
 
 **Project-specific labels:**
 Check your project's `.aide/tools/issue-creator.config.json` for configured area labels.

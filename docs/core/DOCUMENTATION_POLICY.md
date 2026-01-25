@@ -91,9 +91,9 @@ All agent primer files should prioritize token efficiency to maximize context bu
 
 Replace these placeholders with your actual documentation structure:
 
-- `{{PROJECT_SUMMARY_DOC}}` → `docs/PROJECT_SUMMARY.md` or `docs/OVERVIEW.md`
-- `{{DEVELOPMENT_DOC}}` → `docs/DEVELOPMENT.md` or `docs/ARCHITECTURE.md`
-- `{{CONTRIBUTING_DOC}}` → `docs/CONTRIBUTING.md` or `CONTRIBUTING.md`
-- `{{CONTRACTS_DIRECTORY}}` → `docs/contracts/`
-- `{{IMPLEMENTATION_STATUS_QUERY}}` → `gh issue list --label "status:in-progress"` (see [GITHUB_QUERIES.md](../agents/GITHUB_QUERIES.md))
-- `{{PROJECT_DESIGN_DOCS}}` → `docs/design/`, `docs/architecture/`
+- `{{PROJECT_SUMMARY_DOC}}` -> `docs/PROJECT_SUMMARY.md` or `docs/OVERVIEW.md`
+- `{{DEVELOPMENT_DOC}}` -> `docs/DEVELOPMENT.md` or `docs/ARCHITECTURE.md`
+- `{{CONTRIBUTING_DOC}}` -> `docs/CONTRIBUTING.md` or `CONTRIBUTING.md`
+- `{{CONTRACTS_DIRECTORY}}` -> `docs/contracts/`
+- `{{IMPLEMENTATION_STATUS_QUERY}}` -> `gh issue list --label "status:in-progress"` (see [GITHUB_QUERIES.md](../agents/GITHUB_QUERIES.md))
+- `{{PROJECT_DESIGN_DOCS}}` -> `docs/design/`, `docs/architecture/`

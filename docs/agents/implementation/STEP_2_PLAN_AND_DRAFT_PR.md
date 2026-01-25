@@ -10,6 +10,12 @@ Produce a measurable plan mapped to success criteria, get approval, then open a 
 
 After codebase survey, present implementation plan and get approval.
 
+## Two-Layer Planning
+
+**Layer 1 (constraints):** Capture project constraints and non-negotiables (Tier 1 rules, design pillars, architecture boundaries, determinism requirements). Keep it short and explicit.
+
+**Layer 2 (task plan):** A short, ordered plan with exit criteria, likely files, validation commands, and risks. This is the plan you seek approval for.
+
 Present plan:
 ```markdown
 **Implementation Plan:**
@@ -25,6 +31,8 @@ Ready to proceed?
 ```
 
 After approval, create branch + draft PR:
+
+Note: the PR body example uses a bash heredoc. For other shells, use the equivalent (e.g., PowerShell here-string) or edit the PR body in your editor.
 
 ```bash
 # Create feature branch (never work on main)
