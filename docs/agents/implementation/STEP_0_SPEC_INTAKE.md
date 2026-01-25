@@ -7,6 +7,14 @@ Get the spec, extract goals/scope/success criteria, and confirm the work is feas
 - Project authority mapping is loaded (project `AGENT_ORIENTATION.md` or `AGENTS.md`).
 - You have the GitHub issue number containing the spec.
 
+## Spec Quality Check (Gate)
+
+If no spec exists or the spec is incomplete:
+- Stop immediately
+- Use DESIGN_WORKSHOP_START to create a spec
+- Use DESIGN_SPEC_START to formalize requirements
+- Return here once the spec is ready
+
 ## Step Actions
 
 Agent asks:

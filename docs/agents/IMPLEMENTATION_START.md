@@ -8,6 +8,17 @@ Default behavior: for implementation work, complete the full workflow (branch, t
 
 Multi-iteration in one chat: if an iteration finishes and a new one starts in the same session, cleanly close the prior loop (summarize current state + stopping point), then explicitly confirm whether to restart at Step 0 or resume from a later step. Do not restart steps implicitly.
 
+## Prerequisites
+
+**This primer assumes you have a structured spec.**
+
+If you don't have a spec yet:
+- Use DESIGN_WORKSHOP_START for exploratory design
+- Use DESIGN_SPEC_START to formalize requirements
+- Return to this primer once the spec exists
+
+**Context reset is built-in:** Design and implementation use separate primers and typically happen in different sessions. No manual context reset needed between roles.
+
 ## How To Use These Docs
 
 Always load this index first. Then load only the step document for the stage you are currently executing.
@@ -17,7 +28,6 @@ Always load this index first. Then load only the step document for the stage you
 0. Spec intake - get issue/spec, extract goal/scope/success criteria
 1. Codebase survey - read targeted, no coding
 2. Implementation plan + draft PR - get approval, open draft PR with checklist, WAIT
-2.5 Context reset checkpoint - handoff note if pausing or switching sessions/roles
 3. Implement - code + tests + docs, clean commits, keep checklist updated
 4. Sanity check - verify success criteria
 5. Code refinement - cleanup, best practices, scalability
@@ -32,7 +42,6 @@ Always load this index first. Then load only the step document for the stage you
 - Step 0: `implementation/STEP_0_SPEC_INTAKE.md`
 - Step 1: `implementation/STEP_1_CODEBASE_SURVEY.md`
 - Step 2: `implementation/STEP_2_PLAN_AND_DRAFT_PR.md`
-- Step 2.5: `implementation/STEP_2_5_CONTEXT_RESET.md`
 - Step 3: `implementation/STEP_3_IMPLEMENT.md`
 - Step 4: `implementation/STEP_4_SANITY_CHECK.md`
 - Step 5: `implementation/STEP_5_REFINEMENT.md`
