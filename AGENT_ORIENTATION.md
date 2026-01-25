@@ -53,7 +53,6 @@ Reference implementations. Copy and customize, do not follow directly.
 0. Spec Intake      -> Get issue/spec, extract goals
 1. Codebase Survey  -> Read targeted, NO CODING
 2. Plan + Draft PR  -> Get approval, create branch
-2.5 Context Reset   -> Handoff note if pausing or switching roles
 3. Implement        -> Code + tests, clean commits
 4. Sanity Check     -> Verify success criteria
 5. Refinement       -> Cleanup, best practices
