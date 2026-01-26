@@ -1,0 +1,47 @@
+param(
+    [string]$StartPath = (Get-Location).Path
+)
+
+function Find-RepoRoot {
+    param([string]$Path)
+    $current = Resolve-Path $Path
+    while ($true) {
+        $agentsPath = Join-Path $current "AGENTS.md"
+        if (Test-Path $agentsPath) {
+            return $current
+        }
+        $parent = Split-Path $current -Parent
+        if ($parent -eq $current -or [string]::IsNullOrWhiteSpace($parent)) {
+            return $null
+        }
+        $current = $parent
+    }
+}
+
+$repoRoot = Find-RepoRoot -Path $StartPath
+if (-not $repoRoot) {
+    Write-Output "Primed: AGENT_ORIENTATION.md: no AGENTS.md: no"
+    Write-Output "Constraints: Extend-not-replace; No test mods; No main; Deterministic; InventoryService/JobSystem authoritative; Autoloads UI-free"
+    Write-Output "Next input needed: authoritative AGENTS.md path"
+    Write-Output "If resuming work: provide handoff or PR link"
+    exit 1
+}
+
+$agentOrientationPath = Join-Path $repoRoot "AGENT_ORIENTATION.md"
+$agentsPath = Join-Path $repoRoot "AGENTS.md"
+
+$hasOrientation = Test-Path $agentOrientationPath
+$hasAgents = Test-Path $agentsPath
+
+if ($hasOrientation) {
+    Get-Content $agentOrientationPath | Out-Null
+}
+if ($hasAgents) {
+    Get-Content $agentsPath | Out-Null
+}
+
+Write-Output ("Primed: AGENT_ORIENTATION.md: {0} AGENTS.md: {1}" -f ($(if ($hasOrientation) {'yes'} else {'no'}), $(if ($hasAgents) {'yes'} else {'no'})))
+Write-Output "Constraints: Extend-not-replace; No test mods; No main; Deterministic; InventoryService/JobSystem authoritative; Autoloads UI-free"
+Write-Output "Next input needed: task spec or PR/issue link"
+Write-Output "If resuming work: provide handoff or PR link"
+
