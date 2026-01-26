@@ -1,0 +1,35 @@
+# Codex skills (AIDE)
+
+This folder contains the source for AIDE's `aide-*` Codex skills.
+
+## Folder layout
+
+- `src/` - skill sources (reviewable diffs)
+- `dist/` - generated `.skill` packages (ignored; produced by scripts/CI)
+- `scripts/` - packaging utilities
+
+## Install
+
+Preferred distribution is via GitHub Releases for the AIDE repo:
+
+1. Download the desired `.skill` from the latest AIDE release assets.
+2. Import it via your Codex extension UI (e.g. "Import Skill").
+3. Reload VS Code / restart the extension.
+
+## Script execution model
+
+Skills include optional `scripts/` for deterministic execution in environments that allow running them. If scripts cannot be executed, the `SKILL.md` instructions remain the source of truth for manual or model-driven execution.
+
+## When to use `/prime` vs `/role`
+
+- `/prime` is the entrypoint: load project constraints and ask what you want to do.
+- `/role` is optional: jump straight to a specific primer if you already know the role.
+
+## Build packages locally
+
+From the AIDE repo root:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File tools/codex-skills/scripts/package_all.ps1
+```
+
