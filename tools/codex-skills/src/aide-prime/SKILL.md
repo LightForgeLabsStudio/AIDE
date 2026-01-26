@@ -23,13 +23,17 @@ Provide a minimal, deterministic prime for an AIDE-based repo by loading only Ti
 ### 3) Output the Prime Report (<=10 lines)
 Include:
 1. `Primed: [AGENT_ORIENTATION.md: yes/no] [AGENTS.md: yes/no]`
-2. `Constraints: Extend-not-replace; No test mods; No main; Deterministic; InventoryService/JobSystem authoritative; Autoloads UI-free`
+2. `Constraints: <from AGENTS.md Quick Constraints section, or "project-defined">`
 3. `Next input needed: task spec or PR/issue link`
 4. `If resuming work: provide handoff or PR link`
 
 ### 4) Missing-doc behavior
 - If `AGENTS.md` is missing, report that and ask for the authoritative doc path.
 - If `AGENT_ORIENTATION.md` is missing, proceed with `AGENTS.md` only.
+
+### 5) Constraints source
+- If `AGENTS.md` includes a **Quick Constraints** section, list those items.
+- Otherwise, print a generic "project-defined" constraints line.
 
 ## Notes
 

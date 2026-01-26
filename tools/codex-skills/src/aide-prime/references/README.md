@@ -8,3 +8,7 @@ It locates the repo root by walking up from the current working directory until 
 
 Output format is a short Prime Report (<=10 lines) that confirms what was loaded and asks for the task spec or PR/issue link.
 
+Constraints line:
+- Prefer a `## Quick Constraints` section in `AGENTS.md` (optional).
+- If missing, output a generic "project-defined" constraints line.
+

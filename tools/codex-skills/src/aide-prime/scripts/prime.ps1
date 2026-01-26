@@ -18,10 +18,38 @@ function Find-RepoRoot {
     }
 }
 
+function Get-QuickConstraints {
+    param([string]$AgentsPath)
+    if (-not (Test-Path $AgentsPath)) {
+        return "Constraints: project-defined (AGENTS.md missing)"
+    }
+
+    $lines = Get-Content $AgentsPath
+    $inSection = $false
+    $items = @()
+    foreach ($line in $lines) {
+        if ($line -match '^##\\s+Quick Constraints') {
+            $inSection = $true
+            continue
+        }
+        if ($inSection) {
+            if ($line -match '^##\\s+') { break }
+            if ($line -match '^\\s*-\\s+(.*)$') {
+                $items += $Matches[1].Trim()
+            }
+        }
+    }
+
+    if ($items.Count -gt 0) {
+        return "Constraints: " + ($items -join "; ")
+    }
+    return "Constraints: project-defined (see AGENTS.md)"
+}
+
 $repoRoot = Find-RepoRoot -Path $StartPath
 if (-not $repoRoot) {
     Write-Output "Primed: AGENT_ORIENTATION.md: no AGENTS.md: no"
-    Write-Output "Constraints: Extend-not-replace; No test mods; No main; Deterministic; InventoryService/JobSystem authoritative; Autoloads UI-free"
+    Write-Output "Constraints: project-defined (AGENTS.md missing)"
     Write-Output "Next input needed: authoritative AGENTS.md path"
     Write-Output "If resuming work: provide handoff or PR link"
     exit 1
@@ -41,7 +69,7 @@ if ($hasAgents) {
 }
 
 Write-Output ("Primed: AGENT_ORIENTATION.md: {0} AGENTS.md: {1}" -f ($(if ($hasOrientation) {'yes'} else {'no'}), $(if ($hasAgents) {'yes'} else {'no'})))
-Write-Output "Constraints: Extend-not-replace; No test mods; No main; Deterministic; InventoryService/JobSystem authoritative; Autoloads UI-free"
+Write-Output (Get-QuickConstraints -AgentsPath $agentsPath)
 Write-Output "Next input needed: task spec or PR/issue link"
 Write-Output "If resuming work: provide handoff or PR link"
 
