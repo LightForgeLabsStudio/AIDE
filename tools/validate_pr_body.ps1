@@ -39,6 +39,7 @@ if (-not $Body) {
 
 $errors = @()
 $lines = $Body -split "`n"
+$inCodeBlock = $false
 
 $pathPatterns = @(
     "tools/",
@@ -51,6 +52,13 @@ $pathPatterns = @(
 
 for ($i = 0; $i -lt $lines.Count; $i++) {
     $line = $lines[$i]
+    if ($line -match '^\s*```') {
+        $inCodeBlock = -not $inCodeBlock
+        continue
+    }
+    if ($inCodeBlock) {
+        continue
+    }
 
     # Disallow stray control characters (excluding tab)
     if ($line -match "[\u0000-\u0008\u000B\u000C\u000E-\u001F]") {
@@ -84,4 +92,3 @@ if ($errors.Count -gt 0) {
 }
 
 Write-Output "PR body formatting check passed."
-
