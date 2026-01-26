@@ -1,5 +1,11 @@
 # Codex skills (AIDE)
 
+> **⚠️ DEPRECATED:** This directory is being phased out in favor of the unified skills system at `../../skills/`.
+>
+> **New location:** [../../skills/README.md](../../skills/README.md)
+>
+> This directory remains for backward compatibility but will be removed in a future release.
+
 This folder contains the source for AIDE's `aide-*` Codex skills.
 
 ## Folder layout
@@ -27,7 +33,13 @@ Skills include optional `scripts/` for deterministic execution in environments t
 
 ## Build packages locally
 
-From the AIDE repo root:
+**Recommended (new unified system):**
+
+```powershell
+powershell -ExecutionPolicy Bypass -File skills/package-codex.ps1
+```
+
+**Legacy (this directory):**
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File tools/codex-skills/scripts/package_all.ps1
