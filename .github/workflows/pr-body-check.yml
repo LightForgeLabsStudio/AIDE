@@ -1,0 +1,15 @@
+name: PR body formatting check
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate PR body formatting
+        shell: pwsh
+        run: ./tools/validate_pr_body.ps1
+
