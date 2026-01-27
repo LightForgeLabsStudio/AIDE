@@ -43,16 +43,21 @@ def load_config():
 
 def normalize_type(raw_type: str) -> str:
     value = raw_type.strip().lower()
-    type_map = {
-        "feature": "feature",
-        "bug": "bug",
-        "technical-debt": "technical-debt",
-        "chore": "chore",
-        "documentation": "documentation",
-        "research": "research",
-        "epic": "epic",
+    allowed = {
+        "feature",
+        "bug",
+        "technical-debt",
+        "chore",
+        "documentation",
+        "research",
+        "epic",
     }
-    return type_map.get(value, value)
+    if value not in allowed:
+        raise SystemExit(
+            "Invalid issue type '{0}'. Allowed values: feature, bug, technical-debt, "
+            "chore, documentation, research, epic.".format(value)
+        )
+    return value
 
 
 def get_repo_info():
