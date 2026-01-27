@@ -45,14 +45,10 @@ def normalize_type(raw_type: str) -> str:
     value = raw_type.strip().lower()
     type_map = {
         "feature": "feature",
-        "enhancement": "feature",
         "bug": "bug",
         "technical-debt": "technical-debt",
-        "technical debt": "technical-debt",
-        "tech debt": "technical-debt",
         "chore": "chore",
         "documentation": "documentation",
-        "docs": "documentation",
         "research": "research",
         "epic": "epic",
     }
@@ -107,7 +103,10 @@ def get_issue_types(owner: str) -> dict:
 def set_issue_type(owner: str, repo: str, issue_num: int, issue_type: str, mapping: dict):
     type_name = mapping.get(issue_type)
     if not type_name:
-        raise SystemExit(f"Unknown issue type '{issue_type}'.")
+        raise SystemExit(
+            "Unknown issue type '{0}'. Allowed values: feature, bug, technical-debt, "
+            "chore, documentation, research, epic.".format(issue_type)
+        )
     issue_types = get_issue_types(owner)
     type_id = issue_types.get(type_name)
     if not type_id:

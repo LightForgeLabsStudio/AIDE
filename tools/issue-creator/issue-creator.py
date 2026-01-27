@@ -269,14 +269,10 @@ class IssueCreator:
                 raw_type = type_match.group(1).strip().lower()
                 type_map = {
                     "feature": "feature",
-                    "enhancement": "feature",
                     "bug": "bug",
                     "technical-debt": "technical-debt",
-                    "technical debt": "technical-debt",
-                    "tech debt": "technical-debt",
                     "chore": "chore",
                     "documentation": "documentation",
-                    "docs": "documentation",
                     "research": "research",
                 }
                 issue_type = type_map.get(raw_type, raw_type)
@@ -296,7 +292,10 @@ class IssueCreator:
             elif issue_type not in (
                 "feature", "bug", "technical-debt", "chore", "documentation", "research"
             ):
-                raise ValueError(f"Invalid issue type '{issue_type}' for '{title}'.")
+                raise ValueError(
+                    f"Invalid issue type '{issue_type}' for '{title}'. "
+                    "Allowed values: feature, bug, technical-debt, chore, documentation, research."
+                )
 
             # Extract fields
             priority_match = re.search(r'^priority:\s*(\w+)', section, re.MULTILINE | re.IGNORECASE)
