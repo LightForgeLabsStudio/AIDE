@@ -39,7 +39,6 @@ class IssueCreator:
         "area_keywords": {},
         "default_priority": "medium",
         "default_status_ready": "status:ready",
-        "default_status_blocked": "status:blocked",
         "epic_label": "Epic",
         "issue_type_mapping": {
             "epic": "Epic",
@@ -128,7 +127,7 @@ class IssueCreator:
         labels.append(f'priority:{spec.priority}')
         for area in spec.areas:
             labels.append(f'area:{area}')
-        labels.append(self.config['default_status_blocked'] if spec.blocked_by else self.config['default_status_ready'])
+        labels.append(self.config['default_status_ready'])
         return labels
 
     def ensure_labels_for_specs(self, specs: List[IssueSpec]):
@@ -329,10 +328,7 @@ class IssueCreator:
             labels.append(f'area:{area}')
 
         # Status
-        if spec.blocked_by:
-            labels.append(self.config['default_status_blocked'])
-        else:
-            labels.append(self.config['default_status_ready'])
+        labels.append(self.config['default_status_ready'])
 
         # Build title (only Epic gets prefix, others use labels)
         body = spec.body
@@ -566,10 +562,7 @@ class IssueCreator:
             labels.append(f'area:{area}')
 
         # Status
-        if spec.blocked_by:
-            labels.append(self.config['default_status_blocked'])
-        else:
-            labels.append(self.config['default_status_ready'])
+        labels.append(self.config['default_status_ready'])
 
         # Build title (only Epic gets prefix, others use labels)
         body = spec.body

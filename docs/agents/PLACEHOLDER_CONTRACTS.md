@@ -55,7 +55,6 @@ AIDE workflows rely on GitHub labels for issue/PR state tracking. Projects **mus
 | `status:ready` | Spec complete, ready for implementation | Implementation Agent |
 | `status:in-progress` | Currently being worked on | Implementation Agent |
 | `status:needs-review` | Awaiting PR review | PR Review Agent |
-| `status:blocked` | Blocked by dependencies | All agents |
 
 ### Category Labels (Recommended)
 
@@ -72,7 +71,6 @@ AIDE workflows rely on GitHub labels for issue/PR state tracking. Projects **mus
 gh label create "status:ready" --description "Ready for implementation"
 gh label create "status:in-progress" --description "Currently being worked on"
 gh label create "status:needs-review" --description "Awaiting review"
-gh label create "status:blocked" --description "Blocked by dependencies"
 ```
 
 ---

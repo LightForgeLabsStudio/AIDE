@@ -29,7 +29,7 @@ Batch create GitHub issues with Epic/child relationships from formatted spec fil
 - ✅ Reports blocking dependencies
 - ✅ Idempotent reruns (updates existing issues, and `--update-blockers` reapplies dependencies)
 - ✅ Preflights and creates missing labels needed by specs
-- ✅ Normalizes redundant “Issue:”/“[Type]:” title prefixes
+- ✅ Normalizes redundant “Issue:” title prefixes
 - ✅ UTF-8 support (handles curly quotes from ChatGPT)
 - ✅ Windows + Mac + Linux compatible
 
@@ -56,7 +56,8 @@ Epic description
 
 ---
 
-## Issue: [TypeTag] Issue Title
+## Issue: Issue Title
+type: feature|bug|technical-debt|chore|documentation|research
 priority: high|medium|low
 area: system-name
 
@@ -70,19 +71,11 @@ Issue description
 ```
 
 **Key format rules:**
-- Epic: `## [Epic]: Title` (no type tags)
-- Issue: `## Issue: [TypeTag] Title` (type tags go AFTER "Issue:")
+- Epic: `## [Epic]: Title` (only Epics use a title prefix)
+- Issue: `## Issue: Title` (no type tags)
 - Section separator: `---`
-- Metadata: `priority:`, `area:`, `blocked_by:` on separate lines
+- Metadata: `type:`, `priority:`, `area:`, `blocked_by:` on separate lines
 - Success criteria: Plain bullets `- item` (NO checklists - those belong in PRs)
-
-**Common type tags:**
-- `[Chore]` - Maintenance, cleanup, documentation
-- `[Refactor]` - Code restructuring
-- `[Bug]` - Fix broken functionality
-- `[Feature]` - New functionality
-- `[Hardening]` - Improve robustness
-- `[Cleanup]` - Remove duplication
 
 ## Setup
 
@@ -156,7 +149,8 @@ python .aide/tools/issue-creator/issue-creator.py specs.md --update-auto
 **Spec file for auto-update:**
 
 ```markdown
-## Issue: [Chore] Updated Title
+## Issue: Updated Title
+type: chore
 issue_number: 171
 priority: high
 area: docs
@@ -174,7 +168,7 @@ The `issue_number: N` field tells the tool which issue to update.
 python .aide/tools/issue-creator/issue-creator.py specs.md --update-blockers
 ```
 
-Ensure each `blocked_by` entry uses the final issue titles (including `[Feature]`, `[Hardening]`, etc.) so the tool can locate the blocker automatically.
+Ensure each `blocked_by` entry uses the final issue titles (no type tags) so the tool can locate the blocker automatically.
 
 ### With Agent
 
@@ -197,7 +191,7 @@ Agent workflow:
 **Phase 1: Create Issues**
 - Parses spec file for Epic and Issue headings
 - Creates all issues via `gh issue create`
-- Applies labels from metadata (priority, area, type)
+- Applies labels from metadata (priority, area)
 
 **Phase 2: Link Relationships**
 - Links child issues to Epic via GraphQL `addSubIssue` mutation
@@ -205,7 +199,7 @@ Agent workflow:
 
 **Phase 3: Apply Dependencies**
 - Reads `blocked_by` metadata and invokes the `addBlockedBy` GraphQL mutation
-- Adds `status:blocked` label and a “Blocked by” section in the issue body
+- Adds a “Blocked by” section in the issue body
 - Re-run with `--update-blockers` to refresh these relationships on existing issues
 
 ## Common Errors
@@ -247,11 +241,11 @@ python .aide/tools/issue-creator/issue-creator.py specs-utf8.md
 
 ### Error: Title formatting
 
-If created issues have `[Feature]: Issue: [TypeTag]` instead of `[TypeTag]`, fix manually:
+If created issues have redundant `Issue:` prefixes, fix manually:
 
 ```bash
-gh issue edit 171 --title "[Chore] Update Documentation Policy"
-gh issue edit 172 --title "[Refactor] Formalize Job record model"
+gh issue edit 171 --title "Update Documentation Policy"
+gh issue edit 172 --title "Formalize Job record model"
 ```
 
 ## Customization

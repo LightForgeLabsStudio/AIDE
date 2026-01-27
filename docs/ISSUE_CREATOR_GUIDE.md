@@ -135,7 +135,6 @@ You can override or supplement with explicit `area:` field.
   },
   "default_priority": "medium",
   "default_status_ready": "status:ready",
-  "default_status_blocked": "status:blocked",
   "epic_label": "Epic"
 }
 ```
@@ -183,7 +182,6 @@ Issue numbers:
 - `blocked_by: Issue Title` creates GitHub blocking relationship via GraphQL:
   - Sets blocking relationship via `addBlockedBy` mutation
   - Visible in issue UI "Relationships" dropdown
-  - Adds `status:blocked` label for filtering
   - Prevents closing blocked issues in GitHub UI
 - Run `--update-blockers` to reapply those blocking relationships after you modify a spec without recreating issues.
 
@@ -192,20 +190,20 @@ Issue numbers:
 - Use `--link-blocker BLOCKED:BLOCKER` to add a blocking relationship directly without re-running the spec.
 
 ### Idempotent Reruns
-- The tool now detects existing issue titles and updates them instead of creating duplicates. Retitling an issue (e.g., `Issue: [Feature] Foo`) affects the matched title, so keep spec headings aligned with the issue names you expect.
-- `blocked_by` entries must use the final issue titles (including `[Feature]`, `[Hardening]`, etc.) so the tool can find the blocker when reapplying dependencies.
+- The tool detects existing issue titles and updates them instead of creating duplicates. Keep spec headings aligned with the issue titles you expect.
+- `blocked_by` entries must use the final issue titles (no type tags) so the tool can find the blocker when reapplying dependencies.
 
 ### Label Preflight
 - The tool now preflights all labels referenced by the spec and creates missing labels automatically before creating issues.
 
 ### Title Normalization
-- Spec headings like `Issue: [Feature] Foo` are normalized to `[Feature] Foo` for consistent issue titles.
+- Only Epic headings use `[Epic]:` prefix. Issue titles are used as written.
 
 ### Label Automation
 - **Type**: GitHub Issue Type is set from `type:` metadata
 - **Priority**: `priority:high|medium|low`
 - **Area**: `area:system-name` (auto-inferred + explicit)
-- **Status**: `status:ready` or `status:blocked`
+- **Status**: `status:ready`
 
 ## Integration with AIDE Workflow
 
@@ -259,7 +257,6 @@ For projects with different label conventions, update config:
 ```json
 {
   "default_status_ready": "ready",
-  "default_status_blocked": "blocked"
 }
 ```
 

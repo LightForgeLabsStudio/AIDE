@@ -55,18 +55,10 @@ blocked_by: Exact Issue Title
 
 **Key format rules:**
 - Epic heading: `## [Epic]: Title` (no type tags)
-- Issue heading: `## Issue: [TypeTag] Title` (type tags like [Chore], [Refactor], [Bug] go AFTER "Issue:")
+- Issue heading: `## Issue: Title` (no type tags)
 - Section separator: `---`
-- Metadata on separate lines: `priority:`, `area:`, `blocked_by:`
+- Metadata on separate lines: `type:`, `priority:`, `area:`, `blocked_by:`
 - Success criteria: Plain bullets `- item` (NO checklists `- [ ]`)
-
-**Common type tags:**
-- `[Chore]` - Maintenance, cleanup, documentation
-- `[Refactor]` - Code restructuring without behavior change
-- `[Bug]` - Fix broken functionality
-- `[Feature]` - New functionality
-- `[Hardening]` - Improve robustness, add guardrails
-- `[Cleanup]` - Remove duplication, simplify
 
 **References:**
 - See `.aide/docs/ISSUE_CREATOR_GUIDE.md` for complete format documentation
@@ -180,15 +172,15 @@ gh issue view <epic-number> --web
 
 **Common title formatting issues:**
 
-If titles have `[Feature]: Issue: [TypeTag]` instead of just `[TypeTag]`, fix them:
+If titles have redundant `Issue:` prefixes, fix them:
 
 ```bash
 # Fix redundant prefixes
-gh issue edit <number> --title "[TypeTag] Actual Title"
+gh issue edit <number> --title "Actual Title"
 
 # Example
-gh issue edit 171 --title "[Chore] Update Documentation Policy"
-gh issue edit 172 --title "[Refactor] Formalize Job record model"
+gh issue edit 171 --title "Update Documentation Policy"
+gh issue edit 172 --title "Formalize Job record model"
 ```
 
 **Verify blocking dependencies:**

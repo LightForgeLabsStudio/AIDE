@@ -69,14 +69,15 @@ Holistic codebase reviews (not PR reviews). Surface structural risks, design dri
 ```bash
 # For technical debt
 gh issue create \
-  --title "[Tech Debt]: Brief description" \
+  --title "Brief description" \
   --body "Impact, code location, proposed solution" \
   --label "priority: [level],area: [system]"
+python .aide/tools/set-issue-type.py --issue <number> --type technical-debt
 ```
 
 **Checklist:**
 - [ ] GitHub issues created for all Critical/Major findings
-- [ ] Issues tagged with appropriate labels (type, priority, area)
+- [ ] Issues tagged with appropriate labels (priority, area)
 - [ ] Issues include code locations and proposed solutions
 - [ ] Remediation tasks routed appropriately (DESIGN_SPEC_START for features, direct implementation for refactors)
 

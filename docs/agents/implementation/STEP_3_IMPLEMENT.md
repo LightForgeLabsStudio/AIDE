@@ -81,9 +81,10 @@ If you discover bugs or issues outside the current spec:
 2. Create GitHub issue to track it:
    ```bash
    gh issue create \
-     --title "[Bug]: Brief description" \
+     --title "Brief description" \
      --body "Description, reproduction steps, code location" \
      --label "priority: [level],area: [system]"
+   python .aide/tools/set-issue-type.py --issue <number> --type bug
    ```
 3. Comment in PR that issue was discovered and tracked
 4. Continue with current implementation (don't expand scope)
