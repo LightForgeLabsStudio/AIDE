@@ -27,6 +27,7 @@ Complete overhaul of the job assignment and priority system to enable more flexi
 ---
 
 ## Issue: Job Priority System
+type: feature
 priority: high
 area: job-system
 
@@ -54,6 +55,7 @@ area: job-system
 ---
 
 ## Issue: Job Cancellation
+type: feature
 priority: medium
 area: job-system
 blocked_by: Issue: Job Priority System
@@ -83,6 +85,7 @@ blocked_by: Issue: Job Priority System
 ---
 
 ## Issue: Job Queue UI Improvements
+type: feature
 priority: medium
 area: job-system, ui
 
@@ -110,6 +113,7 @@ area: job-system, ui
 ---
 
 ## Issue: Job System Performance Optimization
+type: feature
 priority: low
 area: job-system
 

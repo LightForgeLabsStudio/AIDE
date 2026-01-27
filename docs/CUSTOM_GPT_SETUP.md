@@ -77,38 +77,31 @@ C) Revise specific sections"
 
 ## Key Format Rules
 
-**Heading Format (Type Markers):**
+**Heading Format:**
 ```markdown
 ## [Epic]: Title             # Epic issues
-## [Bug]: Title              # Bug reports
-## [Chore]: Title            # Maintenance/tooling
-## [Tech Debt]: Title        # Refactoring/cleanup
-## [Documentation]: Title    # Docs work
-## [Research]: Title         # Spikes/investigations
-## Issue: Title              # Generic feature (default if no marker)
+## Issue: Title              # Non-epic issues (no type markers)
 ```
 
-**Type marker replaces "Issue:", not added after it.**
-
 Examples:
-- ✅ `## [Chore]: Update Documentation Policy`
-- ✅ `## [Bug]: Fix drone pathfinding crash`
-- ✅ `## Issue: Add health bar to units` (generic feature, no marker)
-- ❌ `## Issue: [Chore] Update Docs` (WRONG - type goes before colon)
+- ✅ `## [Epic]: Combat System Overhaul`
+- ✅ `## Issue: Add health bar to units`
 
 **Metadata Fields (on separate lines after heading):**
 ```markdown
+type: feature|bug|technical-debt|chore|documentation|research
 priority: high|medium|low
 area: system-name, another-area
-blocked_by: Exact Issue Title (must match heading exactly, including type marker)
+blocked_by: Exact Issue Title (must match heading exactly)
 ```
 
 **Example with blocker:**
 ```markdown
-## [Bug]: Fix critical crash
+## Issue: Fix critical crash
+type: bug
 priority: high
 area: drone-ai
-blocked_by: [Chore]: Add crash logging
+blocked_by: Issue: Add crash logging
 
 ### Goals
 ...

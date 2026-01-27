@@ -14,6 +14,8 @@ desktop.ini
 *.tmp
 *.bak
 *.log
+__pycache__/
+*.pyc
 
 # Project-specific tool configs (not part of AIDE framework)
 *.config.json

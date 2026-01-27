@@ -39,14 +39,7 @@ class IssueCreator:
         "area_keywords": {},
         "default_priority": "medium",
         "default_status_ready": "status:ready",
-        "default_status_blocked": "status:blocked",
         "epic_label": "Epic",
-        "enhancement_label": "enhancement",
-        "bug_label": "bug",
-        "technical_debt_label": "technical-debt",
-        "chore_label": "chore",
-        "documentation_label": "documentation",
-        "research_label": "research",
         "issue_type_mapping": {
             "epic": "Epic",
             "feature": "Feature",
@@ -120,15 +113,6 @@ class IssueCreator:
                 color = "fbca04"
             elif label.startswith("status:"):
                 color = "0e8a16"
-            elif label in (
-                self.config.get('bug_label'),
-                self.config.get('technical_debt_label'),
-                self.config.get('chore_label'),
-                self.config.get('documentation_label'),
-                self.config.get('research_label'),
-                self.config.get('enhancement_label')
-            ):
-                color = "cfd3d7"
 
             subprocess.run(
                 ['gh', 'label', 'create', label, '--description', description, '--color', color],
@@ -138,20 +122,12 @@ class IssueCreator:
     def labels_for_spec(self, spec: IssueSpec) -> List[str]:
         """Compute labels the tool will apply for a spec."""
         labels = []
-        type_label_map = {
-            "epic": self.config['epic_label'],
-            "bug": self.config['bug_label'],
-            "technical-debt": self.config['technical_debt_label'],
-            "chore": self.config['chore_label'],
-            "documentation": self.config['documentation_label'],
-            "research": self.config['research_label'],
-            "feature": self.config['enhancement_label']
-        }
-        labels.append(type_label_map.get(spec.issue_type, self.config['enhancement_label']))
+        if spec.issue_type == "epic":
+            labels.append(self.config['epic_label'])
         labels.append(f'priority:{spec.priority}')
         for area in spec.areas:
             labels.append(f'area:{area}')
-        labels.append(self.config['default_status_blocked'] if spec.blocked_by else self.config['default_status_ready'])
+        labels.append(self.config['default_status_ready'])
         return labels
 
     def ensure_labels_for_specs(self, specs: List[IssueSpec]):
@@ -259,25 +235,23 @@ class IssueCreator:
                 continue
 
             is_epic = '[Epic]' in section or 'Epic:' in section
+            if not is_epic:
+                if re.search(r'\[(Bug|Feature|Tech Debt|Technical Debt|Chore|Documentation|Docs|Research)\]', section):
+                    raise ValueError("Non-epic title markers are not allowed. Use 'type: <value>' metadata instead.")
 
-            # Detect issue type from markers
             issue_type = "feature"  # default
-            if is_epic:
-                issue_type = "epic"
-            elif '[Bug]' in section or 'Bug:' in section:
-                issue_type = "bug"
-            elif '[Tech Debt]' in section or 'Tech Debt:' in section:
-                issue_type = "technical-debt"
-            elif '[Technical Debt]' in section or 'Technical Debt:' in section:
-                issue_type = "technical-debt"
-            elif '[Chore]' in section or 'Chore:' in section:
-                issue_type = "chore"
-            elif '[Documentation]' in section or 'Documentation:' in section:
-                issue_type = "documentation"
-            elif '[Docs]' in section or 'Docs:' in section:
-                issue_type = "documentation"
-            elif '[Research]' in section or 'Research:' in section:
-                issue_type = "research"
+            type_match = re.search(r'^type:\s*(.+?)$', section, re.MULTILINE | re.IGNORECASE)
+            if type_match:
+                raw_type = type_match.group(1).strip().lower()
+                type_map = {
+                    "feature": "feature",
+                    "bug": "bug",
+                    "technical-debt": "technical-debt",
+                    "chore": "chore",
+                    "documentation": "documentation",
+                    "research": "research",
+                }
+                issue_type = type_map.get(raw_type, raw_type)
 
             title_match = re.search(
                 r'^#+\s*(?:\[(?:Epic|Bug|Tech Debt|Technical Debt|Feature|Chore|Documentation|Docs|Research)\]:?\s*)?(.+?)$',
@@ -287,6 +261,17 @@ class IssueCreator:
                 continue
 
             title = self._normalize_title(title_match.group(1).strip())
+            if is_epic:
+                issue_type = "epic"
+            elif not type_match:
+                raise ValueError(f"Missing required type for issue '{title}'. Add 'type: <value>' metadata.")
+            elif issue_type not in (
+                "feature", "bug", "technical-debt", "chore", "documentation", "research"
+            ):
+                raise ValueError(
+                    f"Invalid issue type '{issue_type}' for '{title}'. "
+                    "Allowed values: feature, bug, technical-debt, chore, documentation, research."
+                )
 
             # Extract fields
             priority_match = re.search(r'^priority:\s*(\w+)', section, re.MULTILINE | re.IGNORECASE)
@@ -332,17 +317,8 @@ class IssueCreator:
         """Create single GitHub issue, returns issue number"""
         labels = []
 
-        # Type label
-        type_label_map = {
-            "epic": self.config['epic_label'],
-            "bug": self.config['bug_label'],
-            "technical-debt": self.config['technical_debt_label'],
-            "chore": self.config['chore_label'],
-            "documentation": self.config['documentation_label'],
-            "research": self.config['research_label'],
-            "feature": self.config['enhancement_label']
-        }
-        labels.append(type_label_map.get(spec.issue_type, self.config['enhancement_label']))
+        if spec.issue_type == "epic":
+            labels.append(self.config['epic_label'])
 
         # Priority
         labels.append(f'priority:{spec.priority}')
@@ -352,10 +328,7 @@ class IssueCreator:
             labels.append(f'area:{area}')
 
         # Status
-        if spec.blocked_by:
-            labels.append(self.config['default_status_blocked'])
-        else:
-            labels.append(self.config['default_status_ready'])
+        labels.append(self.config['default_status_ready'])
 
         # Build title (only Epic gets prefix, others use labels)
         body = spec.body
@@ -534,23 +507,7 @@ class IssueCreator:
 
     def infer_type_from_labels(self, labels: List[str]) -> str:
         """Infer issue_type from labels"""
-        # Map label names to internal issue types
-        label_to_type = {
-            self.config['epic_label']: 'epic',
-            self.config['bug_label']: 'bug',
-            self.config['technical_debt_label']: 'technical-debt',
-            self.config['chore_label']: 'chore',
-            self.config['documentation_label']: 'documentation',
-            self.config['research_label']: 'research',
-            self.config['enhancement_label']: 'feature',
-        }
-
-        for label in labels:
-            if label in label_to_type:
-                return label_to_type[label]
-
-        # Default to feature if no type label found
-        return 'feature'
+        return 'epic' if self.config['epic_label'] in labels else 'feature'
 
     def sync_types(self, issue_numbers: List[int]):
         """Sync GitHub issue types based on labels for given issues"""
@@ -594,17 +551,8 @@ class IssueCreator:
         """Update existing GitHub issue"""
         labels = []
 
-        # Type label
-        type_label_map = {
-            "epic": self.config['epic_label'],
-            "bug": self.config['bug_label'],
-            "technical-debt": self.config['technical_debt_label'],
-            "chore": self.config['chore_label'],
-            "documentation": self.config['documentation_label'],
-            "research": self.config['research_label'],
-            "feature": self.config['enhancement_label']
-        }
-        labels.append(type_label_map.get(spec.issue_type, self.config['enhancement_label']))
+        if spec.issue_type == "epic":
+            labels.append(self.config['epic_label'])
 
         # Priority
         labels.append(f'priority:{spec.priority}')
@@ -614,10 +562,7 @@ class IssueCreator:
             labels.append(f'area:{area}')
 
         # Status
-        if spec.blocked_by:
-            labels.append(self.config['default_status_blocked'])
-        else:
-            labels.append(self.config['default_status_ready'])
+        labels.append(self.config['default_status_ready'])
 
         # Build title (only Epic gets prefix, others use labels)
         body = spec.body
@@ -628,8 +573,7 @@ class IssueCreator:
 
         # Get current labels and preserve custom ones
         current_labels = self.get_current_labels(issue_num)
-        managed_prefixes = ('priority:', 'area:', 'status:', 'Epic',
-                           'enhancement', 'bug', 'technical-debt')
+        managed_prefixes = ('priority:', 'area:', 'status:', 'Epic')
         custom_labels = [l for l in current_labels
                         if not any(l.startswith(p) or l == p
                                   for p in managed_prefixes)]

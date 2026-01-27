@@ -14,16 +14,17 @@ Create issues consistently with required labels so work is trackable and automat
 ### Inputs
 - Title (required)
 - Body (required; include reproduction/acceptance criteria)
-- Type: `bug` | `enhancement` | `technical-debt`
+- Type: `feature` | `bug` | `technical-debt` | `chore` | `documentation` | `research` | `epic`
 - Priority: `critical` | `high` | `medium` | `low`
 - Area: `area:<name>` (string)
 - Status: `status:needs-spec` | `status:ready` | `status:in-progress`
 - Optional repo override (`owner/repo`)
 
 ### Actions
-1) Build labels list: `<type>, priority:<x>, area:<y>, status:<z>`
+1) Build labels list: `priority:<x>, area:<y>, status:<z>` (+ `Epic` if epic)
 2) Run `gh issue create` with title/body/labels.
-3) Output the created issue URL.
+3) Set GitHub Issue Type via `.aide/tools/set-issue-type.py --issue <num> --type <type>`.
+4) Output the created issue URL.
 
 ## Notes
 - If labels are missing or differ in a repo, ask for the correct labels before creating.

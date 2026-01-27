@@ -268,16 +268,14 @@ Epic description
 ### Blocked Dependencies
 
 GitHub supports dependency tracking via:
-1. **`status: blocked` label** (for queries/filtering)
-2. **Issue body** (for visibility and context)
-3. **Task lists** (for auto-linking)
+1. **Issue body** (for visibility and context)
+2. **Task lists** (for auto-linking)
 
 #### Method 1: Label + Body (Recommended)
 
 ```bash
-# Mark issue as blocked
+# Mark issue as blocked in body
 gh issue edit 45 \
-  --add-label "status: blocked" \
   --body "$(cat <<'EOF'
 ## Description
 Implement feature X
@@ -296,11 +294,6 @@ EOF
 
 **Query blocked issues:**
 ```bash
-# Find all blocked work
-gh issue list --label "status: blocked" --state open
-
-# Blocked issues by area
-gh issue list --label "status: blocked,area: drone-ai" --state open
 ```
 
 #### Method 2: Task List Dependencies
@@ -327,9 +320,6 @@ gh issue view 42 --json state --jq '.state'  # "OPEN" or "CLOSED"
 When blocking issue closes, unblock dependent issues:
 
 ```bash
-# Remove blocked status when dependency closes
-gh issue edit 45 --remove-label "status: blocked" --add-label "status: ready"
-
 # Update issue body to remove "Blocked by" section
 gh issue edit 45 --body "$(cat <<'EOF'
 ## Description
@@ -382,12 +372,7 @@ gh api graphql -f query='
     }
   }
 }
-' --jq '
-  if .data.repository.epic90.labels.nodes | map(.name) | contains(["status: blocked"])
-  then "Epic #90 is blocked. Check body for dependencies."
-  else "Epic #90 is not blocked."
-  end
-'
+' --jq '.data.repository.epic90.body'
 ```
 
 **Query with owner/repo from current directory:**

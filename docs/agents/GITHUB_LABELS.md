@@ -4,14 +4,11 @@
 
 ## Label Categories
 
-### Type Labels
+### General Labels
 
 | Label | Color | Description | Usage |
 |-------|-------|-------------|-------|
-| `bug` | #d73a4a | Something isn't working | Production bugs, broken functionality |
-| `enhancement` | #a2eeef | New feature or request | New capabilities, improvements |
 | `documentation` | #0075ca | Improvements or additions to documentation | Docs updates, guides |
-| `technical-debt` | #fbca04 | Refactoring or code quality | Code cleanup, architecture improvements |
 | `question` | #d876e3 | Further information is requested | Clarifications, discussions |
 | `duplicate` | #cfd3d7 | This issue or pull request already exists | Duplicate of existing issue |
 | `invalid` | #e4e669 | This doesn't seem right | Invalid/incorrect issues |
@@ -52,13 +49,10 @@
 | `status: ready` | #0e8a16 | Ready for implementation | Step 0: Spec Intake |
 | `status: in-progress` | #fbca04 | Currently being worked on | Step 2-7: Implementation |
 | `status: needs-review` | #8B4513 | Awaiting code review | Step 7: PR Ready |
-| `status: blocked` | #d93f0b | Waiting on dependency | Blocked by another issue |
 
 **Status Workflow:**
 ```
 needs-spec -> ready -> in-progress -> needs-review -> (merged/closed)
-                         ↓
-                     blocked (temporary)
 ```
 
 ### Community Labels
@@ -73,7 +67,7 @@ needs-spec -> ready -> in-progress -> needs-review -> (merged/closed)
 ### On Issue Creation
 
 **Required:**
-- Type label: `bug`, `enhancement`, `technical-debt`, etc.
+- Issue Type is set via GitHub Issue Types (no type labels).
 - Area label: `area: <system>`
 - Priority label: `priority: <level>`
 - Status label: `status: needs-spec` or `status: ready`
@@ -81,9 +75,9 @@ needs-spec -> ready -> in-progress -> needs-review -> (merged/closed)
 **Example:**
 ```bash
 gh issue create \
-  --title "[Bug]: Drone crashes on empty queue" \
+  --title "Drone crashes on empty queue" \
   --body "..." \
-  --label "bug,area: drone-ai,priority: high,status: ready"
+  --label "area: drone-ai,priority: high,status: ready"
 ```
 
 ### During Implementation
@@ -97,8 +91,6 @@ gh issue edit 42 --add-label "status: in-progress" --remove-label "status: ready
 # PR ready for review (Step 6)
 gh issue edit 42 --add-label "status: needs-review" --remove-label "status: in-progress"
 
-# Issue blocked
-gh issue edit 42 --add-label "status: blocked" --remove-label "status: in-progress"
 ```
 
 ### On PR Creation
@@ -115,8 +107,8 @@ gh issue edit 42 --add-label "status: blocked" --remove-label "status: in-progre
 # Ready for implementation
 gh issue list --label "status: ready" --state open
 
-# High priority bugs
-gh issue list --label "bug,priority: high" --state open
+# High priority work
+gh issue list --label "priority: high" --state open
 
 # My area of work
 gh issue list --label "area: drone-ai" --state open
@@ -128,8 +120,6 @@ gh issue list --label "area: drone-ai" --state open
 # What's in progress?
 gh issue list --label "status: in-progress" --state open
 
-# What's blocked?
-gh issue list --label "status: blocked" --state open
 
 # What needs review?
 gh issue list --label "status: needs-review" --state open
@@ -161,8 +151,6 @@ gh api graphql -f query='
 **Potential automations:**
 - Auto-apply `area:` based on files changed
 - Auto-apply `status: needs-review` when PR marked ready
-- Auto-apply `status: blocked` when "Blocked by #X" in description
-- Remove `status: blocked` when blocking issue closes
 
 *Note: Not currently implemented, but available via GitHub Actions.*
 
@@ -189,7 +177,7 @@ gh label create "priority: urgent" \
 gh label edit "old-name" --name "new-name"
 
 # Update description/color
-gh label edit "bug" --description "Updated description" --color "ff0000"
+gh label edit "priority: high" --description "Updated description" --color "ff0000"
 ```
 
 ### Deleting Labels
@@ -200,11 +188,11 @@ gh label delete "deprecated-label"
 
 ## Best Practices
 
-1. **Every issue gets labels** - Type, Area, Priority, Status
+1. **Every issue gets labels** - Area, Priority, Status
 2. **Update status labels** as work progresses
 3. **Use `area:` for filtering** work by system
 4. **Use `priority:` for triage** and sprint planning
-5. **Use `status: blocked`** to surface dependencies
+5. **Use GitHub blocking relationships** to surface dependencies
 6. **Keep labels synchronized** between issue and PR
 7. **Query by labels** to find relevant work (see GITHUB_QUERIES.md)
 

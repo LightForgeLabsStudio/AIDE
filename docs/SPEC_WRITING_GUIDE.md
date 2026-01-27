@@ -102,6 +102,7 @@ Issues define specific, implementable work units.
 
 ```markdown
 ## Issue: Job Priority System
+type: feature
 priority: high
 area: job-system
 
@@ -131,25 +132,32 @@ area: job-system
 
 ## Issue Types
 
-The tool detects issue types from markers in the title. Type determines labels and GitHub issue type field.
+Issue type is **explicit metadata**, not inferred from title markers.
 
-### Available Types
+### Required Field
 
-| Marker | Label | GitHub Type | Title Prefix | Use Case |
-|--------|-------|-------------|--------------|----------|
-| `[Epic]:` or `Epic:` | `Epic` | Epic | `[Epic]:` | Parent grouping work |
-| `[Feature]:` | `enhancement` | Feature | None | New functionality |
-| `[Bug]:` | `bug` | Bug | None | Bug reports |
-| `[Tech Debt]:` or `[Technical Debt]:` | `technical-debt` | Technical Debt | None | Code quality, refactoring |
-| `[Chore]:` | `chore` | Chore | None | Maintenance, config, tooling |
-| `[Documentation]:` or `[Docs]:` | `documentation` | Documentation | None | Documentation work |
-| `[Research]:` | `research` | Research | None | Spikes, investigations |
+Add `type: <value>` to each Issue section (not Epics):
 
-**Default:** If no marker, treated as `Feature`.
+```markdown
+## Issue: Job Priority System
+type: feature
+priority: high
+area: job-system
+```
+
+### Allowed Values
+
+- `feature`
+- `bug`
+- `technical-debt`
+- `chore`
+- `documentation`
+- `research`
 
 ### Notes
 
-- **Only Epics get title prefixes** - Other types rely on labels and GitHub type field
+- **Only Epics use a title prefix**: `[Epic]:`
+- **No other title markers** (e.g. `[Bug]:`) are allowed
 - Type mapping configured in [issue-creator.config.json](../../issue-creator.config.json)
 - Tool sets GitHub issue type via GraphQL after creation
 
@@ -160,6 +168,15 @@ The tool detects issue types from markers in the title. Type determines labels a
 Add metadata as `key: value` lines at the start of each section (after the heading).
 
 ### Available Fields
+
+#### `type: feature|bug|technical-debt|chore|documentation|research`
+
+Required for all Issues (not Epics). Used to set labels and GitHub Issue Type.
+
+```markdown
+## Issue: Drone Pathfinding Optimization
+type: feature
+```
 
 #### `priority: high|medium|low`
 
