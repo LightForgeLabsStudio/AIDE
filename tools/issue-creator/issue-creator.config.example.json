@@ -12,6 +12,5 @@
   "default_priority": "medium",
   "default_status_ready": "status:ready",
   "default_status_blocked": "status:blocked",
-  "epic_label": "Epic",
-  "enhancement_label": "enhancement"
+  "epic_label": "Epic"
 }

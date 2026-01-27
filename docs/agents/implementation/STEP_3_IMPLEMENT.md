@@ -83,7 +83,7 @@ If you discover bugs or issues outside the current spec:
    gh issue create \
      --title "[Bug]: Brief description" \
      --body "Description, reproduction steps, code location" \
-     --label "bug,priority: [level],area: [system]"
+     --label "priority: [level],area: [system]"
    ```
 3. Comment in PR that issue was discovered and tracked
 4. Continue with current implementation (don't expand scope)

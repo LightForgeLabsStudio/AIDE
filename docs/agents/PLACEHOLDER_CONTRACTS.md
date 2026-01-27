@@ -63,7 +63,7 @@ AIDE workflows rely on GitHub labels for issue/PR state tracking. Projects **mus
 |------------|----------|---------|
 | `area:*` | `area:ui`, `area:api`, `area:docs` | Filter by system/component |
 | `priority:*` | `priority:high`, `priority:medium`, `priority:low` | Triage ordering |
-| Type | `bug`, `enhancement`, `technical-debt` | Issue classification |
+| Type | GitHub Issue Type (Feature/Bug/Technical Debt/etc.) | Issue classification |
 
 ### Label Setup
 

@@ -108,7 +108,7 @@ Add these as `key: value` lines at the start of each section:
 
 ### Epic Marker
 Use `[Epic]:` in title or `## [Epic]: Title` to create an Epic issue:
-- Gets `Epic` label instead of `enhancement`
+- Gets `Epic` label
 - Subsequent issues (until next Epic) become children
 
 ## Area Inference
@@ -136,8 +136,7 @@ You can override or supplement with explicit `area:` field.
   "default_priority": "medium",
   "default_status_ready": "status:ready",
   "default_status_blocked": "status:blocked",
-  "epic_label": "Epic",
-  "enhancement_label": "enhancement"
+  "epic_label": "Epic"
 }
 ```
 
@@ -203,7 +202,7 @@ Issue numbers:
 - Spec headings like `Issue: [Feature] Foo` are normalized to `[Feature] Foo` for consistent issue titles.
 
 ### Label Automation
-- **Type**: `Epic` or `enhancement`
+- **Type**: GitHub Issue Type is set from `type:` metadata
 - **Priority**: `priority:high|medium|low`
 - **Area**: `area:system-name` (auto-inferred + explicit)
 - **Status**: `status:ready` or `status:blocked`

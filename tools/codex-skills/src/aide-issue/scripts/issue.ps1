@@ -3,7 +3,7 @@ param(
     [string]$Title,
     [Parameter(Mandatory = $true)]
     [string]$Body,
-    [ValidateSet("bug","enhancement","technical-debt")]
+    [ValidateSet("feature","bug","technical-debt","chore","documentation","research","epic")]
     [string]$Type = "bug",
     [ValidateSet("critical","high","medium","low")]
     [string]$Priority = "medium",
@@ -15,11 +15,11 @@ param(
 )
 
 $labels = @(
-    $Type,
     "priority:$Priority",
     "area:$Area",
     "status:$Status"
 )
+if ($Type -eq "epic") { $labels += "Epic" }
 
 $args = @("issue", "create", "--title", $Title, "--body", $Body, "--label", ($labels -join ","))
 if ($Repo) { $args += @("--repo", $Repo) }
@@ -31,4 +31,6 @@ if ($LASTEXITCODE -ne 0) {
 }
 
 Write-Output $url
+$issueNumber = ($url -split "/")[-1]
+python .aide/tools/set-issue-type.py --issue $issueNumber --type $Type
 

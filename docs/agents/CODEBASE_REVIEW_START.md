@@ -71,7 +71,7 @@ Holistic codebase reviews (not PR reviews). Surface structural risks, design dri
 gh issue create \
   --title "[Tech Debt]: Brief description" \
   --body "Impact, code location, proposed solution" \
-  --label "technical-debt,priority: [level],area: [system]"
+  --label "priority: [level],area: [system]"
 ```
 
 **Checklist:**

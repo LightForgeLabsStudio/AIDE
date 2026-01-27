@@ -4,14 +4,11 @@
 
 ## Label Categories
 
-### Type Labels
+### General Labels
 
 | Label | Color | Description | Usage |
 |-------|-------|-------------|-------|
-| `bug` | #d73a4a | Something isn't working | Production bugs, broken functionality |
-| `enhancement` | #a2eeef | New feature or request | New capabilities, improvements |
 | `documentation` | #0075ca | Improvements or additions to documentation | Docs updates, guides |
-| `technical-debt` | #fbca04 | Refactoring or code quality | Code cleanup, architecture improvements |
 | `question` | #d876e3 | Further information is requested | Clarifications, discussions |
 | `duplicate` | #cfd3d7 | This issue or pull request already exists | Duplicate of existing issue |
 | `invalid` | #e4e669 | This doesn't seem right | Invalid/incorrect issues |
@@ -73,7 +70,7 @@ needs-spec -> ready -> in-progress -> needs-review -> (merged/closed)
 ### On Issue Creation
 
 **Required:**
-- Type label: `bug`, `enhancement`, `technical-debt`, etc.
+- Issue Type is set via GitHub Issue Types (no type labels).
 - Area label: `area: <system>`
 - Priority label: `priority: <level>`
 - Status label: `status: needs-spec` or `status: ready`
@@ -83,7 +80,7 @@ needs-spec -> ready -> in-progress -> needs-review -> (merged/closed)
 gh issue create \
   --title "[Bug]: Drone crashes on empty queue" \
   --body "..." \
-  --label "bug,area: drone-ai,priority: high,status: ready"
+  --label "area: drone-ai,priority: high,status: ready"
 ```
 
 ### During Implementation
@@ -115,8 +112,8 @@ gh issue edit 42 --add-label "status: blocked" --remove-label "status: in-progre
 # Ready for implementation
 gh issue list --label "status: ready" --state open
 
-# High priority bugs
-gh issue list --label "bug,priority: high" --state open
+# High priority work
+gh issue list --label "priority: high" --state open
 
 # My area of work
 gh issue list --label "area: drone-ai" --state open
@@ -189,7 +186,7 @@ gh label create "priority: urgent" \
 gh label edit "old-name" --name "new-name"
 
 # Update description/color
-gh label edit "bug" --description "Updated description" --color "ff0000"
+gh label edit "priority: high" --description "Updated description" --color "ff0000"
 ```
 
 ### Deleting Labels
@@ -200,7 +197,7 @@ gh label delete "deprecated-label"
 
 ## Best Practices
 
-1. **Every issue gets labels** - Type, Area, Priority, Status
+1. **Every issue gets labels** - Area, Priority, Status
 2. **Update status labels** as work progresses
 3. **Use `area:` for filtering** work by system
 4. **Use `priority:` for triage** and sprint planning
