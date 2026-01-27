@@ -259,25 +259,27 @@ class IssueCreator:
                 continue
 
             is_epic = '[Epic]' in section or 'Epic:' in section
+            if not is_epic:
+                if re.search(r'\[(Bug|Feature|Tech Debt|Technical Debt|Chore|Documentation|Docs|Research)\]', section):
+                    raise ValueError("Non-epic title markers are not allowed. Use 'type: <value>' metadata instead.")
 
-            # Detect issue type from markers
             issue_type = "feature"  # default
-            if is_epic:
-                issue_type = "epic"
-            elif '[Bug]' in section or 'Bug:' in section:
-                issue_type = "bug"
-            elif '[Tech Debt]' in section or 'Tech Debt:' in section:
-                issue_type = "technical-debt"
-            elif '[Technical Debt]' in section or 'Technical Debt:' in section:
-                issue_type = "technical-debt"
-            elif '[Chore]' in section or 'Chore:' in section:
-                issue_type = "chore"
-            elif '[Documentation]' in section or 'Documentation:' in section:
-                issue_type = "documentation"
-            elif '[Docs]' in section or 'Docs:' in section:
-                issue_type = "documentation"
-            elif '[Research]' in section or 'Research:' in section:
-                issue_type = "research"
+            type_match = re.search(r'^type:\s*(.+?)$', section, re.MULTILINE | re.IGNORECASE)
+            if type_match:
+                raw_type = type_match.group(1).strip().lower()
+                type_map = {
+                    "feature": "feature",
+                    "enhancement": "feature",
+                    "bug": "bug",
+                    "technical-debt": "technical-debt",
+                    "technical debt": "technical-debt",
+                    "tech debt": "technical-debt",
+                    "chore": "chore",
+                    "documentation": "documentation",
+                    "docs": "documentation",
+                    "research": "research",
+                }
+                issue_type = type_map.get(raw_type, raw_type)
 
             title_match = re.search(
                 r'^#+\s*(?:\[(?:Epic|Bug|Tech Debt|Technical Debt|Feature|Chore|Documentation|Docs|Research)\]:?\s*)?(.+?)$',
@@ -287,6 +289,14 @@ class IssueCreator:
                 continue
 
             title = self._normalize_title(title_match.group(1).strip())
+            if is_epic:
+                issue_type = "epic"
+            elif not type_match:
+                raise ValueError(f"Missing required type for issue '{title}'. Add 'type: <value>' metadata.")
+            elif issue_type not in (
+                "feature", "bug", "technical-debt", "chore", "documentation", "research"
+            ):
+                raise ValueError(f"Invalid issue type '{issue_type}' for '{title}'.")
 
             # Extract fields
             priority_match = re.search(r'^priority:\s*(\w+)', section, re.MULTILINE | re.IGNORECASE)
