@@ -33,4 +33,8 @@ if ($LASTEXITCODE -ne 0) {
 Write-Output $url
 $issueNumber = ($url -split "/")[-1]
 python .aide/tools/set-issue-type.py --issue $issueNumber --type $Type
+if ($LASTEXITCODE -ne 0) {
+    Write-Error "Failed to set GitHub Issue Type for issue #$issueNumber. See previous output for details."
+    exit 1
+}
 

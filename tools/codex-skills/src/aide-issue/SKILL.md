@@ -1,6 +1,6 @@
 ---
 name: aide-issue
-description: Create a GitHub issue following AIDE label conventions. Use when the user types /issue or asks to file an out-of-scope bug, feature, or tech debt. Creates the issue via gh with required labels (type, priority, area, status).
+description: Create a GitHub issue following AIDE label conventions. Applies priority/area/status labels and sets GitHub Issue Type (no type labels).
 ---
 
 # AIDE Issue
@@ -14,7 +14,7 @@ Create issues consistently with required labels so work is trackable and automat
 ### Inputs
 - Title (required)
 - Body (required; include reproduction/acceptance criteria)
-- Type: `feature` | `bug` | `technical-debt` | `chore` | `documentation` | `research` | `epic`
+- Issue Type (GitHub Issue Types): `feature` | `bug` | `technical-debt` | `chore` | `documentation` | `research` | `epic`
 - Priority: `critical` | `high` | `medium` | `low`
 - Area: `area:<name>` (string)
 - Status: `status:needs-spec` | `status:ready` | `status:in-progress`
@@ -23,7 +23,7 @@ Create issues consistently with required labels so work is trackable and automat
 ### Actions
 1) Build labels list: `priority:<x>, area:<y>, status:<z>` (+ `Epic` if epic)
 2) Run `gh issue create` with title/body/labels.
-3) Set GitHub Issue Type via `.aide/tools/set-issue-type.py --issue <num> --type <type>`.
+3) Set GitHub Issue Type via `.aide/tools/set-issue-type.py --issue <num> --type <type>`; fail if this step fails.
 4) Output the created issue URL.
 
 ## Notes
