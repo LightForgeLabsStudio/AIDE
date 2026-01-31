@@ -82,13 +82,16 @@ def get_issue_id(owner: str, repo: str, issue_num: int) -> str:
         capture_output=True, text=True, check=True
     )
     data = json.loads(result.stdout)
-    return data["data"]["repository"]["issue"]["id"]
+    issue = data.get("data", {}).get("repository", {}).get("issue")
+    if not issue:
+        raise SystemExit(f"Issue #{issue_num} not found in {owner}/{repo}.")
+    return issue["id"]
 
 
 def get_issue_types(owner: str) -> dict:
     query = f'''{{
       organization(login: "{owner}") {{
-        issueTypes(first: 25) {{
+        issueTypes(first: 100) {{
           nodes {{
             id
             name
@@ -101,7 +104,13 @@ def get_issue_types(owner: str) -> dict:
         capture_output=True, text=True, check=True
     )
     data = json.loads(result.stdout)
-    types = data["data"]["organization"]["issueTypes"]["nodes"]
+    org = data.get("data", {}).get("organization")
+    if not org:
+        raise SystemExit(
+            f"Unable to query Issue Types for organization '{owner}'. "
+            "Ensure the repo owner is an organization and Issue Types are enabled."
+        )
+    types = org["issueTypes"]["nodes"]
     return {t["name"]: t["id"] for t in types}
 
 

@@ -176,7 +176,7 @@ class IssueCreator:
         """Query org issue types and return name->ID mapping"""
         query = f'''{{
           organization(login: "{self.repo_info['owner']}") {{
-            issueTypes(first: 25) {{
+            issueTypes(first: 100) {{
               nodes {{
                 id
                 name
@@ -852,7 +852,12 @@ Update mode metadata:
     parser.add_argument('--update-epic', type=int, metavar='NUM', help='Update Epic NUM and all children (matches by order)')
     parser.add_argument('--update-auto', action='store_true', help='Update issues based on issue_number metadata in specs')
     parser.add_argument('--add-child', type=int, metavar='EPIC_NUM', help='Create new issue from spec and link to Epic EPIC_NUM')
-    parser.add_argument('--sync-types', type=str, metavar='NUMS', help='Sync GitHub issue types from labels for comma-separated issue numbers (e.g. 42,43,44)')
+    parser.add_argument(
+        '--sync-types',
+        type=str,
+        metavar='NUMS',
+        help='Migration helper: sync GitHub Issue Types from legacy type labels for comma-separated issue numbers (e.g. 42,43,44)',
+    )
     parser.add_argument('--update-blockers', action='store_true', help='Update blocked_by relationships for issues described in the spec')
     parser.add_argument('--link-blocker', action='append', metavar='BLOCKED:BLOCKER', help='Explicitly link two existing issues via blocking (can be repeated)')
     parser.add_argument('--link-child', action='append', metavar='PARENT:CHILD', help='Explicitly link an existing child to an Epic (can be repeated)')
