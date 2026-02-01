@@ -19,8 +19,9 @@ See [agents/IMPLEMENTATION_START.md](../agents/IMPLEMENTATION_START.md) (index) 
 3. **Implement:** Follow [agents/IMPLEMENTATION_START.md](../agents/IMPLEMENTATION_START.md) workflow
 4. **Test:** Run tests per [TESTING_POLICY.md](TESTING_POLICY.md)
 5. **Document:** Update docs per [DOCUMENTATION_POLICY.md](DOCUMENTATION_POLICY.md)
-6. **Review:** Open PR for review per [agents/PR_REVIEW_START.md](../agents/PR_REVIEW_START.md)
-7. **Merge:** Address feedback, then implementer merges when approved by reviewer
+6. **CI:** Wait for CI checks to pass before marking PR ready
+7. **Review:** Open PR for review per [agents/PR_REVIEW_START.md](../agents/PR_REVIEW_START.md)
+8. **Merge:** Address feedback, then implementer merges when approved by reviewer
 
 **Important Constraints:**
 - Do not modify existing tests without explicit approval and justification
