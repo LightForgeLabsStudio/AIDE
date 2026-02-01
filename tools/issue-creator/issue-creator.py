@@ -634,7 +634,7 @@ class IssueCreator:
         query = f'''{{
           repository(owner: "{self.repo_info['owner']}", name: "{self.repo_info['repo']}") {{
             issue(number: {epic_num}) {{
-              trackedIssues(first: 100) {{
+              subIssues(first: 100) {{
                 nodes {{
                   number
                 }}
@@ -649,8 +649,8 @@ class IssueCreator:
         )
 
         data = json.loads(result.stdout)
-        tracked_issues = data['data']['repository']['issue'].get('trackedIssues', {}).get('nodes', [])
-        return [issue['number'] for issue in tracked_issues]
+        sub_issues = data['data']['repository']['issue'].get('subIssues', {}).get('nodes', [])
+        return [issue['number'] for issue in sub_issues]
 
     def process_updates(self, specs: List[IssueSpec], update_mode: str, target_issue: Optional[int] = None):
         """Update existing issues"""
