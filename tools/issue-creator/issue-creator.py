@@ -313,8 +313,12 @@ class IssueCreator:
             issue_num_match = re.search(r'^issue_number:\s*(\d+)', section, re.MULTILINE | re.IGNORECASE)
             issue_number = int(issue_num_match.group(1)) if issue_num_match else None
 
-            # Infer areas from content
-            inferred_areas = self.infer_areas(section)
+            # Infer areas from content.
+            #
+            # If the spec provides explicit `area:` values, treat them as the
+            # source of truth and do not add inferred areas (prevents noisy
+            # labels from incidental keywords in the body).
+            inferred_areas = self.infer_areas(section) if not explicit_areas else []
             areas = list(set(explicit_areas + inferred_areas))
 
             if is_epic:
@@ -604,30 +608,61 @@ class IssueCreator:
 
         # Combine managed labels with custom labels
         all_labels = labels + custom_labels
+        # Update issue via gh CLI.
+        #
+        # NOTE: In practice, mixing `--remove-label` and `--add-label` in the
+        # same `gh issue edit` call can be flaky. We apply changes in phases and
+        # verify managed labels were applied, retrying once if needed.
+        max_attempts = 2
+        for attempt in range(1, max_attempts + 1):
+            # 1) Update title/body
+            cmd = ['gh', 'issue', 'edit', str(issue_num), '--title', title, '--body', body]
+            result = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8')
+            if result.returncode != 0:
+                print(f"Error updating issue #{issue_num}: {result.stderr}", file=sys.stderr)
+                raise subprocess.CalledProcessError(result.returncode, cmd, result.stdout, result.stderr)
 
-        # Update issue via gh CLI
-        cmd = [
-            'gh', 'issue', 'edit', str(issue_num),
-            '--title', title,
-            '--body', body,
-        ]
+            # 2) Remove existing managed labels
+            for label in current_labels:
+                if any(label.startswith(p) or label == p for p in managed_prefixes):
+                    cmd = ['gh', 'issue', 'edit', str(issue_num), '--remove-label', label]
+                    result = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8')
+                    if result.returncode != 0:
+                        print(f"Error updating issue #{issue_num}: {result.stderr}", file=sys.stderr)
+                        raise subprocess.CalledProcessError(result.returncode, cmd, result.stdout, result.stderr)
 
-        # Remove all existing managed labels, then add all labels
-        for label in current_labels:
-            if any(label.startswith(p) or label == p for p in managed_prefixes):
-                cmd.extend(['--remove-label', label])
+            # 3) Add expected labels (managed + preserved custom)
+            for label in all_labels:
+                cmd = ['gh', 'issue', 'edit', str(issue_num), '--add-label', label]
+                result = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8')
+                if result.returncode != 0:
+                    print(f"Error updating issue #{issue_num}: {result.stderr}", file=sys.stderr)
+                    raise subprocess.CalledProcessError(result.returncode, cmd, result.stdout, result.stderr)
 
-        for label in all_labels:
-            cmd.extend(['--add-label', label])
+            # Set GitHub issue type
+            self.set_issue_type(issue_num, spec.issue_type)
 
-        result = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8')
+            # Verify managed labels landed
+            updated_labels = self.get_current_labels(issue_num)
+            missing_managed = [l for l in labels if l not in updated_labels]
+            if not missing_managed:
+                break
 
-        if result.returncode != 0:
-            print(f"Error updating issue #{issue_num}: {result.stderr}", file=sys.stderr)
-            raise subprocess.CalledProcessError(result.returncode, cmd, result.stdout, result.stderr)
+            if attempt < max_attempts:
+                print(
+                    f"[WARN] Issue #{issue_num}: missing label(s) after update ({', '.join(missing_managed)}); retrying...",
+                    file=sys.stderr
+                )
+                current_labels = updated_labels
+                custom_labels = [l for l in current_labels
+                                 if not any(l.startswith(p) or l == p for p in managed_prefixes)]
+                all_labels = labels + custom_labels
+                continue
 
-        # Set GitHub issue type
-        self.set_issue_type(issue_num, spec.issue_type)
+            print(
+                f"[WARN] Issue #{issue_num}: missing label(s) after update ({', '.join(missing_managed)}).",
+                file=sys.stderr
+            )
 
     def get_epic_children(self, epic_num: int) -> List[int]:
         """Get child issue numbers for an Epic"""
