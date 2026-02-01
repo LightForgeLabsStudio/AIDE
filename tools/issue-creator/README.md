@@ -29,7 +29,6 @@ Batch create GitHub issues with Epic/child relationships from formatted spec fil
 - ✅ Reports blocking dependencies
 - ✅ Idempotent reruns (updates existing issues, and `--update-blockers` reapplies dependencies)
 - ✅ Preflights and creates missing labels needed by specs
-- ✅ Normalizes redundant “Issue:” title prefixes
 - ✅ UTF-8 support (handles curly quotes from ChatGPT)
 - ✅ Windows + Mac + Linux compatible
 
@@ -56,8 +55,7 @@ Epic description
 
 ---
 
-## Issue: Issue Title
-type: feature|bug|technical-debt|chore|documentation|research
+## [Feature]: Issue Title
 priority: high|medium|low
 area: system-name
 
@@ -72,9 +70,9 @@ Issue description
 
 **Key format rules:**
 - Epic: `## [Epic]: Title` (only Epics use a title prefix)
-- Issue: `## Issue: Title` (no type tags)
-- Section separator: `---`
-- Metadata: `type:`, `priority:`, `area:`, `blocked_by:` on separate lines
+- Issue: `## [Feature]: Title` / `## [Bug]: Title` / `## [Tech Debt]: Title` / `## [Documentation]: Title` / etc.
+- Section separator: `---` (reserved for spec boundaries only; do not use `---` inside an Epic/Issue section)
+- Metadata: `priority:`, `area:`, `blocked_by:` on separate lines (`type:` is optional override)
 - Success criteria: Plain bullets `- item` (NO checklists - those belong in PRs)
 
 ## Setup
@@ -149,8 +147,7 @@ python .aide/tools/issue-creator/issue-creator.py specs.md --update-auto
 **Spec file for auto-update:**
 
 ```markdown
-## Issue: Updated Title
-type: chore
+## [Chore]: Updated Title
 issue_number: 171
 priority: high
 area: docs
@@ -241,7 +238,7 @@ python .aide/tools/issue-creator/issue-creator.py specs-utf8.md
 
 ### Error: Title formatting
 
-If created issues have redundant `Issue:` prefixes, fix manually:
+If created issues have incorrect titles, fix manually:
 
 ```bash
 gh issue edit 171 --title "Update Documentation Policy"

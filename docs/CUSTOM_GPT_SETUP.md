@@ -80,15 +80,19 @@ C) Revise specific sections"
 **Heading Format:**
 ```markdown
 ## [Epic]: Title             # Epic issues
-## Issue: Title              # Non-epic issues (no type markers)
+## [Feature]: Title          # Non-epic issues
+## [Bug]: Title
+## [Tech Debt]: Title
+## [Documentation]: Title
 ```
 
 Examples:
 - ✅ `## [Epic]: Combat System Overhaul`
-- ✅ `## Issue: Add health bar to units`
+- ✅ `## [Feature]: Add health bar to units`
 
 **Metadata Fields (on separate lines after heading):**
 ```markdown
+# Optional override (prefer the heading type):
 type: feature|bug|technical-debt|chore|documentation|research
 priority: high|medium|low
 area: system-name, another-area
@@ -97,17 +101,16 @@ blocked_by: Exact Issue Title (must match heading exactly)
 
 **Example with blocker:**
 ```markdown
-## Issue: Fix critical crash
-type: bug
+## [Bug]: Fix critical crash
 priority: high
 area: drone-ai
-blocked_by: Issue: Add crash logging
+blocked_by: Add crash logging
 
 ### Goals
 ...
 ```
 
-**Sections separated by:** `---`
+**Sections separated by:** `---` (reserved for separating specs only; do not use `---` inside a single spec section)
 
 **CRITICAL - No Checklists:**
 - ❌ NEVER `- [ ]` checkbox format
@@ -121,7 +124,7 @@ blocked_by: Issue: Add crash logging
 "What areas?" -> Check project's `issue-creator.config.json`
 "Blocking deps?" -> Use `blocked_by: Exact Issue Title`
 "Multiple Epics?" -> Yes, each `[Epic]:` starts new scope
-"Type tags?" -> Yes, in title after "Issue:" marker: `## Issue: [TypeTag] Title`
+"Type tags?" -> Yes, in the heading: `## [Feature]: Title` (avoid legacy Issue headings)
 ```
 
 ### Conversation Starters

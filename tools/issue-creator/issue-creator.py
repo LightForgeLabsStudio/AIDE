@@ -59,13 +59,8 @@ class IssueCreator:
 
     @staticmethod
     def _normalize_title(title: str) -> str:
-        """Normalize headings like 'Issue: [Feature] Foo' to '[Feature] Foo'."""
+        """Normalize issue titles (trim only)."""
         value = title.strip()
-        if value.lower().startswith("issue:"):
-            value = value[6:].lstrip()
-        if value.startswith("[") and "]:" in value:
-            tag, rest = value.split("]:", 1)
-            value = f"{tag}]{rest}".strip()
         return value
 
     def _format_title(self, title: str, issue_type: str) -> str:
@@ -227,17 +222,17 @@ class IssueCreator:
     def parse_spec_file(self, content: str) -> List[IssueSpec]:
         """Parse spec file into IssueSpec objects"""
         specs = []
-        sections = re.split(r'\n(?:---+|##\s+Issue:)\s*\n', content)
+        # Specs are separated by a single line containing exactly `---`.
+        #
+        # IMPORTANT: `---` is reserved for spec boundaries and should not be used
+        # inside a single spec section. If you need visual separation within a
+        # spec, use headings (`### ...`) or another marker (e.g. `***`).
+        sections = re.split(r'(?m)^\s*---\s*$', content)
         current_epic = None
 
         for section in sections:
             if not section.strip():
                 continue
-
-            is_epic = '[Epic]' in section or 'Epic:' in section
-            if not is_epic:
-                if re.search(r'\[(Bug|Feature|Tech Debt|Technical Debt|Chore|Documentation|Docs|Research)\]', section):
-                    raise ValueError("Non-epic title markers are not allowed. Use 'type: <value>' metadata instead.")
 
             issue_type = "feature"  # default
             type_match = re.search(r'^type:\s*(.+?)$', section, re.MULTILINE | re.IGNORECASE)
@@ -254,17 +249,46 @@ class IssueCreator:
                 issue_type = type_map.get(raw_type, raw_type)
 
             title_match = re.search(
-                r'^#+\s*(?:\[(?:Epic|Bug|Tech Debt|Technical Debt|Feature|Chore|Documentation|Docs|Research)\]:?\s*)?(.+?)$',
+                r'^##\s*(?:\[(?P<tag>Epic|Bug|Tech Debt|Technical Debt|Feature|Chore|Documentation|Docs|Research)\]\s*:?\s*)?(?P<title>.+?)\s*$',
                 section, re.MULTILINE
             )
             if not title_match:
-                continue
+                raise ValueError(
+                    "Spec section is missing a level-2 heading like '## [Feature]: Title'. "
+                    "Remember: '---' can only appear between specs."
+                )
 
-            title = self._normalize_title(title_match.group(1).strip())
+            raw_title = title_match.group('title').strip()
+            title = self._normalize_title(raw_title)
+
+            raw_tag = (title_match.group('tag') or '').strip()
+            tag_map = {
+                "Epic": "epic",
+                "Feature": "feature",
+                "Bug": "bug",
+                "Tech Debt": "technical-debt",
+                "Technical Debt": "technical-debt",
+                "Chore": "chore",
+                "Documentation": "documentation",
+                "Docs": "documentation",
+                "Research": "research",
+            }
+
+            is_epic = raw_tag == "Epic"
             if is_epic:
                 issue_type = "epic"
+            elif raw_title.lower().startswith("issue:"):
+                raise ValueError(
+                    f"Legacy heading '## Issue: ...' is not supported for '{title}'. "
+                    "Use a typed heading like '## [Feature]: Title' instead."
+                )
+            elif raw_tag:
+                issue_type = tag_map.get(raw_tag, issue_type)
             elif not type_match:
-                raise ValueError(f"Missing required type for issue '{title}'. Add 'type: <value>' metadata.")
+                raise ValueError(
+                    f"Missing required issue type for '{title}'. "
+                    "Add a heading tag like '## [Feature]:' or metadata 'type: <value>'."
+                )
             elif issue_type not in (
                 "feature", "bug", "technical-debt", "chore", "documentation", "research"
             ):
@@ -289,8 +313,12 @@ class IssueCreator:
             issue_num_match = re.search(r'^issue_number:\s*(\d+)', section, re.MULTILINE | re.IGNORECASE)
             issue_number = int(issue_num_match.group(1)) if issue_num_match else None
 
-            # Infer areas from content
-            inferred_areas = self.infer_areas(section)
+            # Infer areas from content.
+            #
+            # If the spec provides explicit `area:` values, treat them as the
+            # source of truth and do not add inferred areas (prevents noisy
+            # labels from incidental keywords in the body).
+            inferred_areas = self.infer_areas(section) if not explicit_areas else []
             areas = list(set(explicit_areas + inferred_areas))
 
             if is_epic:
@@ -580,37 +608,68 @@ class IssueCreator:
 
         # Combine managed labels with custom labels
         all_labels = labels + custom_labels
+        # Update issue via gh CLI.
+        #
+        # NOTE: In practice, mixing `--remove-label` and `--add-label` in the
+        # same `gh issue edit` call can be flaky. We apply changes in phases and
+        # verify managed labels were applied, retrying once if needed.
+        max_attempts = 2
+        for attempt in range(1, max_attempts + 1):
+            # 1) Update title/body
+            cmd = ['gh', 'issue', 'edit', str(issue_num), '--title', title, '--body', body]
+            result = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8')
+            if result.returncode != 0:
+                print(f"Error updating issue #{issue_num}: {result.stderr}", file=sys.stderr)
+                raise subprocess.CalledProcessError(result.returncode, cmd, result.stdout, result.stderr)
 
-        # Update issue via gh CLI
-        cmd = [
-            'gh', 'issue', 'edit', str(issue_num),
-            '--title', title,
-            '--body', body,
-        ]
+            # 2) Remove existing managed labels
+            for label in current_labels:
+                if any(label.startswith(p) or label == p for p in managed_prefixes):
+                    cmd = ['gh', 'issue', 'edit', str(issue_num), '--remove-label', label]
+                    result = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8')
+                    if result.returncode != 0:
+                        print(f"Error updating issue #{issue_num}: {result.stderr}", file=sys.stderr)
+                        raise subprocess.CalledProcessError(result.returncode, cmd, result.stdout, result.stderr)
 
-        # Remove all existing managed labels, then add all labels
-        for label in current_labels:
-            if any(label.startswith(p) or label == p for p in managed_prefixes):
-                cmd.extend(['--remove-label', label])
+            # 3) Add expected labels (managed + preserved custom)
+            for label in all_labels:
+                cmd = ['gh', 'issue', 'edit', str(issue_num), '--add-label', label]
+                result = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8')
+                if result.returncode != 0:
+                    print(f"Error updating issue #{issue_num}: {result.stderr}", file=sys.stderr)
+                    raise subprocess.CalledProcessError(result.returncode, cmd, result.stdout, result.stderr)
 
-        for label in all_labels:
-            cmd.extend(['--add-label', label])
+            # Set GitHub issue type
+            self.set_issue_type(issue_num, spec.issue_type)
 
-        result = subprocess.run(cmd, capture_output=True, text=True, encoding='utf-8')
+            # Verify managed labels landed
+            updated_labels = self.get_current_labels(issue_num)
+            missing_managed = [l for l in labels if l not in updated_labels]
+            if not missing_managed:
+                break
 
-        if result.returncode != 0:
-            print(f"Error updating issue #{issue_num}: {result.stderr}", file=sys.stderr)
-            raise subprocess.CalledProcessError(result.returncode, cmd, result.stdout, result.stderr)
+            if attempt < max_attempts:
+                print(
+                    f"[WARN] Issue #{issue_num}: missing label(s) after update ({', '.join(missing_managed)}); retrying...",
+                    file=sys.stderr
+                )
+                current_labels = updated_labels
+                custom_labels = [l for l in current_labels
+                                 if not any(l.startswith(p) or l == p for p in managed_prefixes)]
+                all_labels = labels + custom_labels
+                continue
 
-        # Set GitHub issue type
-        self.set_issue_type(issue_num, spec.issue_type)
+            print(
+                f"[WARN] Issue #{issue_num}: missing label(s) after update ({', '.join(missing_managed)}).",
+                file=sys.stderr
+            )
 
     def get_epic_children(self, epic_num: int) -> List[int]:
         """Get child issue numbers for an Epic"""
         query = f'''{{
           repository(owner: "{self.repo_info['owner']}", name: "{self.repo_info['repo']}") {{
             issue(number: {epic_num}) {{
-              trackedIssues(first: 100) {{
+              subIssues(first: 100) {{
                 nodes {{
                   number
                 }}
@@ -625,8 +684,8 @@ class IssueCreator:
         )
 
         data = json.loads(result.stdout)
-        tracked_issues = data['data']['repository']['issue'].get('trackedIssues', {}).get('nodes', [])
-        return [issue['number'] for issue in tracked_issues]
+        sub_issues = data['data']['repository']['issue'].get('subIssues', {}).get('nodes', [])
+        return [issue['number'] for issue in sub_issues]
 
     def process_updates(self, specs: List[IssueSpec], update_mode: str, target_issue: Optional[int] = None):
         """Update existing issues"""

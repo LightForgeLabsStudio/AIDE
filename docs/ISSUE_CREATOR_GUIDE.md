@@ -32,7 +32,16 @@ If you need to rerun the tool, it now detects existing issue titles and updates 
 
 ## Spec File Format
 
-Issues are separated by `---` or `## Issue:` markers.
+Specs are separated by `---` lines.
+
+**IMPORTANT:** `---` is reserved for spec boundaries. Do not use `---` inside an Epic or Issue section. Use `###` headings (or another marker like `***`) for intra-section structure.
+
+Each spec starts with a heading that declares the type:
+- `## [Epic]: <title>`
+- `## [Feature]: <title>`
+- `## [Bug]: <title>`
+- `## [Tech Debt]: <title>`
+- `## [Documentation]: <title>`
 
 **IMPORTANT: No Checklists in Issues**
 
@@ -61,7 +70,7 @@ Complete overhaul of job assignment and priority system.
 
 ---
 
-## Issue: Job Priority System
+## [Feature]: Job Priority System
 priority: high
 area: job-system
 
@@ -79,10 +88,10 @@ area: job-system
 
 ---
 
-## Issue: Job Cancellation
+## [Feature]: Job Cancellation
 priority: medium
 area: job-system
-blocked_by: Issue: Job Priority System
+blocked_by: Job Priority System
 
 ### Goals
 - Cancel jobs in progress
@@ -96,15 +105,15 @@ blocked_by: Issue: Job Priority System
 ## Spec Fields
 
 ### Required
-- **Title**: First heading in section (`## Issue: Title` or `# Title`)
+- **Title + Type**: First heading in section (e.g. `## [Feature]: Title`)
 
 ### Optional Metadata
 Add these as `key: value` lines at the start of each section:
 
 - `priority: high|medium|low` (default: `medium`)
 - `area: system-name` (comma-separated for multiple areas)
-- `blocked_by: Issue Title` (must match exact heading text, including `Issue:` prefix if present)
-- `blocks: Issue Title` (must match exact heading text, including `Issue:` prefix if present)
+- `blocked_by: Issue Title` (must match exact GitHub issue title)
+- `blocks: Issue Title` (must match exact GitHub issue title)
 
 ### Epic Marker
 Use `[Epic]:` in title or `## [Epic]: Title` to create an Epic issue:
@@ -200,7 +209,7 @@ Issue numbers:
 - Only Epic headings use `[Epic]:` prefix. Issue titles are used as written.
 
 ### Label Automation
-- **Type**: GitHub Issue Type is set from `type:` metadata
+- **Type**: GitHub Issue Type is set from the heading tag (or `type:` metadata if present)
 - **Priority**: `priority:high|medium|low`
 - **Area**: `area:system-name` (auto-inferred + explicit)
 - **Status**: `status:ready`
@@ -228,7 +237,7 @@ PR review agent reads spec from issue #141 (not PR description).
 ## Troubleshooting
 
 ### "No issues found"
-- Check that sections are separated by `---` or `## Issue:` markers
+- Check that sections are separated by `---` lines followed by `## ...` headings
 - Ensure each section has a heading with title
 
 ### "No area inference"
@@ -267,7 +276,7 @@ Each `[Epic]:` starts a new epic scope. Issues belong to the most recent epic:
 ## [Epic]: Backend Refactor
 ...
 
-## Issue: API v2
+## [Feature]: API v2
 (child of Backend Refactor)
 
 ---
@@ -275,7 +284,7 @@ Each `[Epic]:` starts a new epic scope. Issues belong to the most recent epic:
 ## [Epic]: UI Redesign
 ...
 
-## Issue: New Theme System
+## [Feature]: New Theme System
 (child of UI Redesign)
 ```
 
