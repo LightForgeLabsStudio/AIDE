@@ -43,8 +43,6 @@ Each spec starts with a heading that declares the type:
 - `## [Tech Debt]: <title>`
 - `## [Documentation]: <title>`
 
-Legacy: headings like `## Issue: <title>` are still supported (defaults to Feature), but the preferred format is the typed heading tags above.
-
 **IMPORTANT: No Checklists in Issues**
 
 - ❌ Do NOT use `- [ ]` checkbox format in Issues
@@ -278,7 +276,7 @@ Each `[Epic]:` starts a new epic scope. Issues belong to the most recent epic:
 ## [Epic]: Backend Refactor
 ...
 
-## Issue: API v2
+## [Feature]: API v2
 (child of Backend Refactor)
 
 ---
@@ -286,7 +284,7 @@ Each `[Epic]:` starts a new epic scope. Issues belong to the most recent epic:
 ## [Epic]: UI Redesign
 ...
 
-## Issue: New Theme System
+## [Feature]: New Theme System
 (child of UI Redesign)
 ```
 

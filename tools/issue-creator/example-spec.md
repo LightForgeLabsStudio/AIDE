@@ -1,11 +1,3 @@
-# Example Issue Spec
-
-This example demonstrates creating an Epic with child issues, including blocking dependencies and area inference.
-
-> **For complete format documentation, see [SPEC_WRITING_GUIDE.md](../../docs/SPEC_WRITING_GUIDE.md)**
-
----
-
 ## [Epic]: Job System Overhaul
 
 Complete overhaul of the job assignment and priority system to enable more flexible drone behavior and better player control.
@@ -26,8 +18,7 @@ Complete overhaul of the job assignment and priority system to enable more flexi
 
 ---
 
-## Issue: Job Priority System
-type: feature
+## [Feature]: Job Priority System
 priority: high
 area: job-system
 
@@ -54,11 +45,10 @@ area: job-system
 
 ---
 
-## Issue: Job Cancellation
-type: feature
+## [Feature]: Job Cancellation
 priority: medium
 area: job-system
-blocked_by: Issue: Job Priority System
+blocked_by: Job Priority System
 
 ### Goals
 - Cancel jobs that are in progress
@@ -84,8 +74,7 @@ blocked_by: Issue: Job Priority System
 
 ---
 
-## Issue: Job Queue UI Improvements
-type: feature
+## [Feature]: Job Queue UI Improvements
 priority: medium
 area: job-system, ui
 
@@ -112,8 +101,7 @@ area: job-system, ui
 
 ---
 
-## Issue: Job System Performance Optimization
-type: feature
+## [Tech Debt]: Job System Performance Optimization
 priority: low
 area: job-system
 

@@ -59,13 +59,8 @@ class IssueCreator:
 
     @staticmethod
     def _normalize_title(title: str) -> str:
-        """Normalize headings like 'Issue: Foo' to 'Foo'."""
+        """Normalize issue titles (trim only)."""
         value = title.strip()
-        if value.lower().startswith("issue:"):
-            value = value[6:].lstrip()
-        if value.startswith("[") and "]:" in value:
-            tag, rest = value.split("]:", 1)
-            value = f"{tag}]{rest}".strip()
         return value
 
     def _format_title(self, title: str, issue_type: str) -> str:
@@ -227,12 +222,12 @@ class IssueCreator:
     def parse_spec_file(self, content: str) -> List[IssueSpec]:
         """Parse spec file into IssueSpec objects"""
         specs = []
-        # Specs are separated by horizontal-rule lines (`---`).
+        # Specs are separated by a single line containing exactly `---`.
         #
         # IMPORTANT: `---` is reserved for spec boundaries and should not be used
         # inside a single spec section. If you need visual separation within a
         # spec, use headings (`### ...`) or another marker (e.g. `***`).
-        sections = re.split(r'\n---+\s*\n', content)
+        sections = re.split(r'(?m)^\s*---\s*$', content)
         current_epic = None
 
         for section in sections:
@@ -282,11 +277,13 @@ class IssueCreator:
             is_epic = raw_tag == "Epic"
             if is_epic:
                 issue_type = "epic"
+            elif raw_title.lower().startswith("issue:"):
+                raise ValueError(
+                    f"Legacy heading '## Issue: ...' is not supported for '{title}'. "
+                    "Use a typed heading like '## [Feature]: Title' instead."
+                )
             elif raw_tag:
                 issue_type = tag_map.get(raw_tag, issue_type)
-            elif raw_title.lower().startswith("issue:"):
-                # Backwards-compatible "## Issue: ..." headings default to Feature unless overridden by `type:`.
-                issue_type = issue_type or "feature"
             elif not type_match:
                 raise ValueError(
                     f"Missing required issue type for '{title}'. "

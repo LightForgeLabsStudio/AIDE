@@ -30,7 +30,7 @@ Epic description
 
 ---
 
-## Issue: [TypeTag] Issue Title
+## [Feature]: Issue Title
 priority: high|medium|low
 area: system-name
 
@@ -46,7 +46,7 @@ What this issue includes
 
 ---
 
-## Issue: [TypeTag] Another Issue
+## [Bug]: Another Issue
 priority: medium
 area: system-name
 blocked_by: Exact Issue Title
@@ -55,9 +55,9 @@ blocked_by: Exact Issue Title
 
 **Key format rules:**
 - Epic heading: `## [Epic]: Title` (no type tags)
-- Issue heading: `## Issue: Title` (no type tags)
+- Non-epic heading: `## [Feature]: Title`, `## [Bug]: Title`, `## [Tech Debt]: Title`, `## [Documentation]: Title`
 - Section separator: `---`
-- Metadata on separate lines: `type:`, `priority:`, `area:`, `blocked_by:`
+- Metadata on separate lines: `priority:`, `area:`, `blocked_by:` (optional `type:` override supported, but prefer the heading type)
 - Success criteria: Plain bullets `- item` (NO checklists `- [ ]`)
 
 **References:**
@@ -277,7 +277,7 @@ User provides spec file from Custom GPT:
 6. Report results
 
 ### Workflow 2: Standalone Issues (No Epic)
-Spec file has only `## Issue:` headings (no `## [Epic]:`):
+Spec file has only non-epic headings (no `## [Epic]:`), e.g. `## [Feature]: ...` / `## [Bug]: ...`:
 1. Read spec file
 2. Pre-flight check
 3. Run tool
@@ -285,7 +285,7 @@ Spec file has only `## Issue:` headings (no `## [Epic]:`):
 5. Report results
 
 ### Workflow 3: Children for Existing Epic
-Spec file has `## Issue:` headings referencing existing Epic:
+Spec file has non-epic headings (e.g. `## [Feature]: ...`) and you want to attach them to an existing Epic:
 1. Read spec file
 2. Check Epic exists: `gh issue view <epic-number>`
 3. Run tool with Epic number: `python .aide/tools/issue-creator/issue-creator.py <spec-file> --epic <epic-number>`
