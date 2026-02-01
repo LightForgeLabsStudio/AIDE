@@ -37,6 +37,10 @@ When converting designs to specs, preserve all sections and narrative unless exp
 
 The [example-spec.md](../tools/issue-creator/example-spec.md) file shows canonical patterns. When in doubt, match its structure.
 
+### 5. `---` Separates Specs
+
+Use `---` only between specs (Epic -> Issue -> Issue...). Do not use `---` inside an Epic or Issue section; use headings (`### ...`) for intra-section structure.
+
 ---
 
 ## Epic Structure
@@ -101,8 +105,7 @@ Issues define specific, implementable work units.
 ### Example
 
 ```markdown
-## Issue: Job Priority System
-type: feature
+## [Feature]: Job Priority System
 priority: high
 area: job-system
 
@@ -132,34 +135,23 @@ area: job-system
 
 ## Issue Types
 
-Issue type is **explicit metadata**, not inferred from title markers.
+Issue type is declared in the **heading tag**.
 
 ### Required Field
 
-Add `type: <value>` to each Issue section (not Epics):
+Use a typed heading for each Issue section (not Epics):
 
 ```markdown
-## Issue: Job Priority System
-type: feature
+## [Feature]: Job Priority System
 priority: high
 area: job-system
 ```
 
-### Allowed Values
-
-- `feature`
-- `bug`
-- `technical-debt`
-- `chore`
-- `documentation`
-- `research`
-
 ### Notes
 
-- **Only Epics use a title prefix**: `[Epic]:`
-- **No other title markers** (e.g. `[Bug]:`) are allowed
-- Type mapping configured in [issue-creator.config.json](../../issue-creator.config.json)
-- Tool sets GitHub issue type via GraphQL after creation
+- Use one of: `[Feature]`, `[Bug]`, `[Tech Debt]`, `[Chore]`, `[Documentation]`, `[Research]`, `[Epic]`.
+- The tool maps these tags to GitHub Issue Types.
+- `type: <value>` metadata is supported as an override, but the preferred format is the typed heading.
 
 ---
 
@@ -171,10 +163,10 @@ Add metadata as `key: value` lines at the start of each section (after the headi
 
 #### `type: feature|bug|technical-debt|chore|documentation|research`
 
-Required for all Issues (not Epics). Used to set labels and GitHub Issue Type.
+Optional override for Issue type. Prefer using the typed heading tag.
 
 ```markdown
-## Issue: Drone Pathfinding Optimization
+## [Feature]: Drone Pathfinding Optimization
 type: feature
 ```
 
@@ -185,7 +177,7 @@ Maps to `priority:high`, `priority:medium`, `priority:low` labels.
 **Default:** `medium`
 
 ```markdown
-## Issue: Critical Bug Fix
+## [Bug]: Critical Bug Fix
 priority: high
 ```
 
@@ -196,7 +188,7 @@ Maps to `area:system-name` labels. Comma-separated for multiple areas.
 The tool also auto-infers areas from content keywords (configured in `issue-creator.config.json`).
 
 ```markdown
-## Issue: Drone Pathfinding Optimization
+## [Tech Debt]: Drone Pathfinding Optimization
 area: drone-ai, performance
 ```
 
@@ -204,11 +196,11 @@ area: drone-ai, performance
 
 Creates GitHub blocking relationship via `addBlockedBy` GraphQL mutation.
 
-**Must match exact heading text, including `Issue:` prefix if present.**
+**Must match exact GitHub issue title.**
 
 ```markdown
-## Issue: Job Cancellation
-blocked_by: Issue: Job Priority System
+## [Feature]: Job Cancellation
+blocked_by: Job Priority System
 ```
 
 This creates a blocking relationship visible in GitHub's "Relationships" dropdown and prevents closing the blocked issue until the blocker is resolved.
@@ -246,16 +238,16 @@ Examples of explicit ordering:
 Use comma-separated values:
 
 ```markdown
-blocked_by: Issue: Foundation Task, Issue: Another Prerequisite
+blocked_by: Foundation Task, Another Prerequisite
 ```
 
 ### Reference Format
 
 The `blocked_by` value must match the **exact title** from the heading:
 
-- Heading: `## Issue: Foundation Task` -> Reference: `blocked_by: Issue: Foundation Task`
-- Heading: `## Foundation Task` -> Reference: `blocked_by: Foundation Task`
-- Heading: `## [Epic]: My Epic` -> Reference: `blocked_by: [Epic]: My Epic`
+- Heading: `## [Feature]: Foundation Task` -> Reference: `blocked_by: Foundation Task`
+- Heading: `## [Tech Debt]: Foundation Task` -> Reference: `blocked_by: Foundation Task`
+- Epic heading: `## [Epic]: My Epic` -> Reference: `blocked_by: [Epic]: My Epic`
 
 ### Limitation
 
@@ -342,7 +334,7 @@ Use these checks before submitting a spec to the `issue-creator` tool.
 ### Minimal Issue
 
 ```markdown
-## Issue: Add Health Bar to Unit
+## [Feature]: Add Health Bar to Unit
 priority: medium
 area: ui
 
@@ -361,10 +353,10 @@ area: ui
 ### Issue with Blocker
 
 ```markdown
-## Issue: Wire Health Bar to Combat System
+## [Feature]: Wire Health Bar to Combat System
 priority: medium
 area: ui, combat
-blocked_by: Issue: Add Health Bar to Unit
+blocked_by: Add Health Bar to Unit
 
 ### Goals
 - Health bar updates during combat
