@@ -3,6 +3,8 @@ name: PR body formatting check
 on:
   pull_request:
     types: [opened, edited, synchronize, reopened]
+  issue_comment:
+    types: [created, edited]
 
 jobs:
   validate:
