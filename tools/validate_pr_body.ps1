@@ -41,14 +41,15 @@ $errors = @()
 $lines = $Body -split "`n"
 $inCodeBlock = $false
 
-$pathPatterns = @(
-    "tools/",
-    "\.github/",
-    "\.aide/",
-    "docs/",
-    "scripts/",
-    "[A-Za-z]:\\\\"
+$filePathRegexes = @(
+    # Repo-relative file paths (require a file extension to reduce false positives like "docs/")
+    [regex]::new('(?:^|\s)(?<path>(?:tools|docs|scripts|\.aide|\.github)/[^\s`\)]+?\.[A-Za-z0-9]{1,8}(?:#[^\s`\)]*)?)'),
+
+    # Windows absolute paths
+    [regex]::new('(?:^|\s)(?<path>[A-Za-z]:\\[^\s`]+)')
 )
+
+$backslashPathRegex = [regex]::new('(?:^|\s)(?<path>\\[A-Za-z0-9._-]+(?:\\[^\s`]+)*)')
 
 for ($i = 0; $i -lt $lines.Count; $i++) {
     $line = $lines[$i]
@@ -66,19 +67,30 @@ for ($i = 0; $i -lt $lines.Count; $i++) {
         continue
     }
 
-    foreach ($pattern in $pathPatterns) {
-        $matches = [regex]::Matches($line, $pattern)
+    foreach ($re in $filePathRegexes) {
+        $matches = $re.Matches($line)
         foreach ($m in $matches) {
-            if (-not (Is-InlineCode -Line $line -Index $m.Index)) {
-                $errors += "Line $($i+1): path/command appears outside backticks -> '$($m.Value)'"
+            $path = $m.Groups['path'].Value.Trim()
+            if (-not $path) {
+                continue
+            }
+            $pathIndex = $m.Groups['path'].Index
+            if (-not (Is-InlineCode -Line $line -Index $pathIndex)) {
+                $errors += "Line $($i+1): file path appears outside backticks -> '$path'"
             }
         }
     }
 
-    # Disallow escaped leading backslash paths like \tools
-    if ($line -match "(^|\\s)\\\\[A-Za-z0-9._-]+") {
-        if (-not (Is-InlineCode -Line $line -Index $Matches[0].Index)) {
-            $errors += "Line $($i+1): detected backslash path outside backticks -> '$($Matches[0].Trim())'"
+    # Disallow escaped leading backslash paths like \tools (require backticks)
+    $matches = $backslashPathRegex.Matches($line)
+    foreach ($m in $matches) {
+        $path = $m.Groups['path'].Value.Trim()
+        if (-not $path) {
+            continue
+        }
+        $pathIndex = $m.Groups['path'].Index
+        if (-not (Is-InlineCode -Line $line -Index $pathIndex)) {
+            $errors += "Line $($i+1): backslash path appears outside backticks -> '$path'"
         }
     }
 }
@@ -87,7 +99,7 @@ if ($errors.Count -gt 0) {
     Write-Output "PR body formatting check failed:"
     $errors | ForEach-Object { Write-Output "- $_" }
     Write-Output ""
-    Write-Output "Guidance: wrap file paths/commands in backticks and avoid stray backslash paths."
+    Write-Output "Guidance: wrap file paths in backticks and avoid stray backslash paths."
     exit 1
 }
 
