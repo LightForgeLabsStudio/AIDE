@@ -59,7 +59,7 @@ class IssueCreator:
 
     @staticmethod
     def _normalize_title(title: str) -> str:
-        """Normalize headings like 'Issue: [Feature] Foo' to '[Feature] Foo'."""
+        """Normalize headings like 'Issue: Foo' to 'Foo'."""
         value = title.strip()
         if value.lower().startswith("issue:"):
             value = value[6:].lstrip()
@@ -227,17 +227,19 @@ class IssueCreator:
     def parse_spec_file(self, content: str) -> List[IssueSpec]:
         """Parse spec file into IssueSpec objects"""
         specs = []
-        sections = re.split(r'\n(?:---+|##\s+Issue:)\s*\n', content)
+        # Spec sections are separated by horizontal-rule lines (`---`) that are
+        # followed by a level-2 heading (`## ...`). This allows epics to use
+        # `---` inside their own content (often followed by `### ...`) without
+        # accidentally splitting into multiple specs.
+        #
+        # Legacy note: we no longer use "## Issue:" as a separator, but we still
+        # support headings that start with "## Issue:" for backwards compatibility.
+        sections = re.split(r'\n---+\s*\n(?=##\s)', content)
         current_epic = None
 
         for section in sections:
             if not section.strip():
                 continue
-
-            is_epic = '[Epic]' in section or 'Epic:' in section
-            if not is_epic:
-                if re.search(r'\[(Bug|Feature|Tech Debt|Technical Debt|Chore|Documentation|Docs|Research)\]', section):
-                    raise ValueError("Non-epic title markers are not allowed. Use 'type: <value>' metadata instead.")
 
             issue_type = "feature"  # default
             type_match = re.search(r'^type:\s*(.+?)$', section, re.MULTILINE | re.IGNORECASE)
@@ -254,17 +256,41 @@ class IssueCreator:
                 issue_type = type_map.get(raw_type, raw_type)
 
             title_match = re.search(
-                r'^#+\s*(?:\[(?:Epic|Bug|Tech Debt|Technical Debt|Feature|Chore|Documentation|Docs|Research)\]:?\s*)?(.+?)$',
+                r'^#+\s*(?:\[(?P<tag>Epic|Bug|Tech Debt|Technical Debt|Feature|Chore|Documentation|Docs|Research)\]\s*:?\s*)?(?P<title>.+?)\s*$',
                 section, re.MULTILINE
             )
             if not title_match:
                 continue
 
-            title = self._normalize_title(title_match.group(1).strip())
+            raw_title = title_match.group('title').strip()
+            title = self._normalize_title(raw_title)
+
+            raw_tag = (title_match.group('tag') or '').strip()
+            tag_map = {
+                "Epic": "epic",
+                "Feature": "feature",
+                "Bug": "bug",
+                "Tech Debt": "technical-debt",
+                "Technical Debt": "technical-debt",
+                "Chore": "chore",
+                "Documentation": "documentation",
+                "Docs": "documentation",
+                "Research": "research",
+            }
+
+            is_epic = raw_tag == "Epic"
             if is_epic:
                 issue_type = "epic"
+            elif raw_tag:
+                issue_type = tag_map.get(raw_tag, issue_type)
+            elif raw_title.lower().startswith("issue:"):
+                # Backwards-compatible "## Issue: ..." headings default to Feature unless overridden by `type:`.
+                issue_type = issue_type or "feature"
             elif not type_match:
-                raise ValueError(f"Missing required type for issue '{title}'. Add 'type: <value>' metadata.")
+                raise ValueError(
+                    f"Missing required issue type for '{title}'. "
+                    "Add a heading tag like '## [Feature]:' or metadata 'type: <value>'."
+                )
             elif issue_type not in (
                 "feature", "bug", "technical-debt", "chore", "documentation", "research"
             ):
