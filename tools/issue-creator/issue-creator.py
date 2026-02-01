@@ -227,14 +227,12 @@ class IssueCreator:
     def parse_spec_file(self, content: str) -> List[IssueSpec]:
         """Parse spec file into IssueSpec objects"""
         specs = []
-        # Spec sections are separated by horizontal-rule lines (`---`) that are
-        # followed by a level-2 heading (`## ...`). This allows epics to use
-        # `---` inside their own content (often followed by `### ...`) without
-        # accidentally splitting into multiple specs.
+        # Specs are separated by horizontal-rule lines (`---`).
         #
-        # Legacy note: we no longer use "## Issue:" as a separator, but we still
-        # support headings that start with "## Issue:" for backwards compatibility.
-        sections = re.split(r'\n---+\s*\n(?=##\s)', content)
+        # IMPORTANT: `---` is reserved for spec boundaries and should not be used
+        # inside a single spec section. If you need visual separation within a
+        # spec, use headings (`### ...`) or another marker (e.g. `***`).
+        sections = re.split(r'\n---+\s*\n', content)
         current_epic = None
 
         for section in sections:
@@ -256,11 +254,14 @@ class IssueCreator:
                 issue_type = type_map.get(raw_type, raw_type)
 
             title_match = re.search(
-                r'^#+\s*(?:\[(?P<tag>Epic|Bug|Tech Debt|Technical Debt|Feature|Chore|Documentation|Docs|Research)\]\s*:?\s*)?(?P<title>.+?)\s*$',
+                r'^##\s*(?:\[(?P<tag>Epic|Bug|Tech Debt|Technical Debt|Feature|Chore|Documentation|Docs|Research)\]\s*:?\s*)?(?P<title>.+?)\s*$',
                 section, re.MULTILINE
             )
             if not title_match:
-                continue
+                raise ValueError(
+                    "Spec section is missing a level-2 heading like '## [Feature]: Title'. "
+                    "Remember: '---' can only appear between specs."
+                )
 
             raw_title = title_match.group('title').strip()
             title = self._normalize_title(raw_title)

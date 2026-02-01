@@ -32,7 +32,9 @@ If you need to rerun the tool, it now detects existing issue titles and updates 
 
 ## Spec File Format
 
-Specs are separated by `---` lines that are followed by a level-2 heading (`## ...`).
+Specs are separated by `---` lines.
+
+**IMPORTANT:** `---` is reserved for spec boundaries. Do not use `---` inside an Epic or Issue section. Use `###` headings (or another marker like `***`) for intra-section structure.
 
 Each spec starts with a heading that declares the type:
 - `## [Epic]: <title>`
