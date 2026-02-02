@@ -69,7 +69,18 @@ cp -r .aide/skills/prime ~/.claude/skills/prime
 
 ### Codex (VS Code Extension)
 
-Codex requires packaged `.skill` files (zip archives). Use the packaging script:
+Codex can use either packaged `.skill` files or repo-local skills.
+
+**Option 1: Repo-local install (recommended for teams)**
+```bash
+# From repo root
+.aide/skills/install-codex.ps1
+
+# Installs skills into: .codex/skills/
+# Reload VS Code / restart Codex to pick up changes
+```
+
+**Option 2: Packaged `.skill` import (for distribution)**
 
 ```bash
 # From repo root
