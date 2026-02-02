@@ -112,7 +112,7 @@ See: [.aide/skills/README.md](../../.aide/skills/README.md)
 
 **After:**
 - Same process! `.skill` files generated from unified source
-- OR: Clone repo and run `.aide/skills/install-codex.ps1` (future enhancement)
+- OR: Clone repo and run `.aide/skills/install-codex.ps1` to install repo-local skills into `.codex/skills/`
 
 ### Claude Code Users
 
