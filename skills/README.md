@@ -37,6 +37,24 @@ Detailed instructions for the AI agent...
 
 The YAML frontmatter is **required**. The markdown content provides instructions.
 
+### YAML Frontmatter Best Practices
+
+**Avoid colons in `description` values.** Some skill loaders (Codex) may mis-parse frontmatter when `description:` contains additional `:`.
+
+❌ Bad:
+```yaml
+description: Review PRs (no fixes): spec alignment, tests, docs
+```
+
+✅ Good:
+```yaml
+description: Review PRs (no fixes) covering spec alignment, tests, and docs
+```
+
+Practical tips:
+- Prefer words like `covering`, `including`, `to`, `and` instead of `:`.
+- Keep `description` short and plain-text (aim for <120 chars).
+
 ## Installation
 
 ### Claude Code (VS Code Extension or CLI)
