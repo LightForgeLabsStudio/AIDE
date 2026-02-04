@@ -41,6 +41,15 @@ The YAML frontmatter is **required**. The markdown content provides instructions
 
 ### Claude Code (VS Code Extension or CLI)
 
+**Option 0: Repo-local install (recommended for teams)**
+```bash
+# From repo root (Windows PowerShell)
+.aide/skills/install-claude.ps1
+
+# Installs skills into: .claude/skills/
+# Reload VS Code / restart Claude Code to pick up changes
+```
+
 **Option 1: Symlink (recommended - stays in sync)**
 ```bash
 # Windows (PowerShell as Admin)
@@ -62,8 +71,13 @@ cp -r .aide/skills/implement ~/.claude/skills/implement
 **Option 3: Install Script**
 ```bash
 # From repo root
-.aide/skills/install-claude.ps1    # Windows
+.aide/skills/install-claude.ps1    # Windows (defaults to .claude/skills)
 .aide/skills/install-claude.sh     # Linux/Mac
+```
+
+To install to a user-level directory instead:
+```bash
+.aide/skills/install-claude.ps1 -SkillsPath "$HOME\\.claude\\skills"
 ```
 
 ### Codex (VS Code Extension)
