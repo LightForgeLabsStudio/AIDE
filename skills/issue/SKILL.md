@@ -9,6 +9,24 @@ description: Create a GitHub issue following AIDE label conventions. Applies pri
 
 Create issues consistently with required labels so work is trackable and automation-friendly.
 
+## Spec Writing (recommended structure)
+
+When the issue is a spec (feature/tech debt/chore), prefer a lean, issue-friendly structure:
+
+- **Goals**
+- **Scope**
+- **Non-Goals**
+- **Success Criteria** (testable/measurable)
+
+Rules:
+- Do not use checklists (`- [ ]`) in issues; use plain bullets (`-`).
+- For batch epics/children, prefer the issue-creator tool spec format.
+
+References:
+- `.aide/docs/SPEC_WRITING_GUIDE.md` (normative)
+- `.aide/docs/ISSUE_CREATOR_GUIDE.md`
+- `.aide/tools/issue-creator/example-spec.md`
+
 ## Workflow
 
 ### Inputs

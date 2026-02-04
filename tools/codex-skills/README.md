@@ -26,10 +26,9 @@ Preferred distribution is via GitHub Releases for the AIDE repo:
 
 Skills include optional `scripts/` for deterministic execution in environments that allow running them. If scripts cannot be executed, the `SKILL.md` instructions remain the source of truth for manual or model-driven execution.
 
-## When to use `/prime` vs `/role`
+## Note on entry commands
 
-- `/prime` is the entrypoint: load project constraints and ask what you want to do.
-- `/role` is optional: jump straight to a specific primer if you already know the role.
+Older versions used routing commands like `/prime` and `/role`. The unified skills system prefers role entrypoints (e.g. `/implement`, `/pr-review`, `/design`) under `.aide/skills/`.
 
 ## Build packages locally
 

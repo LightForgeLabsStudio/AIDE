@@ -3,7 +3,7 @@
 This catalog defines a **tool-agnostic** set of slash-style commands (skills) that help agents execute common workflows consistently across Codex, Claude, and other tooling.
 
 Projects may implement these commands as:
-- native tool skills (e.g., `/prime`)
+- native tool skills
 - repo scripts
 - a hybrid (skill -> script -> project tooling)
 
@@ -22,21 +22,15 @@ This document defines **behavior and inputs/outputs**; it does not mandate an im
 
 ## Core Commands
 
-### `/prime`
+### Role entrypoints
 
-**Intent:** minimal cold-start orientation and routing.
+Projects may expose role-specific entry commands instead of a single routing command. Typical set:
 
-**Inputs:**
-- Optional task link (issue/PR/spec) if already known.
-
-**Reads (minimum):**
-- Project `AGENT_ORIENTATION.md` (or project `AGENTS.md` if no orientation doc)
-- Project Tier 1 docs listed there (at least `AGENTS.md`)
-
-**Outputs:**
-- Resolved role primer to load (AIDE `docs/agents/*`)
-- Required next action (request spec/PR link, or confirm starting stage)
-- Any missing inputs required to proceed
+- `/implement` - implement a feature/bug end-to-end
+- `/pr-review` - review a PR (no fixes)
+- `/design` - design exploration (option shaping) and issue creation
+- `/codebase-review` - holistic health review (no fixes)
+- `/doc-review` - documentation review (no code changes)
 
 ### `/plan`
 

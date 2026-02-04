@@ -15,9 +15,8 @@ Each skill is a directory with a `SKILL.md` file:
 
 ```
 skills/
-├── prime/
-│   ├── SKILL.md          # Skill definition (YAML + markdown)
-│   └── scripts/          # Optional: tool-specific automation
+├── implement/
+│   └── SKILL.md
 ├── quality/
 │   └── SKILL.md
 ...
@@ -45,19 +44,19 @@ The YAML frontmatter is **required**. The markdown content provides instructions
 **Option 1: Symlink (recommended - stays in sync)**
 ```bash
 # Windows (PowerShell as Admin)
-New-Item -ItemType SymbolicLink -Path "$HOME\.claude\skills\prime" -Target "path\to\.aide\skills\prime"
+New-Item -ItemType SymbolicLink -Path "$HOME\.claude\skills\implement" -Target "path\to\.aide\skills\implement"
 
 # Linux/Mac
-ln -s /path/to/.aide/skills/prime ~/.claude/skills/prime
+ln -s /path/to/.aide/skills/implement ~/.claude/skills/implement
 ```
 
 **Option 2: Copy**
 ```bash
 # Windows
-xcopy /E /I .aide\skills\prime %USERPROFILE%\.claude\skills\prime
+xcopy /E /I .aide\skills\implement %USERPROFILE%\.claude\skills\implement
 
 # Linux/Mac
-cp -r .aide/skills/prime ~/.claude/skills/prime
+cp -r .aide/skills/implement ~/.claude/skills/implement
 ```
 
 **Option 3: Install Script**
@@ -98,12 +97,15 @@ Check tool documentation for skill installation. Most support the same `SKILL.md
 
 | Skill | Command | Description |
 |-------|---------|-------------|
-| **prime** | `/prime` | Load AGENT_ORIENTATION.md and AGENTS.md, extract constraints |
+| **implement** | `/implement` | Implementation entrypoint: plan, branch, PR, validate, push |
+| **pr-review** | `/pr-review` | Review PRs (no fixes): spec alignment, tests, docs |
+| **codebase-review** | `/codebase-review` | Holistic health review + follow-up issues |
+| **doc-review** | `/doc-review` | Documentation accuracy/drift review |
+| **design** | `/design` | Relaxed design exploration + optional issue creation |
 | **quality** | `/quality` | Run lint and tests from AGENTS.md placeholders |
 | **handoff** | `/handoff` | Generate session handoff note for context resets |
 | **plan** | `/plan` | Create two-layer implementation plan + PR draft |
 | **evolve** | `/evolve` | Turn repeated failures into rules/automation |
-| **role** | `/role` | Route to correct AIDE workflow primer |
 | **sync** | `/sync` | End-of-session git sync (pull, push, verify) |
 | **issue** | `/issue` | Create labeled GitHub issue |
 | **pr-ready** | `/pr-ready` | Validate and mark PR ready |
@@ -152,8 +154,8 @@ cd .aide
 Individual skills can be shared by copying the skill directory:
 
 ```bash
-# Share prime skill
-cp -r .aide/skills/prime ~/shared-skills/
+# Share implement skill
+cp -r .aide/skills/implement ~/shared-skills/
 # Recipient installs to their tool's skills directory
 ```
 

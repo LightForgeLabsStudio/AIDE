@@ -27,9 +27,8 @@
 
 ```
 .aide/skills/
-├── prime/
-│   ├── SKILL.md        # Agent-agnostic skill definition
-│   └── scripts/        # Optional: tool-specific helpers
+├── implement/
+│   └── SKILL.md
 ├── quality/
 │   └── SKILL.md
 ├── handoff/
