@@ -7,6 +7,13 @@ description: Relaxed design exploration aligned to pillars; optionally create Gi
 
 Run a lightweight design exploration session, then (optionally) turn outcomes into GitHub issues.
 
+## Documentation Loading (role-based)
+
+- Always read: `AGENTS.md` + the design question/topic.
+- Stage-load (as needed): relevant `design/` pillar(s), `docs/DESIGN_QUICK_REFERENCE.md`, and GitHub state (`gh issue list`, `gh pr list`).
+- Stage-load (only if creating issues): `docs/CONTRIBUTING.md` (workflow expectations) plus `.aide/docs/SPEC_WRITING_GUIDE.md` and `.aide/docs/ISSUE_CREATOR_GUIDE.md`.
+- Usually skip: `docs/TESTING_POLICY.md` and `docs/CODING_GUIDELINES.md` unless the design output explicitly includes test strategy or coding constraints.
+
 ## Inputs (ask first)
 
 - Topic/question and timebox.

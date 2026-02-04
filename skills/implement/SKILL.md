@@ -7,6 +7,12 @@ description: Implementation entrypoint for AIDE repos: intake spec, plan, branch
 
 Implement a feature/bug end-to-end using the AIDE implementation workflow.
 
+## Documentation Loading (role-based)
+
+- Always read: `AGENTS.md` + the task spec (issue/PR description).
+- Stage-load (implementation work): `docs/CODING_GUIDELINES.md`, `docs/TESTING_POLICY.md`, `docs/CONTRIBUTING.md`, and `docs/DEVELOPMENT.md` as soon as planning/implementation begins.
+- Stage-load (as needed): relevant `design/` pillar(s) for the feature/bug.
+
 ## Inputs (ask first)
 
 - Issue/PR link or pasted spec text (goals, scope, success criteria).

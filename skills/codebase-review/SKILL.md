@@ -7,6 +7,12 @@ description: Holistic codebase health review (no fixes): find architecture drift
 
 Do a strategic, read-only review of the codebase (not PR-specific) and produce actionable findings.
 
+## Documentation Loading (role-based)
+
+- Always read: `AGENTS.md` + current GitHub activity (issues/PRs).
+- Stage-load: `docs/DEVELOPMENT.md`, `docs/CODING_GUIDELINES.md`, `docs/TESTING_POLICY.md`, `docs/DOCUMENTATION_POLICY.md`.
+- Stage-load (as needed): relevant `design/` pillar(s) and `docs/DESIGN_QUICK_REFERENCE.md`.
+
 ## Inputs (ask first)
 
 - Scope (domains/systems) and timebox.
