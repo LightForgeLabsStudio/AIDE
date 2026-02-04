@@ -1,6 +1,6 @@
 ---
 name: doc-review
-description: Review documentation for accuracy and drift (no code changes): cross-check against sources of truth and propose edits.
+description: Review documentation for accuracy and drift (no code changes) and propose edits.
 ---
 
 # Doc Review
