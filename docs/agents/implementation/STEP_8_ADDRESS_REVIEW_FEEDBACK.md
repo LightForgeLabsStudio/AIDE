@@ -1,5 +1,7 @@
 # Implementation Agent - Step 8: Address Review Feedback
 
+**Navigation:** [Index](../IMPLEMENTATION_START.md) | Prev: [Step 7](STEP_7_REPORT_BACK.md) | Next: [Step 9](STEP_9_MERGE.md)
+
 ## Purpose
 Systematically fix review feedback (critical -> major -> minor), keep tests green, and wait for approval before merging.
 

@@ -1,5 +1,7 @@
 # Implementation Agent - Step 6: Mark PR Ready for Review
 
+**Navigation:** [Index](../IMPLEMENTATION_START.md) | Prev: [Step 5](STEP_5_REFINEMENT.md) | Next: [Step 7](STEP_7_REPORT_BACK.md)
+
 ## Purpose
 Finalize and mark the PR ready only when the checklist is complete and quality gates are green.
 

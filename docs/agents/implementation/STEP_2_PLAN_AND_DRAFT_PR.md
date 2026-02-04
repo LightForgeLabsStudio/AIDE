@@ -1,5 +1,7 @@
 # Implementation Agent - Step 2: Implementation Plan + Draft PR Setup
 
+**Navigation:** [Index](../IMPLEMENTATION_START.md) | Prev: [Step 1](STEP_1_CODEBASE_SURVEY.md) | Next: [Step 3](STEP_3_IMPLEMENT.md)
+
 ## Purpose
 Produce a measurable plan mapped to success criteria, get approval, then open a draft PR with the plan as a checklist.
 

@@ -1,5 +1,7 @@
 # Implementation Agent - Step 4: Sanity Check
 
+**Navigation:** [Index](../IMPLEMENTATION_START.md) | Prev: [Step 3](STEP_3_IMPLEMENT.md) | Next: [Step 5](STEP_5_REFINEMENT.md)
+
 ## Purpose
 Verify the spec success criteria is actually met (beyond "code compiles") before refinement and review.
 

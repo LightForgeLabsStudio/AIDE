@@ -1,5 +1,7 @@
 # Implementation Agent - Step 3: Implement
 
+**Navigation:** [Index](../IMPLEMENTATION_START.md) | Prev: [Step 2](STEP_2_PLAN_AND_DRAFT_PR.md) | Next: [Step 4](STEP_4_SANITY_CHECK.md)
+
 ## Purpose
 Implement the approved plan with small, focused commits; keep tests passing; keep the PR checklist updated.
 

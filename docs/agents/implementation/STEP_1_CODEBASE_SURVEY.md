@@ -1,5 +1,7 @@
 # Implementation Agent - Step 1: Codebase Survey (Read Targeted)
 
+**Navigation:** [Index](../IMPLEMENTATION_START.md) | Prev: [Step 0](STEP_0_SPEC_INTAKE.md) | Next: [Step 2](STEP_2_PLAN_AND_DRAFT_PR.md)
+
 ## Purpose
 Read only what's needed to implement the spec, confirm constraints, and identify risks/dependencies before planning.
 

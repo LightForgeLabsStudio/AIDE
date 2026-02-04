@@ -1,5 +1,7 @@
 # Implementation Agent - Step 10: Sync Local Main
 
+**Navigation:** [Index](../IMPLEMENTATION_START.md) | Prev: [Step 9](STEP_9_MERGE.md)
+
 ## Purpose
 Ensure your local `{{MAIN_BRANCH}}` matches remote after merge.
 

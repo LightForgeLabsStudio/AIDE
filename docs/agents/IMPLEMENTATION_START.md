@@ -64,6 +64,9 @@ If you don't have a spec yet:
 
 Always load this index first. Then load only the step document for the stage you are currently executing.
 
+If you prefer a single-file overview (or your tool doesn’t follow nested links reliably), use:
+- `IMPLEMENTATION_ONE_PAGER.md`
+
 ## The Workflow
 
 0. Spec intake - get issue/spec, extract goal/scope/success criteria

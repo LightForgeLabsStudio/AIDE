@@ -1,5 +1,7 @@
 # Implementation Agent - Step 0: Spec Intake
 
+**Navigation:** [Index](../IMPLEMENTATION_START.md) | Next: [Step 1](STEP_1_CODEBASE_SURVEY.md)
+
 ## Purpose
 Get the spec, extract goals/scope/success criteria, and confirm the work is feasible and aligned before planning.
 
