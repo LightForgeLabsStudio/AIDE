@@ -68,8 +68,9 @@ Reference implementations. Copy and customize, do not follow directly.
 
 1. **Project provides orientation** -> Read project's `AGENT_ORIENTATION.md` or `AGENTS.md`
 2. **Resolve placeholders** -> Map `{{PLACEHOLDERS}}` using project's table
-3. **Load role primer** -> Read appropriate primer from `docs/agents/`
-4. **Execute workflow** -> Follow primer end-to-end
+3. **Pick the right role** -> If unsure, use [SKILL_ROUTER.md](docs/agents/SKILL_ROUTER.md)
+4. **Load role primer** -> Read appropriate primer from `docs/agents/`
+5. **Execute workflow** -> Follow primer end-to-end
 
 ---
 

@@ -6,7 +6,48 @@ Token Economy: follow `AGENT_OPERATIONAL_TOKEN_ECONOMY.md` (read targeted, commu
 
 Default behavior: for implementation work, complete the full workflow (branch, tests, draft PR, ready PR, merge, sync). Do not offer or accept skip options.
 
-Multi-iteration in one chat: if an iteration finishes and a new one starts in the same session, cleanly close the prior loop (summarize current state + stopping point), then explicitly confirm whether to restart at Step 0 or resume from a later step. Do not restart steps implicitly.
+## Multi-Iteration Protocol (Same Chat / Session)
+
+Sometimes a session completes one implementation loop and immediately starts another (new issue, new feature, or a follow-up bug). To keep context clean and avoid workflow drift, do this explicitly.
+
+### 1) Close the prior iteration
+
+- Ensure work is in a clean state (commit or discard local changes).
+- Ensure any required pushes are done (project policy may require "push before stopping").
+- Update the PR checklist/status if one exists (mark done items, note remaining work).
+- Write a 5-line closure summary:
+  - What was delivered vs success criteria
+  - What is still incomplete (if anything)
+  - Validation status (tests/lint run, pass/fail)
+  - Links (issue/PR)
+  - Current branch / next intended branch
+
+### 2) Context assessment (for the next iteration)
+
+- Identify the new target: issue/PR/spec link and success criteria.
+- Confirm whether it is a continuation of the same goal or a distinct new scope.
+- Identify any new constraints (design pillars, architecture boundaries, determinism, testing rules).
+
+### 3) Branch strategy (choose one)
+
+- **New issue / distinct scope** -> create a fresh branch and (usually) a fresh PR.
+- **Same issue / small follow-up** -> continue on the existing branch/PR if it keeps history coherent.
+- **Bug found during review** -> prefer a separate follow-up PR unless the reviewer requested it be folded in.
+
+Rule of thumb: if the next change would make the current PR harder to review, start a new branch/PR.
+
+### 4) Explicitly restart or resume the workflow
+
+Ask (or state) which step you are starting from and why:
+
+- **Restart at Step 0 (recommended by default)** when the issue/spec changes, or when context is stale.
+- **Resume at a later step** only when the same issue continues and prior steps are still valid (recent survey, no major codebase changes, no new constraints).
+
+### Common scenarios
+
+- **New feature request arrives mid-session:** close the current loop, then restart at Step 0 for the new issue on a new branch.
+- **User asks for an extension of the same feature:** assess if it fits the current PR; if yes, resume at Step 2/3; if not, restart with a new branch/PR.
+- **Bug discovered while implementing:** if it is a prerequisite fix for the current work, keep it in the current branch; otherwise, create a follow-up issue and restart on a new branch.
 
 ## Prerequisites
 
