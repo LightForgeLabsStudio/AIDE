@@ -61,6 +61,8 @@ Projects may expose role-specific entry commands instead of a single routing com
 
 **Notes:** use project placeholder mappings for exact commands.
 
+If quality gates fail or you get stuck mid-work, follow: `docs/agents/ERROR_RECOVERY.md`
+
 ### `/tests`
 
 **Intent:** run the smallest relevant test scope first, then broaden.
