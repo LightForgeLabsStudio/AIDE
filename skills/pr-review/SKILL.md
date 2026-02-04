@@ -1,6 +1,6 @@
 ---
 name: pr-review
-description: Review a pull request (no code changes): spec alignment, architecture, tests, docs, and clear findings.
+description: Review a pull request (no code changes) covering spec alignment, architecture, tests, docs, and clear findings.
 ---
 
 # PR Review

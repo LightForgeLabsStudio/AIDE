@@ -1,6 +1,6 @@
 ---
 name: codebase-review
-description: Holistic codebase health review (no fixes): find architecture drift, dead code, test/doc gaps, and file follow-up issues.
+description: Holistic codebase health review (no fixes) to find architecture drift, dead code, test/doc gaps, and file follow-up issues.
 ---
 
 # Codebase Review

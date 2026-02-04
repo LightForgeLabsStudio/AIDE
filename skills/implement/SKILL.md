@@ -1,6 +1,6 @@
 ---
 name: implement
-description: Implementation entrypoint for AIDE repos: intake spec, plan, branch, draft PR, implement, validate, push.
+description: Implementation entrypoint for AIDE repos (intake spec, plan, branch, draft PR, implement, validate, push).
 ---
 
 # Implement
