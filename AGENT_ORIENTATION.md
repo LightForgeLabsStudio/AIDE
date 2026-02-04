@@ -72,6 +72,8 @@ Reference implementations. Copy and customize, do not follow directly.
 4. **Load role primer** -> Read appropriate primer from `docs/agents/`
 5. **Execute workflow** -> Follow primer end-to-end
 
+If you hit failures mid-work (tests failing, conflicts, scope pivots), use: [ERROR_RECOVERY.md](docs/agents/ERROR_RECOVERY.md)
+
 ---
 
 ## Documentation Loading Policy (Always-Load vs On-Demand)
