@@ -59,6 +59,17 @@ When reviewing, also verify:
 ## What to Review
 
 ### Spec Alignment (REQUIRED)
+
+**Exception:** Issue linking may be skipped for:
+
+- **Tooling/infrastructure** - CI scripts, build config, dev tools (label with `tooling`)
+- **Documentation-only** - Typo fixes, formatting, doc improvements with no behavior changes (label with `docs`)
+- **Trivial fixes** - Single-line fixes, obvious corrections (< 10 lines changed, label with `trivial`)
+
+**If PR claims exception:** Verify it truly qualifies (no behavior changes, no new features, no architecture impact). If in doubt, request issue.
+
+**For all other PRs:**
+
 - [ ] PR links to GitHub issue containing spec (via "Fixes #X")
 - [ ] Issue contains complete spec (goals, scope, non-goals, success criteria)
 - [ ] Implementation delivers spec goals from issue
@@ -66,7 +77,7 @@ When reviewing, also verify:
 - [ ] Success criteria met (tests confirm criteria from issue)
 - [ ] Non-goals respected (nothing out of scope added)
 
-**If issue link missing or spec misaligned:** Request Changes (Critical)
+**If issue link missing or spec misaligned (and no valid exception):** Request Changes (Critical)
 
 ### Code Quality
 - [ ] No security risks, resource leaks

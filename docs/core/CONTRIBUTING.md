@@ -23,6 +23,17 @@ See [agents/IMPLEMENTATION_START.md](../agents/IMPLEMENTATION_START.md) (index) 
 7. **Review:** Open PR for review per [agents/PR_REVIEW_START.md](../agents/PR_REVIEW_START.md)
 8. **Merge:** Address feedback, then implementer merges when approved by reviewer
 
+**Lightweight Change Exception:**
+
+Some changes may skip the spec/issue requirement (step 2) if they meet ALL criteria:
+
+- **No behavior changes** - No impact on users, APIs, or runtime behavior
+- **Small scope** - Tooling scripts, doc typos, trivial fixes (< 10 lines)
+- **Self-evident** - The PR diff fully explains the change; no design decisions needed
+- **Labeled appropriately** - Use GitHub labels: `tooling`, `docs`, or `trivial`
+
+**When in doubt, create an issue.** The spec process exists to prevent rework and misalignment.
+
 **Important Constraints:**
 - Do not modify existing tests without explicit approval and justification
 - Confirm with requester before large refactors or cross-cutting architectural changes
