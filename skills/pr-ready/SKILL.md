@@ -18,8 +18,8 @@ Standardize the "PR Ready" step: run validation, post a summary, and flip a PR f
 - Optional `-Fast` to run lint + unit tests only
 
 ### Actions
-1) Locate repo root (walk up until `AGENTS.md`).
-2) Read `AGENTS.md` and extract quality commands:
+1) Assume the current workspace is the repo root.
+2) Use project placeholder mappings and extract quality commands:
    - `{{LINT_COMMAND}}`
    - `{{RUN_UNIT_TESTS_COMMAND}}`
    - `{{RUN_ALL_TESTS_COMMAND}}`

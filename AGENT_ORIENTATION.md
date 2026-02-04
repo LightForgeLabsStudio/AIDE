@@ -11,8 +11,7 @@
 | **Implementation** | Build features, fix bugs | [IMPLEMENTATION_START.md](docs/agents/IMPLEMENTATION_START.md) |
 | **PR Review** | Review code quality, architecture | [PR_REVIEW_START.md](docs/agents/PR_REVIEW_START.md) |
 | **Codebase Review** | Holistic health audits | [CODEBASE_REVIEW_START.md](docs/agents/CODEBASE_REVIEW_START.md) |
-| **Design Spec** | Prioritize and spec features | [DESIGN_SPEC_START.md](docs/agents/DESIGN_SPEC_START.md) |
-| **Design Workshop** | High-level design exploration | [DESIGN_WORKSHOP_START.md](docs/agents/DESIGN_WORKSHOP_START.md) |
+| **Design** | Design exploration + issue-ready specs | [DESIGN_WORKSHOP_START.md](docs/agents/DESIGN_WORKSHOP_START.md) + [DESIGN_SPEC_REFERENCE.md](docs/agents/design/DESIGN_SPEC_REFERENCE.md) |
 | **Doc Review** | Documentation accuracy | [DOC_REVIEW_START.md](docs/agents/DOC_REVIEW_START.md) |
 
 ---

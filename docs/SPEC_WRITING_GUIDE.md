@@ -247,7 +247,7 @@ The `blocked_by` value must match the **exact title** from the heading:
 
 - Heading: `## [Feature]: Foundation Task` -> Reference: `blocked_by: Foundation Task`
 - Heading: `## [Tech Debt]: Foundation Task` -> Reference: `blocked_by: Foundation Task`
-- Epic heading: `## [Epic]: My Epic` -> Reference: `blocked_by: [Epic]: My Epic`
+- Epic heading: `## [Epic]: My Epic` -> Reference: `blocked_by: My Epic`
 
 ### Limitation
 

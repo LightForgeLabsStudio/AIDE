@@ -75,6 +75,7 @@ On demand for new feature areas, roadmap planning, design gaps.
 - `{{CONTRIBUTING_DOC}}` - Spec template
 - `{{DOCUMENTATION_POLICY_DOC}}` - Doc standards
 - `AGENT_OPERATIONAL_TOKEN_ECONOMY.md` - Efficient operation
+- Issue-ready spec reference: `.aide/docs/agents/design/DESIGN_SPEC_REFERENCE.md`
 
 ---
 
