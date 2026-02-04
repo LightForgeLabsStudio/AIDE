@@ -61,8 +61,8 @@ ln -s ../../.aide/docs/agents/IMPLEMENTATION_START.md docs/agents/
 ln -s ../../.aide/docs/agents/PR_REVIEW_START.md docs/agents/
 ln -s ../../.aide/docs/agents/DOC_REVIEW_START.md docs/agents/
 ln -s ../../.aide/docs/agents/CODEBASE_REVIEW_START.md docs/agents/
-ln -s ../../.aide/docs/agents/DESIGN_SPEC_START.md docs/agents/
 ln -s ../../.aide/docs/agents/DESIGN_WORKSHOP_START.md docs/agents/
+ln -s ../../.aide/docs/agents/design/DESIGN_SPEC_REFERENCE.md docs/agents/
 ln -s ../../.aide/docs/agents/AGENT_PRIMER_TEMPLATE.md docs/agents/
 echo "✓ Symlinked agent primers"
 
