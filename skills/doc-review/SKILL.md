@@ -9,7 +9,7 @@ Review documentation for correctness, alignment with code/GitHub state, and mini
 
 ## Documentation Loading (role-based)
 
-- Always read: `AGENTS.md` + the docs/PR being reviewed.
+- Always use: project constraints + the docs/PR being reviewed.
 - Stage-load: `docs/DOCUMENTATION_POLICY.md`.
 - Stage-load (as needed): `docs/CONTRIBUTING.md`, `docs/DEVELOPMENT.md`, `docs/TESTING_POLICY.md` (only to validate doc claims), and relevant `design/` pillar(s).
 
@@ -21,7 +21,7 @@ Review documentation for correctness, alignment with code/GitHub state, and mini
 ## Workflow
 
 1) **Read doc rules**
-   - `AGENTS.md` + `docs/DOCUMENTATION_POLICY.md` (as needed).
+   - Use project constraints + `docs/DOCUMENTATION_POLICY.md` (as needed).
 
 2) **Cross-check**
    - Validate claims against code, GitHub state (issues/PRs), and design pillars.

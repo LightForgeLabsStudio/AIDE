@@ -10,7 +10,7 @@ Turn repeated mistakes into system improvements (constraints, docs, automation).
 ## Workflow
 
 ### 1. Locate repo root
-Walk up from current directory until you find `AGENTS.md`.
+Assume the current workspace is the repo root.
 
 ### 2. Read the evolution guide
 Read `.aide/docs/agents/SYSTEM_EVOLUTION.md` for the decision tree and trigger criteria.
@@ -32,7 +32,7 @@ Use this hierarchy (smallest effective change):
 **2. Is it project-wide binding?**
 - Does it apply to ALL code/features?
 - Is violating it a critical error?
-- If YES → Tier 1 constraint (AGENTS.md)
+- If YES → Tier 1 constraint (project constraints doc)
 
 **3. Is it system-specific guidance?**
 - Does it apply to a specific subsystem/pattern?
@@ -114,7 +114,7 @@ Rationale: Enforceable via regex, prevents recurring formatting issues
 **Tier 1 example:**
 ```
 Decision: TIER 1
-Location: AGENTS.md → Critical Invariants
+Location: project constraints doc → Critical Invariants
 Proposed: "InventoryService is the single source of truth for item quantities"
 Rationale: Project-wide invariant, violations cause data corruption
 ```

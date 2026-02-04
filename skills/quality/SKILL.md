@@ -1,19 +1,19 @@
 ---
 name: quality
-description: Run project quality gates from AGENTS.md placeholder mappings. Executes lint and tests based on project configuration.
+description: Run project quality gates from project placeholder mappings. Executes lint and tests based on project configuration.
 ---
 
 # AIDE Quality
 
-Run project quality gates from AGENTS.md placeholder mappings.
+Run project quality gates from project placeholder mappings.
 
 ## Workflow
 
 ### 1. Locate repo root
-Walk up from current directory until you find `AGENTS.md`.
+Assume the current workspace is the repo root.
 
 ### 2. Load quality commands
-Read `AGENTS.md` and extract these placeholder mappings:
+Use project placeholder mappings and extract these commands:
 - `{{RUN_ALL_TESTS_COMMAND}}` - Full test suite
 - `{{RUN_UNIT_TESTS_COMMAND}}` - Unit tests only (optional)
 - `{{LINT_COMMAND}}` - Linting
@@ -56,6 +56,6 @@ Next: [Fix failures OR proceed with PR if all passed]
 
 ## Important Notes
 - Never modify test files
-- If commands are missing from AGENTS.md, ask user to provide them
+- If commands are missing, ask user to provide them
 - Stop immediately if lint or tests fail - do not proceed
 - For CI/PR workflows, always run at least lint + tests before marking ready

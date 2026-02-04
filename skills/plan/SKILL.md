@@ -1,6 +1,6 @@
 ---
 name: plan
-description: Create a two-layer AIDE implementation plan from an issue/PR spec. Reads AGENTS.md for constraints and outputs a plan plus a draft PR checklist.
+description: Create a two-layer AIDE implementation plan from an issue/PR spec using project constraints and placeholder mappings.
 ---
 
 # AIDE Plan
@@ -10,7 +10,7 @@ Create a two-layer AIDE implementation plan from a task spec.
 ## Workflow
 
 ### 1. Locate repo root
-Walk up from current directory until you find `AGENTS.md`.
+Assume the current workspace is the repo root.
 
 ### 2. Get the task spec
 Ask user for:
@@ -21,7 +21,7 @@ Ask user for:
 If user provides a number, fetch the full spec with `gh`.
 
 ### 3. Read project constraints
-Read `AGENTS.md` to capture:
+Use project constraints and placeholder mappings to capture:
 - Critical invariants (top section)
 - Design pillars
 - Architectural constraints
@@ -77,7 +77,7 @@ Keep plan concise (<=12 steps).
 **Testing Strategy:**
 - Unit tests: [which tests to write/modify]
 - Integration tests: [if needed]
-- Validation: `[command from AGENTS.md]`
+- Validation: `[project-configured command]`
 
 **Risks/Unknowns:**
 - [Any uncertainty or decision points]

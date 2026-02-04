@@ -9,7 +9,7 @@ Do a strategic, read-only review of the codebase (not PR-specific) and produce a
 
 ## Documentation Loading (role-based)
 
-- Always read: `AGENTS.md` + current GitHub activity (issues/PRs).
+- Always use: project constraints + current GitHub activity (issues/PRs).
 - Stage-load: `docs/DEVELOPMENT.md`, `docs/CODING_GUIDELINES.md`, `docs/TESTING_POLICY.md`, `docs/DOCUMENTATION_POLICY.md`.
 - Stage-load (as needed): relevant `design/` pillar(s) and `docs/DESIGN_QUICK_REFERENCE.md`.
 
@@ -21,7 +21,7 @@ Do a strategic, read-only review of the codebase (not PR-specific) and produce a
 ## Workflow
 
 1) **Read Tier 1 rules**
-   - `AGENTS.md` + relevant project docs (architecture/testing/docs policy).
+   - Use the project's constraints (already loaded in this environment) + relevant project docs (architecture/testing/docs policy).
 
 2) **Sample strategically**
    - Use recent GitHub activity to choose hotspots (issues/PRs, churn areas).

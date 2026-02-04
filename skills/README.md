@@ -102,7 +102,7 @@ Check tool documentation for skill installation. Most support the same `SKILL.md
 | **codebase-review** | `/codebase-review` | Holistic health review + follow-up issues |
 | **doc-review** | `/doc-review` | Documentation accuracy/drift review |
 | **design** | `/design` | Relaxed design exploration + optional issue creation |
-| **quality** | `/quality` | Run lint and tests from AGENTS.md placeholders |
+| **quality** | `/quality` | Run lint and tests from project placeholder mappings |
 | **handoff** | `/handoff` | Generate session handoff note for context resets |
 | **plan** | `/plan` | Create two-layer implementation plan + PR draft |
 | **evolve** | `/evolve` | Turn repeated failures into rules/automation |
@@ -125,7 +125,7 @@ Check tool documentation for skill installation. Most support the same `SKILL.md
 From `COMMAND_CATALOG.md`:
 - **Reduce "agent parses prose" variability** - Clear, structured instructions
 - **Keep default context lean** - Link to docs, don't preload everything
-- **Respect project Tier 1 rules** - Always read AGENTS.md
+- **Respect project Tier 1 rules** - Use the project's constraints and authoritative docs
 - **Be composable** - Small commands that chain together
 
 ### Syncing with Codex Skills

@@ -10,7 +10,7 @@ Generate a session handoff note for context resets or multi-day work.
 ## Workflow
 
 ### 1. Locate repo root
-Walk up from current directory until you find `AGENTS.md`.
+Assume the current workspace is the repo root.
 
 ### 2. Load handoff template (optional)
 Check if `.aide/docs/core/SESSION_HANDOFF.template.md` exists in repo.

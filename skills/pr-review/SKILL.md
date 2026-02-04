@@ -9,7 +9,7 @@ Review a PR against the linked issue spec and project constraints. Do not push f
 
 ## Documentation Loading (role-based)
 
-- Always read: `AGENTS.md` + the linked issue spec.
+- Always use: project constraints + the linked issue spec.
 - Stage-load (review work): `docs/CODING_GUIDELINES.md`, `docs/TESTING_POLICY.md`, `docs/CONTRIBUTING.md`, and `docs/DEVELOPMENT.md`.
 - Stage-load (as needed): relevant `design/` pillar(s) and `docs/DOCUMENTATION_POLICY.md` if docs are in scope.
 
@@ -21,7 +21,7 @@ Review a PR against the linked issue spec and project constraints. Do not push f
 ## Workflow
 
 1) **Read Tier 1 rules**
-   - Read `AGENTS.md` and stage-load the role-relevant Tier 1 docs (see above).
+   - Use the project's constraints (already loaded in this environment) and stage-load the role-relevant Tier 1 docs (see above).
 
 2) **Load PR + spec**
    - Use `gh pr view <n>` / `gh pr diff <n>` to read the PR.

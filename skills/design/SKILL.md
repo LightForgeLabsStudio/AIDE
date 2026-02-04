@@ -9,7 +9,7 @@ Run a lightweight design exploration session, then (optionally) turn outcomes in
 
 ## Documentation Loading (role-based)
 
-- Always read: `AGENTS.md` + the design question/topic.
+- Always use: project constraints + the design question/topic.
 - Stage-load (as needed): relevant `design/` pillar(s), `docs/DESIGN_QUICK_REFERENCE.md`, and GitHub state (`gh issue list`, `gh pr list`).
 - Stage-load (only if creating issues): `docs/CONTRIBUTING.md` (workflow expectations) plus `.aide/docs/SPEC_WRITING_GUIDE.md` and `.aide/docs/ISSUE_CREATOR_GUIDE.md`.
 - Usually skip: `docs/TESTING_POLICY.md` and `docs/CODING_GUIDELINES.md` unless the design output explicitly includes test strategy or coding constraints.
@@ -22,7 +22,7 @@ Run a lightweight design exploration session, then (optionally) turn outcomes in
 ## Exploration Workflow (default)
 
 1) **Pillar + state check**
-   - Read `AGENTS.md` constraints.
+   - Use the project's constraints (already loaded in this environment).
    - Reference relevant `design/` pillar(s) and `docs/DESIGN_QUICK_REFERENCE.md` as needed.
    - Query GitHub state (`gh issue list`, `gh pr list`) to avoid proposing already-built/conflicting work.
 

@@ -9,21 +9,21 @@ Implement a feature/bug end-to-end using the AIDE implementation workflow.
 
 ## Documentation Loading (role-based)
 
-- Always read: `AGENTS.md` + the task spec (issue/PR description).
+- Always use: project constraints + the task spec (issue/PR description).
 - Stage-load (implementation work): `docs/CODING_GUIDELINES.md`, `docs/TESTING_POLICY.md`, `docs/CONTRIBUTING.md`, and `docs/DEVELOPMENT.md` as soon as planning/implementation begins.
 - Stage-load (as needed): relevant `design/` pillar(s) for the feature/bug.
 
 ## Inputs (ask first)
 
 - Issue/PR link or pasted spec text (goals, scope, success criteria).
-- Any must-not-change constraints beyond `AGENTS.md`.
+- Any must-not-change constraints beyond the project's standard rules.
 
 If there is no spec yet, switch to `/design` (exploration) before implementing.
 
 ## Workflow
 
 1) **Read Tier 1 rules**
-   - Read `AGENTS.md` (constraints + placeholder commands).
+   - Use the project's constraints and placeholder commands (already loaded in this environment).
    - Load relevant design pillar(s) only if the spec touches them.
 
 2) **Preflight**
@@ -44,7 +44,7 @@ If there is no spec yet, switch to `/design` (exploration) before implementing.
    - Do not modify existing tests without explicit approval.
 
 6) **Validate**
-   - Run lint/tests using commands from `AGENTS.md` placeholder mappings.
+   - Run lint/tests using the project's placeholder-mapped commands.
    - Confirm success criteria are met.
 
 7) **Land the plane**
