@@ -1,5 +1,7 @@
 # Implementation Agent - Step 5: Code Refinement
 
+**Navigation:** [Index](../IMPLEMENTATION_START.md) | Prev: [Step 4](STEP_4_SANITY_CHECK.md) | Next: [Step 6](STEP_6_PR_READY.md)
+
 ## Purpose
 Cleanup, simplify, and align with best practices after the spec is verified, before requesting review.
 

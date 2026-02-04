@@ -1,5 +1,7 @@
 # Implementation Agent - Step 7: Report Back
 
+**Navigation:** [Index](../IMPLEMENTATION_START.md) | Prev: [Step 6](STEP_6_PR_READY.md) | Next: [Step 8](STEP_8_ADDRESS_REVIEW_FEEDBACK.md)
+
 ## Purpose
 Communicate completion clearly vs the spec, including testing and any deviations.
 

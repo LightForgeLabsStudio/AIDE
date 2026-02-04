@@ -1,5 +1,7 @@
 # Implementation Agent - Step 9: Merge After Approval
 
+**Navigation:** [Index](../IMPLEMENTATION_START.md) | Prev: [Step 8](STEP_8_ADDRESS_REVIEW_FEEDBACK.md) | Next: [Step 10](STEP_10_SYNC_MAIN.md)
+
 ## Purpose
 Merge only after approval, verify issue closure, and keep mainline clean.
 
