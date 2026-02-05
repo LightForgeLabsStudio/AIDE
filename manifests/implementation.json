@@ -1,0 +1,88 @@
+{
+  "id": "implementation",
+  "version": 1,
+  "entrypoint": "docs/agents/IMPLEMENTATION_START.md",
+  "one_pager": "docs/agents/IMPLEMENTATION_ONE_PAGER.md",
+  "skill": "skills/implement/SKILL.md",
+  "skill_consumer_prefix": ".aide/",
+  "steps": [
+    {
+      "number": 0,
+      "id": "spec_intake",
+      "title": "Spec intake",
+      "summary": "confirm goal/scope/success criteria",
+      "doc": "docs/agents/implementation/STEP_0_SPEC_INTAKE.md"
+    },
+    {
+      "number": 1,
+      "id": "codebase_survey",
+      "title": "Codebase survey",
+      "summary": "read targeted, no coding",
+      "doc": "docs/agents/implementation/STEP_1_CODEBASE_SURVEY.md"
+    },
+    {
+      "number": 2,
+      "id": "plan_and_draft_pr",
+      "title": "Plan + draft PR",
+      "summary": "plan, get approval, open draft PR",
+      "doc": "docs/agents/implementation/STEP_2_PLAN_AND_DRAFT_PR.md"
+    },
+    {
+      "number": 3,
+      "id": "implement",
+      "title": "Implement",
+      "summary": "code + tests + docs",
+      "doc": "docs/agents/implementation/STEP_3_IMPLEMENT.md"
+    },
+    {
+      "number": 4,
+      "id": "sanity_check",
+      "title": "Sanity check",
+      "summary": "verify success criteria",
+      "doc": "docs/agents/implementation/STEP_4_SANITY_CHECK.md"
+    },
+    {
+      "number": 5,
+      "id": "refinement",
+      "title": "Refinement",
+      "summary": "cleanup, best practices",
+      "doc": "docs/agents/implementation/STEP_5_REFINEMENT.md"
+    },
+    {
+      "number": 6,
+      "id": "pr_ready",
+      "title": "PR ready",
+      "summary": "mark ready for review",
+      "doc": "docs/agents/implementation/STEP_6_PR_READY.md"
+    },
+    {
+      "number": 7,
+      "id": "report_back",
+      "title": "Report back",
+      "summary": "summarize vs spec",
+      "doc": "docs/agents/implementation/STEP_7_REPORT_BACK.md"
+    },
+    {
+      "number": 8,
+      "id": "address_feedback",
+      "title": "Address feedback",
+      "summary": "fix review findings",
+      "doc": "docs/agents/implementation/STEP_8_ADDRESS_REVIEW_FEEDBACK.md"
+    },
+    {
+      "number": 9,
+      "id": "merge",
+      "title": "Merge",
+      "summary": "implementer merges after approval",
+      "doc": "docs/agents/implementation/STEP_9_MERGE.md"
+    },
+    {
+      "number": 10,
+      "id": "sync_main",
+      "title": "Sync main",
+      "summary": "update local main after merge",
+      "doc": "docs/agents/implementation/STEP_10_SYNC_MAIN.md"
+    }
+  ]
+}
+

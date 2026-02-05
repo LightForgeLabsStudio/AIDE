@@ -4,6 +4,9 @@ Command-line tools for streamlining AI-assisted development workflows.
 
 ## Available Tools
 
+### [workflow-gen](workflow-gen/)
+Generate/validate workflow artifacts from a canonical manifest (prevents skill/docs drift).
+
 ### [issue-creator](issue-creator/)
 Batch create GitHub issues with Epic/child relationships from formatted spec files.
 

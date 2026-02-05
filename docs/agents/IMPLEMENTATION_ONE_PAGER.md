@@ -13,9 +13,10 @@ For full detail, use the per-step docs from `IMPLEMENTATION_START.md`.
 
 ## Steps (Overview)
 
+<!-- AIDE-GEN:IMPLEMENTATION_STEPS_START -->
 0. **Spec intake** -> confirm goal/scope/success criteria (`implementation/STEP_0_SPEC_INTAKE.md`)
 1. **Codebase survey** -> read targeted, no coding (`implementation/STEP_1_CODEBASE_SURVEY.md`)
-2. **Plan + draft PR** -> plan, get approval, create draft PR (`implementation/STEP_2_PLAN_AND_DRAFT_PR.md`)
+2. **Plan + draft PR** -> plan, get approval, open draft PR (`implementation/STEP_2_PLAN_AND_DRAFT_PR.md`)
 3. **Implement** -> code + tests + docs (`implementation/STEP_3_IMPLEMENT.md`)
 4. **Sanity check** -> verify success criteria (`implementation/STEP_4_SANITY_CHECK.md`)
 5. **Refinement** -> cleanup, best practices (`implementation/STEP_5_REFINEMENT.md`)
@@ -24,6 +25,7 @@ For full detail, use the per-step docs from `IMPLEMENTATION_START.md`.
 8. **Address feedback** -> fix review findings (`implementation/STEP_8_ADDRESS_REVIEW_FEEDBACK.md`)
 9. **Merge** -> implementer merges after approval (`implementation/STEP_9_MERGE.md`)
 10. **Sync main** -> update local main after merge (`implementation/STEP_10_SYNC_MAIN.md`)
+<!-- AIDE-GEN:IMPLEMENTATION_STEPS_END -->
 
 ## If You’re Resuming Mid-Workflow
 
