@@ -37,6 +37,7 @@ Review a PR against the linked issue spec and project constraints. Do not push f
 4) **Report**
    - Findings grouped by severity (Critical/Major/Minor) with `path:line` references.
    - Clear decision: approve / request changes / comment-only.
+   - Prefer submitting as a formal GitHub Review via `gh pr review` (not only as a PR comment).
 
 ## Reference
 

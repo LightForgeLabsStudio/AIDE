@@ -41,9 +41,9 @@ When reviewing, also verify:
 7. **Apply custom checks** - If provided in review request
 8. **Verify tests** - Automated ran + passed (or manual checklist provided), match spec success criteria from issue
 9. **Check docs** - Updated if behavior changed
-10. **Post inline comments** - Line-specific issues via `gh pr comment`
-11. **Post summary** - Overall findings + spec alignment + decision (as comment)
-12. **Decide** - Approve / Request changes / Comment (verdict in comment body, NOT formal approval)
+10. **Post inline comments** - Line-specific issues via PR review comments
+11. **Post summary** - Overall findings + spec alignment + decision (as a GitHub Review)
+12. **Decide** - Approve / Request changes / Comment-only (submit as a formal GitHub Review)
 
 ### Re-Review (After Fixes)
 1. Read implementer's status comment
@@ -152,8 +152,13 @@ When reviewing, also verify:
 gh pr view <number>
 gh pr diff <number>
 
-# Post review comment (ALWAYS use this - same git account prevents formal approval)
-gh pr comment <number> --body "Review summary with verdict..."
+# Submit a formal GitHub Review (preferred)
+# - --comment: non-blocking review (no approval state)
+# - --request-changes: blocks merge (when critical issues exist)
+# - --approve: approval signal (may not count as "independent" under branch protection)
+gh pr review <number> --comment --body "Review summary with verdict..."
+gh pr review <number> --request-changes --body "Blocking findings..."
+gh pr review <number> --approve --body "Approval summary..."
 
 # Post inline code comment (specific line)
 gh api repos/:owner/:repo/pulls/<number>/comments \
@@ -166,14 +171,13 @@ gh api repos/:owner/:repo/pulls/<number>/comments \
 gh api repos/:owner/:repo/pulls/<number>/comments
 ```
 
-**IMPORTANT:** Since reviewer and implementer share the same git account:
-- DO NOT use `gh pr review --approve` or `--request-changes` (will fail)
-- ALWAYS use `gh pr comment` with verdict in the comment body
-- Verdict format: "**Decision:** ✅ Approve" or "**Decision:** ❌ Request Changes"
-
+**IMPORTANT:** Formal Reviews vs independence:
+- You *can* submit formal GitHub Reviews with `gh pr review` even if the reviewer is the same GitHub account as the implementer.
+- That review is not independent. Protected branches may require approvals from a different reviewer identity.
+- When in doubt, use `gh pr review --comment` and include the decision in the body.
 ## Review Output Format
 
-**Summary comment structure:**
+**Summary review structure:**
 ```markdown
 ## PR Review Summary
 
@@ -258,7 +262,7 @@ gh api repos/:owner/:repo/pulls/<number>/comments
 ## Critical Don'ts
 
 - ❌ Push code or create commits
-- ❌ Use `gh pr review --approve` (same git account - will fail)
+- ❌ Submit `gh pr review --approve` only when no critical issues exist
 - ❌ Approve verdict if critical issues exist
 - ❌ Approve verdict without verifying tests ran
 - ❌ Request changes verdict for minor issues (comment verdict instead)
