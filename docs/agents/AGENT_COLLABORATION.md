@@ -63,6 +63,13 @@ Protocol:
   - Reviewer posts: `Critical design issue: <problem>. Recommend design review.`
   - Link to the affected success criteria/pillar/assumption.
 - Designer (or user) responds with a decision, or requests a follow-up spec/issue.
+- If roles are split across separate agent sessions, include a 1-paragraph recap + link to the decision thread to avoid re-litigating context.
+
+**Example:**
+```markdown
+Critical design issue: Cargo capacity conflicts with Pillar X (link). Recommend design review.
+Impact: Current implementation assumes 2 slots; pillar implies 1. Need decision: allow 2, or redesign inventory flow?
+```
 
 ### Clarification Pattern (Any role)
 

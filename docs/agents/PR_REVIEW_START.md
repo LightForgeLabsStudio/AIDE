@@ -173,6 +173,7 @@ gh api repos/:owner/:repo/pulls/<number>/comments
 
 **IMPORTANT:** Formal Reviews vs independence:
 - You *can* submit formal GitHub Reviews with `gh pr review` even if the reviewer is the same GitHub account as the implementer.
+- GitHub will not let you **approve** (or **request changes on**) your own PR. If the reviewer identity == PR author, use `gh pr review --comment` and include the decision in the body.
 - That review is not independent. Protected branches may require approvals from a different reviewer identity.
 - When in doubt, use `gh pr review --comment` and include the decision in the body.
 ## Review Output Format
@@ -262,8 +263,7 @@ gh api repos/:owner/:repo/pulls/<number>/comments
 ## Critical Don'ts
 
 - ❌ Push code or create commits
-- ❌ Submit `gh pr review --approve` only when no critical issues exist
-- ❌ Approve verdict if critical issues exist
+- ❌ Submit `gh pr review --approve` if critical issues exist
 - ❌ Approve verdict without verifying tests ran
 - ❌ Request changes verdict for minor issues (comment verdict instead)
 - ❌ Write essay-style reviews (use structured format above)
