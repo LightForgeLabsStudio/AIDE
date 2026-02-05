@@ -176,6 +176,21 @@ gh api repos/:owner/:repo/pulls/<number>/comments
 - GitHub will not let you **approve** (or **request changes on**) your own PR. If the reviewer identity == PR author, use `gh pr review --comment` and include the decision in the body.
 - That review is not independent. Protected branches may require approvals from a different reviewer identity.
 - When in doubt, use `gh pr review --comment` and include the decision in the body.
+
+### Recommended: Separate reviewer identity (to enable approvals)
+
+If you want the `/pr-review` role to submit real approvals, use a separate GitHub identity for reviews.
+
+**Minimal setup:**
+- Create a reviewer account (human or bot) and grant it **Write** access to the repo.
+- Authenticate both accounts with GitHub CLI:
+  - `gh auth login` (implementer)
+  - `gh auth login` (reviewer)
+- Switch active identity by role:
+  - Implement: `gh auth switch -u <implementer_login>`
+  - Review: `gh auth switch -u <reviewer_login>`
+
+**Note:** You still cannot “independently approve” with the same identity that authored the PR. Separation here means “different GitHub identity”, not “different agent session”.
 ## Review Output Format
 
 **Summary review structure:**

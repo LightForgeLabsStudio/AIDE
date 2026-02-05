@@ -39,6 +39,7 @@ Review a PR against the linked issue spec and project constraints. Do not push f
     - Clear decision: approve / request changes / comment-only.
     - Prefer submitting as a formal GitHub Review via `gh pr review` (not only as a PR comment).
     - If the reviewer identity == PR author, GitHub blocks `--approve`/`--request-changes`; use `gh pr review --comment` and include the decision in the body.
+    - If approvals are desired, switch to a separate reviewer GitHub identity before reviewing (see `.aide/docs/agents/PR_REVIEW_START.md`).
 
 ## Reference
 
