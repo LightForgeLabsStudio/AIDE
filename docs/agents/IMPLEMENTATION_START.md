@@ -18,6 +18,9 @@ Implementation work (creating branches/PRs, pushing commits, merging) must be pe
 # Bash example:
 #   export GH_CONFIG_DIR="$HOME/.config/gh-implement"
 
+# Optional project hook (recommended if present):
+#   powershell -ExecutionPolicy Bypass -File tools/gh/as-implementer.ps1
+
 gh auth switch -u <implementer_login>
 gh api user --jq .login
 ```

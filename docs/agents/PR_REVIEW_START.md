@@ -19,6 +19,9 @@ PR reviews must be performed using a dedicated **reviewer** GitHub identity (not
 # Bash example:
 #   export GH_CONFIG_DIR="$HOME/.config/gh-review"
 
+# Optional project hook (recommended if present):
+#   powershell -ExecutionPolicy Bypass -File tools/gh/as-reviewer.ps1
+
 gh auth switch -u <reviewer_login>
 gh api user --jq .login
 ```
