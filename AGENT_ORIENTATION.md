@@ -74,6 +74,8 @@ Reference implementations. Copy and customize, do not follow directly.
 
 If you hit failures mid-work (tests failing, conflicts, scope pivots), use: [ERROR_RECOVERY.md](docs/agents/ERROR_RECOVERY.md)
 
+If you need cross-role handoffs or spec-gap escalation protocols, use: [AGENT_COLLABORATION.md](docs/agents/AGENT_COLLABORATION.md)
+
 ---
 
 ## Documentation Loading Policy (Always-Load vs On-Demand)

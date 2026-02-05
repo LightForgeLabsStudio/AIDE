@@ -41,3 +41,4 @@ Review a PR against the linked issue spec and project constraints. Do not push f
 ## Reference
 
 - AIDE PR review primer: `.aide/docs/agents/PR_REVIEW_START.md`
+- Cross-role handoffs + escalation protocol: `.aide/docs/agents/AGENT_COLLABORATION.md`
