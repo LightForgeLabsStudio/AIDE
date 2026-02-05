@@ -262,8 +262,7 @@ gh api repos/:owner/:repo/pulls/<number>/comments
 ## Critical Don'ts
 
 - ❌ Push code or create commits
-- ❌ Submit `gh pr review --approve` only when no critical issues exist
-- ❌ Approve verdict if critical issues exist
+- ❌ Submit `gh pr review --approve` if critical issues exist
 - ❌ Approve verdict without verifying tests ran
 - ❌ Request changes verdict for minor issues (comment verdict instead)
 - ❌ Write essay-style reviews (use structured format above)
