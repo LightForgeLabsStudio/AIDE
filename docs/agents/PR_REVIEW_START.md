@@ -12,16 +12,16 @@ PR reviews must be performed using a dedicated **reviewer** GitHub identity (not
 
 **Before starting:**
 ```bash
-## Preferred: isolated auth store for the reviewer role
-# (pick a location that matches your OS conventions)
+## Canonical: separate auth store + separate window for /pr-review
+# - Prefer running reviews in a dedicated terminal/VS Code window where GH_CONFIG_DIR is already set.
 # PowerShell example:
 #   $env:GH_CONFIG_DIR="$env:USERPROFILE\.config\gh-review"
 # Bash example:
 #   export GH_CONFIG_DIR="$HOME/.config/gh-review"
 
-# Optional project hook (recommended if present):
-#   powershell -ExecutionPolicy Bypass -File tools/gh/as-reviewer.ps1
+gh api user --jq .login
 
+# If the active login is not the reviewer login:
 gh auth switch -u <reviewer_login>
 gh api user --jq .login
 ```
@@ -201,18 +201,19 @@ gh api repos/:owner/:repo/pulls/<number>/comments
 
 ### Recommended: Separate reviewer identity (to enable approvals)
 
-If you want the `/pr-review` role to submit real approvals, use a separate GitHub identity for reviews.
+If you want `/pr-review` to submit real approvals, use a separate GitHub identity for reviews and keep it isolated from implementation work.
 
-**Minimal setup:**
+**Canonical setup (recommended):**
 - Create a reviewer account (human or bot) and grant it **Write** access to the repo.
-- Authenticate both accounts with GitHub CLI:
-  - `gh auth login` (implementer)
-  - `gh auth login` (reviewer)
-- Switch active identity by role:
-  - Implement: `gh auth switch -u <implementer_login>`
-  - Review: `gh auth switch -u <reviewer_login>`
+- Use separate `gh` auth stores:
+  - Implementer store: set `GH_CONFIG_DIR` to a path like `.../gh-implement`, then run `gh auth login`.
+  - Reviewer store: set `GH_CONFIG_DIR` to a path like `.../gh-review`, then run `gh auth login`.
+- Run `/implement` and `/pr-review` in separate windows (each with its own `GH_CONFIG_DIR`).
 
-**Note:** You still cannot “independently approve” with the same identity that authored the PR. Separation here means “different GitHub identity”, not “different agent session”.
+**Fallback (works but easier to misuse):**
+- Use a single store and manually switch identities via `gh auth switch`.
+
+**Note:** You still cannot approve your own PR. Separation here means “different GitHub identity”, not “different agent session”.
 ## Review Output Format
 
 **Summary review structure:**

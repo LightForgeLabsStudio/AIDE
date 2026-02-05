@@ -24,7 +24,6 @@ If there is no spec yet, switch to `/design` (exploration) before implementing.
 
 - Use the implementer GitHub identity for all implementation actions (branch/PR/push/merge).
 - Prefer an isolated `gh` auth store for the implementer role via `GH_CONFIG_DIR` (see `.aide/docs/agents/IMPLEMENTATION_START.md`).
-- Preferred: `powershell -ExecutionPolicy Bypass -File tools/gh/as-implementer.ps1` (if present).
 - If the active GitHub identity is the reviewer identity, stop and request switching identities before proceeding.
 
 ## Workflow

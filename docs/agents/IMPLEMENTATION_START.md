@@ -12,15 +12,16 @@ Implementation work (creating branches/PRs, pushing commits, merging) must be pe
 
 **Before starting:**
 ```bash
-## Preferred: isolated auth store for the implementer role
+## Canonical: separate auth store + separate window for /implement
+# - Prefer running implementation in a dedicated terminal/VS Code window where GH_CONFIG_DIR is already set.
 # PowerShell example:
 #   $env:GH_CONFIG_DIR="$env:USERPROFILE\.config\gh-implement"
 # Bash example:
 #   export GH_CONFIG_DIR="$HOME/.config/gh-implement"
 
-# Optional project hook (recommended if present):
-#   powershell -ExecutionPolicy Bypass -File tools/gh/as-implementer.ps1
+gh api user --jq .login
 
+# If the active login is not the implementer login:
 gh auth switch -u <implementer_login>
 gh api user --jq .login
 ```
