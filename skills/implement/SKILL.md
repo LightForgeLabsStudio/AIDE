@@ -20,6 +20,12 @@ Implement a feature/bug end-to-end using the AIDE implementation workflow.
 
 If there is no spec yet, switch to `/design` (exploration) before implementing.
 
+## Identity (REQUIRED)
+
+- Use the implementer GitHub identity for all implementation actions (branch/PR/push/merge).
+- Prefer an isolated `gh` auth store for the implementer role via `GH_CONFIG_DIR` (see `.aide/docs/agents/IMPLEMENTATION_START.md`).
+- If the active GitHub identity is the reviewer identity, stop and request switching identities before proceeding.
+
 ## Workflow
 
 This skill follows the canonical Implementation workflow. The step list below is generated from the workflow manifest to prevent drift.

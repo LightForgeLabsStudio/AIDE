@@ -12,6 +12,13 @@ PR reviews must be performed using a dedicated **reviewer** GitHub identity (not
 
 **Before starting:**
 ```bash
+## Preferred: isolated auth store for the reviewer role
+# (pick a location that matches your OS conventions)
+# PowerShell example:
+#   $env:GH_CONFIG_DIR="$env:USERPROFILE\.config\gh-review"
+# Bash example:
+#   export GH_CONFIG_DIR="$HOME/.config/gh-review"
+
 gh auth switch -u <reviewer_login>
 gh api user --jq .login
 ```

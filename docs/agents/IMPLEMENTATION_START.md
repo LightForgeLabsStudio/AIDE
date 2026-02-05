@@ -6,6 +6,24 @@ Token Economy: follow `AGENT_OPERATIONAL_TOKEN_ECONOMY.md` (read targeted, commu
 
 Default behavior: for implementation work, complete the full workflow (branch, tests, draft PR, ready PR, merge, sync). Do not offer or accept skip options.
 
+## Identity (REQUIRED)
+
+Implementation work (creating branches/PRs, pushing commits, merging) must be performed using the **implementer** GitHub identity (not the reviewer identity).
+
+**Before starting:**
+```bash
+## Preferred: isolated auth store for the implementer role
+# PowerShell example:
+#   $env:GH_CONFIG_DIR="$env:USERPROFILE\.config\gh-implement"
+# Bash example:
+#   export GH_CONFIG_DIR="$HOME/.config/gh-implement"
+
+gh auth switch -u <implementer_login>
+gh api user --jq .login
+```
+
+If the active identity is not the implementer identity, **stop** and request setup/switching before proceeding.
+
 ## Multi-Iteration Protocol (Same Chat / Session)
 
 Sometimes a session completes one implementation loop and immediately starts another (new issue, new feature, or a follow-up bug). To keep context clean and avoid workflow drift, do this explicitly.
