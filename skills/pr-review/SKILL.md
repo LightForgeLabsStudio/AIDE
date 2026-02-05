@@ -39,9 +39,10 @@ Review a PR against the linked issue spec and project constraints. Do not push f
     - Findings grouped by severity (Critical/Major/Minor) with `path:line` references.
     - Clear decision: approve / request changes / non-blocking.
     - Prefer submitting as a formal GitHub Review via `gh pr review` (not only as a PR comment).
-    - Switch to the reviewer identity before reviewing:
-      - Preferred: `powershell -ExecutionPolicy Bypass -File tools/gh/as-reviewer.ps1` (if present)
-      - Fallback: `gh auth switch -u <reviewer_login>` (see `.aide/docs/agents/PR_REVIEW_START.md`)
+    - Run reviews from a dedicated reviewer context:
+      - Prefer a separate window/terminal with `GH_CONFIG_DIR` set to the reviewer auth store.
+      - Verify identity with `gh api user --jq .login` before submitting a review.
+      - If needed, use `gh auth switch -u <reviewer_login>` (see `.aide/docs/agents/PR_REVIEW_START.md`).
     - If the reviewer identity == PR author, stop and request switching identities (do not review as the author).
 
 ## Reference
