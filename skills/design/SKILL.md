@@ -48,3 +48,4 @@ When requested, create issues directly (follow `/issue` workflow):
 
 - Exploration primer: `.aide/docs/agents/DESIGN_WORKSHOP_START.md`
 - Spec reference (project-adapted): `.aide/docs/agents/design/DESIGN_SPEC_REFERENCE.md`
+- Cross-role handoffs + spec-gap protocol: `.aide/docs/agents/AGENT_COLLABORATION.md`

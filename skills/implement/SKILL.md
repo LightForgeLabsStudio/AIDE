@@ -50,3 +50,4 @@ Canonical workflow (also see: `.aide/docs/agents/IMPLEMENTATION_ONE_PAGER.md`).
 
 - AIDE implementation primer: `.aide/docs/agents/IMPLEMENTATION_START.md`
 - Step docs: `.aide/docs/agents/implementation/`
+- Spec gaps + cross-role handoffs: `.aide/docs/agents/AGENT_COLLABORATION.md`

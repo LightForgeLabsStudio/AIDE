@@ -96,6 +96,12 @@ Fix approach:
 Escalate if:
 - The pivot contradicts design pillars, Tier 1 rules, or requires a new architecture decision.
 
+### 5) Spec gap discovered mid-implementation
+
+If the spec is insufficient or contradictory, use the decision tree and escalation protocol in:
+
+- `docs/agents/AGENT_COLLABORATION.md` (Part 1: Handling Spec Gaps)
+
 ## Handy Commands (Generic)
 
 - Show current state: `git status -sb`, `git log -1 --oneline`

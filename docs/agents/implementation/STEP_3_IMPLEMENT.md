@@ -99,6 +99,11 @@ Don't:
 - Ignore problems without tracking them
 - Let technical debt accumulate silently
 
+## Handling Spec Gaps
+
+If you discover the spec is incomplete or ambiguous (blocker/minor/ambiguous), follow:
+- `docs/agents/AGENT_COLLABORATION.md` (Part 1: Handling Spec Gaps)
+
 ## Exit Criteria
 - All planned tasks are implemented (or explicitly deferred with issue(s) filed).
 - PR checklist reflects completed work.
