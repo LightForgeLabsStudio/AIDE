@@ -22,33 +22,29 @@ If there is no spec yet, switch to `/design` (exploration) before implementing.
 
 ## Workflow
 
-1) **Read Tier 1 rules**
-   - Use the project's constraints and placeholder commands (already loaded in this environment).
-   - Load relevant design pillar(s) only if the spec touches them.
+This skill follows the canonical Implementation workflow. The step list below is generated from the workflow manifest to prevent drift.
 
-2) **Preflight**
-   - Ensure you are not working on `main` (create a branch).
-   - Identify authoritative systems (e.g., `InventoryService`, `JobSystem`) and avoid duplicating state.
+<!-- AIDE-GEN:IMPLEMENT_WORKFLOW_START -->
+Canonical workflow (also see: `.aide/docs/agents/IMPLEMENTATION_ONE_PAGER.md`).
 
-3) **Plan before coding**
-   - Produce a short two-layer plan (constraints + steps with exit criteria).
-   - Wait for user approval before making code changes.
+0) **Spec intake** -> confirm goal/scope/success criteria (`.aide/docs/agents/implementation/STEP_0_SPEC_INTAKE.md`)
+1) **Codebase survey** -> read targeted, no coding (`.aide/docs/agents/implementation/STEP_1_CODEBASE_SURVEY.md`)
+2) **Plan + draft PR** -> plan, get approval, open draft PR (`.aide/docs/agents/implementation/STEP_2_PLAN_AND_DRAFT_PR.md`)
+3) **Implement** -> code + tests + docs (`.aide/docs/agents/implementation/STEP_3_IMPLEMENT.md`)
+4) **Sanity check** -> verify success criteria (`.aide/docs/agents/implementation/STEP_4_SANITY_CHECK.md`)
+5) **Refinement** -> cleanup, best practices (`.aide/docs/agents/implementation/STEP_5_REFINEMENT.md`)
+6) **PR ready** -> mark ready for review (`.aide/docs/agents/implementation/STEP_6_PR_READY.md`)
+7) **Report back** -> summarize vs spec (`.aide/docs/agents/implementation/STEP_7_REPORT_BACK.md`)
+8) **Address feedback** -> fix review findings (`.aide/docs/agents/implementation/STEP_8_ADDRESS_REVIEW_FEEDBACK.md`)
+9) **Merge** -> implementer merges after approval (`.aide/docs/agents/implementation/STEP_9_MERGE.md`)
+10) **Sync main** -> update local main after merge (`.aide/docs/agents/implementation/STEP_10_SYNC_MAIN.md`)
+<!-- AIDE-GEN:IMPLEMENT_WORKFLOW_END -->
 
-4) **Draft PR early**
-   - Create a draft PR as soon as the plan is approved.
-   - Ensure PR links the issue (e.g., "Fixes #123") and includes a validation checklist.
-
-5) **Implement**
-   - Extend existing patterns (do not replace architecture).
-   - Keep simulation deterministic (no unseeded randomness in core logic).
-   - Do not modify existing tests without explicit approval.
-
-6) **Validate**
-   - Run lint/tests using the project's placeholder-mapped commands.
-   - Confirm success criteria are met.
-
-7) **Land the plane**
-   - Commit cleanly, then `git push` (required by project rules).
+**Phases (compressed guidance):**
+- Intake + survey (Steps 0–1): confirm spec and map the change surface (no coding).
+- Plan + draft PR (Step 2): write two-layer plan, get approval, open draft PR.
+- Implement + verify (Steps 3–5): implement, verify success criteria, refine.
+- Ship (Steps 6–10): mark PR ready, report back, address feedback, merge, sync main.
 
 ## Reference
 
