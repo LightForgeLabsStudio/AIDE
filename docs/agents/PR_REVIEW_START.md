@@ -6,6 +6,18 @@ Review PRs for {{PROJECT_NAME}} ({{TECH_STACK}}).
 
 **Token Economy:** Follow `AGENT_OPERATIONAL_TOKEN_ECONOMY.md` - structured reviews (not prose), reference file:line, batch tool calls.
 
+## Identity (REQUIRED)
+
+PR reviews must be performed using a dedicated **reviewer** GitHub identity (not the implementer/author identity).
+
+**Before starting:**
+```bash
+gh auth switch -u <reviewer_login>
+gh api user --jq .login
+```
+
+If the active identity is not the reviewer identity, **stop** and request setup/switching before proceeding.
+
 ## Review Request Format
 
 User may request reviews with optional custom checklists/concerns:
@@ -43,13 +55,13 @@ When reviewing, also verify:
 9. **Check docs** - Updated if behavior changed
 10. **Post inline comments** - Line-specific issues via PR review comments
 11. **Post summary** - Overall findings + spec alignment + decision (as a GitHub Review)
-12. **Decide** - Approve / Request changes / Comment-only (submit as a formal GitHub Review)
+12. **Decide** - Approve / Request changes / Non-blocking (submit as a formal GitHub Review)
 
 ### Re-Review (After Fixes)
-1. Read implementer's status comment
+1. Read implementer's status update (PR description + latest PR conversation)
 2. Verify fixes in new commits
 3. Check tests still pass
-4. Decide: Approve / Request more / Comment
+4. Decide: Approve / Request more / Non-blocking
 
 **Comment resolution:**
 - Implementers MAY resolve as they fix
@@ -137,12 +149,12 @@ When reviewing, also verify:
 - Modifies tests without justification
 - Security risks, crashes
 
-**Request Changes or Comment (Major):**
+**Request Changes or Non-blocking (Major):**
 - Over-engineering, poor commits, style violations
 - Module boundary violations
 - Missing tests (where feasible)
 
-**Comment Only (Minor):**
+**Non-blocking (Minor):**
 - Typos, naming, small simplifications
 
 ## GitHub CLI Commands
@@ -153,7 +165,7 @@ gh pr view <number>
 gh pr diff <number>
 
 # Submit a formal GitHub Review (preferred)
-# - --comment: non-blocking review (no approval state)
+# - --comment: non-blocking review (formal review, no approval state)
 # - --request-changes: blocks merge (when critical issues exist)
 # - --approve: approval signal (may not count as "independent" under branch protection)
 gh pr review <number> --comment --body "Review summary with verdict..."
@@ -172,10 +184,10 @@ gh api repos/:owner/:repo/pulls/<number>/comments
 ```
 
 **IMPORTANT:** Formal Reviews vs independence:
-- You *can* submit formal GitHub Reviews with `gh pr review` even if the reviewer is the same GitHub account as the implementer.
-- GitHub will not let you **approve** (or **request changes on**) your own PR. If the reviewer identity == PR author, use `gh pr review --comment` and include the decision in the body.
+- Use the reviewer identity for all PR reviews (see **Identity (REQUIRED)** above).
+- GitHub will not let you **approve** (or **request changes on**) your own PR. If the reviewer identity == PR author, stop and switch identities before continuing.
 - That review is not independent. Protected branches may require approvals from a different reviewer identity.
-- When in doubt, use `gh pr review --comment` and include the decision in the body.
+- Use `gh pr review --comment` for non-blocking feedback (minor issues, optional suggestions).
 
 ### Recommended: Separate reviewer identity (to enable approvals)
 
@@ -197,7 +209,7 @@ If you want the `/pr-review` role to submit real approvals, use a separate GitHu
 ```markdown
 ## PR Review Summary
 
-**Decision:** [Approve / Request Changes / Comment]
+**Decision:** [Approve / Request Changes / Non-blocking]
 
 ### Critical Issues (must fix before merge)
 - ❌ [Issue description] (file.ext:line)
@@ -280,14 +292,14 @@ If you want the `/pr-review` role to submit real approvals, use a separate GitHu
 - ❌ Push code or create commits
 - ❌ Submit `gh pr review --approve` if critical issues exist
 - ❌ Approve verdict without verifying tests ran
-- ❌ Request changes verdict for minor issues (comment verdict instead)
+- ❌ Request changes verdict for minor issues (use a non-blocking verdict instead)
 - ❌ Write essay-style reviews (use structured format above)
 
 ## Review Checklist
 
 Before posting review:
 - [ ] All critical issues have inline comments at specific lines
-- [ ] Summary comment includes decision + severity breakdown
+- [ ] Summary review includes decision + severity breakdown
 - [ ] Test status verified (automated or manual checklist)
 - [ ] Doc updates checked if behavior changed
 - [ ] Decision matches severity (critical = request changes)

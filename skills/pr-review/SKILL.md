@@ -16,6 +16,7 @@ Review a PR against the linked issue spec and project constraints. Do not push f
 ## Inputs (ask first)
 
 - PR number or URL.
+- Reviewer GitHub login to use for reviews (must not be the PR author).
 - Any custom concerns/checks the requester wants verified.
 
 ## Workflow
@@ -36,10 +37,10 @@ Review a PR against the linked issue spec and project constraints. Do not push f
 
 4) **Report**
     - Findings grouped by severity (Critical/Major/Minor) with `path:line` references.
-    - Clear decision: approve / request changes / comment-only.
+    - Clear decision: approve / request changes / non-blocking.
     - Prefer submitting as a formal GitHub Review via `gh pr review` (not only as a PR comment).
-    - If the reviewer identity == PR author, GitHub blocks `--approve`/`--request-changes`; use `gh pr review --comment` and include the decision in the body.
-    - If approvals are desired, switch to a separate reviewer GitHub identity before reviewing (see `.aide/docs/agents/PR_REVIEW_START.md`).
+    - Switch to the reviewer identity before reviewing: `gh auth switch -u <reviewer_login>` (see `.aide/docs/agents/PR_REVIEW_START.md`).
+    - If the reviewer identity == PR author, stop and request switching identities (do not review as the author).
 
 ## Reference
 
