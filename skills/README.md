@@ -141,6 +141,7 @@ Check tool documentation for skill installation. Most support the same `SKILL.md
 | **sync** | `/sync` | End-of-session git sync (pull, push, verify) |
 | **issue** | `/issue` | Create labeled GitHub issue |
 | **pr-ready** | `/pr-ready` | Validate and mark PR ready |
+| **pr-draft** | `/pr-draft` | Create draft PR with validated body template |
 | **skill-author** | `/skill-author` | Create or update skills (frontmatter, workflow, install) |
 
 ## Development

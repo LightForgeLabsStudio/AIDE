@@ -60,7 +60,13 @@ Present plan:
 Ready to proceed?
 ```
 
-After approval, create branch + draft PR:
+After approval, create branch + draft PR via `/pr-draft`:
+
+```text
+/pr-draft
+```
+
+If you must run manually, use a body file and local validation (avoid inline escaped `--body` strings):
 
 Note: the PR body example uses a bash heredoc. For other shells, use the equivalent (e.g., PowerShell here-string) or edit the PR body in your editor.
 
@@ -75,12 +81,11 @@ Implements: #<issue-number>
 
 Co-Authored-By: [Agent Name] <agent@{{PROJECT_DOMAIN}}>"
 
-# Push and create draft PR with plan as checklist
+# Push branch
 git push -u origin feature/<brief-name>
 
-gh pr create --draft \
-  --title "<Feature brief>" \
-  --body "$(cat <<'EOF'
+# Write PR body to a temp file (example)
+cat > /tmp/pr_body.md <<'EOF'
 ## Summary
 [1-2 sentences]
 
@@ -104,7 +109,14 @@ gh pr create --draft \
 ---
 [Agent Name] Implementation
 EOF
-)"
+
+# Validate body formatting locally before create/edit
+powershell -ExecutionPolicy Bypass -File tools/validate_pr_body.ps1 -Body "$(cat /tmp/pr_body.md)"
+
+# Create draft PR from body file
+gh pr create --draft \
+  --title "<Feature brief>" \
+  --body-file /tmp/pr_body.md
 ```
 
 Key points:

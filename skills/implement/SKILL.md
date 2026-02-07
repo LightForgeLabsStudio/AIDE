@@ -48,7 +48,7 @@ Canonical workflow (also see: `.aide/docs/agents/IMPLEMENTATION_ONE_PAGER.md`).
 
 **Phases (compressed guidance):**
 - Intake + survey (Steps 0–1): confirm spec and map the change surface (no coding).
-- Plan + draft PR (Step 2): write two-layer plan, get approval, open draft PR.
+- Plan + draft PR (Step 2): write two-layer plan, get approval, open draft PR via `/pr-draft`.
 - Implement + verify (Steps 3–5): implement, verify success criteria, refine.
 - Ship (Steps 6–10): mark PR ready, report back, address feedback, merge, sync main.
 
