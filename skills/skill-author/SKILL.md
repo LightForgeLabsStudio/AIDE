@@ -1,56 +1,41 @@
 ---
 name: skill-author
-description: Create or update AIDE skills in .aide/skills with valid YAML frontmatter and consistent install workflow.
+description: Create or update an AIDE skill in .aide/skills with valid frontmatter and a concise workflow.
 ---
 
 # Skill Author
 
-Create a new skill (or refine an existing one) in the unified AIDE skills system.
+Create a new skill or refine an existing one. Skills are task starters, not role primers.
 
-## Inputs (ask first)
+## Inputs
 
-- Are we **creating** a new skill or **updating** an existing one
-- Desired command name (hyphenated, e.g. `skill-author`)
-- 1–2 sentence goal for the skill (what user wants done)
-- Trigger guidance (what should cause this skill to be chosen)
-- Target tools to verify (Codex, Claude, both)
-
-## Output contract (what to produce)
-
-- A folder: `.aide/skills/<skill-name>/`
-- A `SKILL.md` with:
-  - YAML frontmatter: `name`, `description`
-  - A concise, step-by-step workflow in the body
-- Update `.aide/skills/README.md` to list the skill
+- Creating or updating an existing skill?
+- Command name (hyphenated, e.g. `skill-author`)
+- 1-2 sentence goal (what the user wants done)
+- What triggers this skill (when should it be chosen over others?)
 
 ## Workflow
 
-1) Define scope
-   - What this skill does (and what it explicitly does not do)
-   - Any repo-specific invariants it must respect (link, don’t duplicate)
+1. **Define scope** — What this skill does and what it explicitly does not do. Link to AGENTS.md for project facts; do not duplicate them.
 
-2) Choose metadata (frontmatter)
-   - `name`: hyphenated command name
-   - `description`: short, plain text, avoid extra `:` characters
+2. **Choose metadata** — `name`: hyphenated. `description`: short plain text, no extra `:` characters.
 
-3) Draft the SKILL.md body (progressive disclosure)
-   - **Inputs** section (what to ask the user for)
-   - **Steps** section (numbered, deterministic, minimal ambiguity)
-   - **References/resources** section (only link what’s necessary)
+3. **Write SKILL.md** to `.aide/skills/<skill-name>/SKILL.md`:
+   - YAML frontmatter: `name` + `description` only
+   - Task definition (not role framing — no "Documentation Loading (role-based)" sections)
+   - **Inputs** section
+   - **Workflow** section (numbered, deterministic steps)
+   - **Reference** section only if linking to a real file that must exist
+   - Target: 30-50 lines total
 
-4) Add bundled resources only if they pay for themselves
-   - `scripts/` when deterministic execution is needed or repeated work appears
-   - `references/` for long docs that should be loaded on-demand
-   - Avoid extra docs like `README.md` inside the skill folder
+4. **Add bundled resources only if they pay for themselves** — `scripts/` for deterministic execution, no extra READMEs inside the skill folder.
 
-5) Install and sanity check
-   - Codex repo-local install: run `.aide/skills/install-codex.ps1`
-   - Claude install: run `.aide/skills/install-claude.ps1` (override `-SkillsPath` if your setup is user-level)
-   - Reload tool UI and confirm the new `/skill-name` appears
+5. **Install** — Run `.aide/skills/install-claude.ps1`. Reload tool UI and confirm `/skill-name` appears.
 
 ## Authoring checklist
 
-- `SKILL.md` frontmatter is valid YAML
-- `description` is short and avoids extra `:` characters
-- Skill instructions are actionable (no “hand-wavy” steps)
-- References are links, not pasted walls of text
+- Frontmatter is valid YAML
+- `description` has no extra `:` characters
+- Steps are actionable (no hand-wavy language)
+- No references to deleted primer files
+- File is 30-50 lines

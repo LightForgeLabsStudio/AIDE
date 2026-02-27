@@ -4,120 +4,84 @@
 
 ---
 
-## Agent Roles
+## Agent Workflow Model
 
-| Role | Purpose | Primer |
-|------|---------|--------|
-| **Implementation** | Build features, fix bugs | [IMPLEMENTATION_START.md](docs/agents/IMPLEMENTATION_START.md) |
-| **PR Review** | Review code quality, architecture | [PR_REVIEW_START.md](docs/agents/PR_REVIEW_START.md) |
-| **Codebase Review** | Holistic health audits | [CODEBASE_REVIEW_START.md](docs/agents/CODEBASE_REVIEW_START.md) |
-| **Design** | Design exploration + issue-ready specs | [DESIGN_WORKSHOP_START.md](docs/agents/DESIGN_WORKSHOP_START.md) + [DESIGN_SPEC_REFERENCE.md](docs/agents/design/DESIGN_SPEC_REFERENCE.md) |
-| **Doc Review** | Documentation accuracy | [DOC_REVIEW_START.md](docs/agents/DOC_REVIEW_START.md) |
+AIDE uses **skills** — task-focused, self-contained workflow definitions — instead of role primers.
+
+| Skill | Purpose |
+| --- | --- |
+| `/implement` | Build features, fix bugs, end-to-end |
+| `/design` | Design exploration → ADR |
+| `/scope` | Decompose ADR into GitHub issues |
+| `/pr-review` | Review code quality, architecture |
+| `/pr-draft`, `/pr-ready` | PR lifecycle |
+| `/codebase-review` | Holistic health audits |
+| `/doc-review` | Documentation accuracy |
+| `/review` | Cross-cutting artifact review (two-file protocol) |
+| `/quality`, `/handoff`, `/sync`, `/issue`, `/evolve`, `/skill-author` | Utilities |
+
+Full catalog: `docs/agents/COMMAND_CATALOG.md`
 
 ---
 
 ## Document Authority Hierarchy
 
+### Tier 0: Always-Available
+
+Project's `AGENTS.md` — placeholder mappings, critical invariants, skill entry workflow. Always in context.
+
 ### Tier 1: Authoritative (Binding)
-Project-side documents satisfy AIDE contracts. Agents MUST read project's authority mapping first.
+Project-side documents satisfy AIDE contracts.
 
 | Expectation | Project Must Provide |
-|-------------|---------------------|
-| Placeholder mappings | `AGENTS.md` or equivalent with `{{PLACEHOLDER}}` -> value table |
+| --- | --- |
+| Placeholder mappings | `AGENTS.md` with `{{PLACEHOLDER}}` → value table |
 | Code style rules | `{{CODING_GUIDELINES_DOC}}` |
 | Test requirements | `{{TESTING_POLICY_DOC}}` |
 | Workflow rules | `{{CONTRIBUTING_DOC}}` |
 
-### Tier 2: Framework Reference (AIDE)
-AIDE provides workflow structure. Projects customize via placeholder mappings.
+### Tier 2: Compact Reference (On-Demand)
 
-| Document | Purpose |
-|----------|---------|
-| [docs/agents/*.md](docs/agents/) | Role-specific workflow primers |
-| [docs/core/*.md](docs/core/) | Process templates |
-| [AGENT_OPERATIONAL_TOKEN_ECONOMY.md](docs/agents/AGENT_OPERATIONAL_TOKEN_ECONOMY.md) | Efficiency guidelines |
+AIDE provides compact reference files in `docs/agents/`. Skills load these only when needed — not preloaded.
+
+| File | Purpose |
+| --- | --- |
+| `COMMAND_CATALOG.md` | Skill directory with chaining flows |
+| `GITHUB_QUERIES.md` | GraphQL queries for issue relationships |
+| `GITHUB_LABELS.md` | Label taxonomy and conventions |
+| `PLACEHOLDER_CONTRACTS.md` | Placeholder resolution rules |
+| `issue-creator-ref.md` | Issue creator format and error handling |
+| `ERROR_RECOVERY.md` | Recovery loop and failure modes |
+| `AGENT_COLLABORATION.md` | Spec gap decision tree |
+| `TOKEN_ECONOMY.md` | Context budget strategies |
+| `SYSTEM_EVOLUTION.md` | Decision tree for scoping rules |
 
 ### Tier 3: Examples (Non-Binding)
-Reference implementations. Copy and customize, do not follow directly.
-
-| Path | Purpose |
-|------|---------|
-| [docs/examples/](docs/examples/) | Tech-stack-specific templates |
-
----
-
-## Workflow Stages (Implementation)
-
-```
-0. Spec Intake      -> Get issue/spec, extract goals
-1. Codebase Survey  -> Read targeted, NO CODING
-2. Plan + Draft PR  -> Get approval, create branch
-3. Implement        -> Code + tests, clean commits
-4. Sanity Check     -> Verify success criteria
-5. Refinement       -> Cleanup, best practices
-6. PR Ready         -> Mark for review
-7. Report Back      -> Summarize vs spec
-8. Address Feedback -> Fix review issues
-9. Merge            -> After approval
-10. Sync Main       -> Update local
-```
+`docs/examples/` — tech-stack-specific templates. Copy and customize; do not follow directly.
 
 ---
 
 ## Entry Workflow
 
-1. **Project provides orientation** -> Read project's `AGENT_ORIENTATION.md` or `AGENTS.md`
-2. **Resolve placeholders** -> Map `{{PLACEHOLDERS}}` using project's table
-3. **Pick the right role** -> If unsure, use [SKILL_ROUTER.md](docs/agents/SKILL_ROUTER.md)
-4. **Load role primer** -> Read appropriate primer from `docs/agents/`
-5. **Execute workflow** -> Follow primer end-to-end
-
-If you hit failures mid-work (tests failing, conflicts, scope pivots), use: [ERROR_RECOVERY.md](docs/agents/ERROR_RECOVERY.md)
-
-If you need cross-role handoffs or spec-gap escalation protocols, use: [AGENT_COLLABORATION.md](docs/agents/AGENT_COLLABORATION.md)
+1. **Read project `AGENTS.md`** — placeholders, invariants, skill entry workflow
+2. **Resolve placeholders** — map `{{PLACEHOLDERS}}` using project's table
+3. **Choose a skill** — invoke the right skill for the task; consult `COMMAND_CATALOG.md` if unsure
+4. **Execute workflow** — skills are self-contained; follow end-to-end; load Tier 2 refs only when needed
 
 ---
 
-## Documentation Loading Policy (Always-Load vs On-Demand)
+## Documentation Loading
 
-To enforce token discipline, agent-facing documentation is classified by when it should be loaded.
-
-### Always-loaded (minimal, authoritative)
-Load these by default at session start:
-
-- Project `AGENT_ORIENTATION.md` or `AGENTS.md` (Tier 1 authority and placeholder mappings)
-- This document: `AGENT_ORIENTATION.md` (AIDE entry + authority model)
-
-### Stage-loaded (situational, load only when you reach the stage)
-Load these only when the current task/stage needs them:
-
-- Role primer for the active role (for example, `docs/agents/IMPLEMENTATION_START.md`)
-- `docs/agents/AGENT_OPERATIONAL_TOKEN_ECONOMY.md` when doing implementation/review work
-- `docs/agents/GITHUB_QUERIES.md` when querying issues/PRs via `gh`
-- `docs/agents/GITHUB_LABELS.md` when applying/creating labels
-- `docs/agents/PLACEHOLDER_CONTRACTS.md` when validating or authoring project placeholder mappings
-- `docs/agents/SYSTEM_EVOLUTION.md` when applying `/evolve` or updating constraints
-
-### Optional (tooling/skills)
-If your tool supports reusable commands (skills), consult:
-
-- `docs/agents/COMMAND_CATALOG.md` for a tool-agnostic slash-command catalog
-- `docs/core/SESSION_HANDOFF.template.md` for a standard session handoff format
-
-### Reference-only (on-demand deep reads)
-Load only when explicitly needed for a decision or template:
-
-- `docs/core/` templates
-- `docs/examples/` examples
-- Any long-form guidance not required to execute the current stage
-
-Rule of thumb: default startup should not preload deep reference material. Prefer targeted reads linked from the current role/stage doc.
+- **Tier 0:** Project `AGENTS.md` — always in context
+- **Tier 1:** Skills — loaded on invocation, self-contained
+- **Tier 2:** `docs/agents/` compact refs — loaded on demand from skills
+- **Rule:** Never preload deep reference material. Default startup should read only `AGENTS.md`.
 
 ---
 
 ## Required Project Contracts
 
-Projects using AIDE MUST provide configuration. See [PLACEHOLDER_CONTRACTS.md](docs/agents/PLACEHOLDER_CONTRACTS.md) for:
+Projects using AIDE MUST provide configuration. See `docs/agents/PLACEHOLDER_CONTRACTS.md` for:
 
 - Required vs optional placeholder mappings
 - Required GitHub label conventions (status, area, priority)
@@ -125,4 +89,4 @@ Projects using AIDE MUST provide configuration. See [PLACEHOLDER_CONTRACTS.md](d
 
 ---
 
-*This document defines AIDE expectations. Projects satisfy them via explicit mappings.*
+*This document defines AIDE expectations. Projects satisfy them via explicit mappings in `AGENTS.md`.*

@@ -60,8 +60,8 @@ For the complete {{design vision/architecture/goals}}, see `{{DESIGN_DOCS_PATH}}
 - `{{DESIGN_DOCS_PATH}}` - Complete design documentation
 
 **Agent Workflows:**
-- [docs/agents/IMPLEMENTATION_START.md](docs/agents/IMPLEMENTATION_START.md) - Implementation workflow
-- [docs/agents/PR_REVIEW_START.md](docs/agents/PR_REVIEW_START.md) - Review workflow
+
+- [AGENTS.md](AGENTS.md) - Skill entry workflow (implement, review, and all utilities)
 
 ## License
 

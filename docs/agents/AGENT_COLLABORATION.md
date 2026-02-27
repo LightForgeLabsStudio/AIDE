@@ -1,79 +1,31 @@
 # Agent Collaboration Protocols
 
-Use this when coordinating across roles (designer ↔ implementer ↔ reviewer) or when you discover a spec gap mid-work.
+Use when coordinating across roles or when you discover a spec gap mid-work.
 
-Primary goals:
-- Keep discussion **in one place** (GitHub issue/PR threads) so context isn’t dropped.
-- Reduce agent paralysis by making escalation **mechanical**.
-- Preserve clean handoffs without adding process bloat.
+## Spec Gap Decision Tree
 
-## Part 1: Handling Spec Gaps (Decision Tree)
+When the spec is insufficient during implementation:
 
-When you discover the spec is insufficient during implementation, categorize it:
+1. **Critical blocker** (spec unimplementable)
+   - Stop. Create an issue: `Spec gap: <short description>`.
+   - Comment on original issue/PR: what's blocked, decision needed, `Blocked by #<new-issue>`.
+   - Wait for decision before proceeding.
 
-1) **Is it a critical blocker?** (spec is unimplementable)
-- Yes -> Scenario A
-- No -> continue
+2. **Minor gap** (obvious extension, one reasonable approach)
+   - Implement the minimum. Document in PR: `Added <X> (not in spec) because <Y>.`
+   - Verify success criteria still hold.
 
-2) **Is the fix obvious and low-risk?** (one reasonable approach)
-- Yes -> Scenario B
-- No -> Scenario C
+3. **Ambiguous gap** (multiple plausible approaches)
+   - Ask in the issue/PR thread: what's unclear + options A/B + recommendation.
+   - Wait for an explicit decision.
 
-### Scenario A: Critical blocker (spec unimplementable)
+## Cross-Role Handoff Patterns
 
-Protocol:
-- Stop implementation work on that thread of work.
-- Create a new issue titled: `Spec gap: <short description>`.
-- Comment on the original issue/PR with:
-  - What is blocked and why
-  - The minimal missing decision/information needed
-  - Link: `Blocked by #<new-issue>`
-- Wait for designer/user decision before proceeding.
+- **Design → Implementation**: Designer produces an issue with goals/scope/non-goals/success criteria. Implementer links via `Fixes #<issue>`.
+- **Implementation → Review**: Implementer marks PR ready with a validation summary. Reviewer posts structured findings (Critical/Major/Minor). Implementer fixes systematically.
+- **Review → Design (escalation)**: Reviewer flags a fundamental design flaw with clear description and affected criteria. Designer (or user) decides before work continues.
 
-### Scenario B: Minor gap (obvious extension)
-
-Protocol:
-- Implement the minimum extension needed (keep it narrow).
-- Document in the PR description or a PR comment:
-  - `Added <X> (not explicitly in spec) because it is required for <Y>.`
-- Ensure tests/validation still reflect the original success criteria.
-
-### Scenario C: Ambiguous gap (multiple plausible approaches)
-
-Protocol:
-- Stop and ask a focused question in the issue/PR thread:
-  - What is unclear
-  - Options A/B (max 2) with a recommendation and tradeoff summary
-- Wait for an explicit decision before implementing.
-
-## Part 2: Cross-Role Handoff Patterns
-
-### Design -> Implementation
-- Designer produces an issue with goals/scope/non-goals/success criteria.
-- Implementer links the issue in the PR (`Fixes #<issue>`).
-- If a spec gap is found, implementer asks in the same issue/PR thread using the scenario protocol above.
-
-### Implementation -> Review
-- Implementer marks PR ready with a checklist and validation summary.
-- Reviewer posts a structured review summary (Critical/Major/Minor).
-- Implementer addresses findings systematically and re-validates.
-
-### Review -> Design (Escalation)
-- If reviewer finds a fundamental design flaw (not just code style/bugs):
-  - Reviewer posts: `Critical design issue: <problem>. Recommend design review.`
-  - Link to the affected success criteria/pillar/assumption.
-- Designer (or user) responds with a decision, or requests a follow-up spec/issue.
-- If roles are split across separate agent sessions, include a 1-paragraph recap + link to the decision thread to avoid re-litigating context.
-
-**Example:**
-```markdown
-Critical design issue: Cargo capacity conflicts with Pillar X (link). Recommend design review.
-Impact: Current implementation assumes 2 slots; pillar implies 1. Need decision: allow 2, or redesign inventory flow?
-```
-
-### Clarification Pattern (Any role)
-
-Use this template when asking for a decision:
+## Clarification Template
 
 ```markdown
 **Question:** [What is unclear]
@@ -82,20 +34,16 @@ Use this template when asking for a decision:
 - A) [Option] — [tradeoff]
 - B) [Option] — [tradeoff]
 **Recommendation:** A because [reason]
-**Blocked until:** [Decision / confirmation]
+**Blocked until:** [Decision]
 ```
 
-## Part 3: Tagging & Threading Conventions
+## Threading
 
-- Keep related discussion in a single GitHub thread (avoid fragmenting across multiple issues unless Scenario A).
-- Quote specific lines or link to file:line when referencing code/spec.
-- Prefer decisions in writing (“Choose A”) over implicit approvals.
-- Resolve threads when addressed:
-  - Implementer resolves after fixing.
-  - Reviewer verifies and may re-open if insufficient.
+- Keep discussion in a single GitHub thread. Fragment only for Scenario 1 (Spec Gap issue).
+- Quote `file:line` when referencing code or spec.
+- Prefer written decisions ("Choose A") over implicit approvals.
+- Implementer resolves threads after fixing; reviewer verifies.
 
-## Related Docs
+## Reference
 
 - Error recovery: `ERROR_RECOVERY.md`
-- Implementation workflow: `IMPLEMENTATION_START.md` and `IMPLEMENTATION_ONE_PAGER.md`
-

@@ -11,7 +11,7 @@ AIDE provides battle-tested processes, agent primers, and documentation template
 AIDE (AI-Assisted Development Environment) is a comprehensive framework that standardizes how AI agents collaborate with human developers on software projects. It provides:
 
 - **Process Documentation**: Contribution workflows, testing policies, documentation standards
-- **AI Agent Primers**: Role-specific instructions for implementation, review, design, and documentation agents
+- **AI Skills**: Self-contained task workflows for implementation, review, design, and documentation
 - **Language-Agnostic Templates**: Customizable standards for any tech stack
 - **Battle-Tested Patterns**: Proven workflows from real-world AI-assisted development
 
@@ -72,8 +72,9 @@ ln -s .aide/docs/core/CONTRIBUTING.md docs/CONTRIBUTING.md
 cp .aide/docs/examples/nodejs-typescript/TESTING_POLICY.md docs/TESTING_POLICY.md
 cp .aide/docs/examples/nodejs-typescript/CODING_GUIDELINES.md docs/CODING_GUIDELINES.md
 
-# Agent primers (usually symlink)
-ln -s .aide/docs/agents docs/agents
+# Install skills into your AI tool
+powershell -ExecutionPolicy Bypass -File .aide/skills/install-claude.ps1
+# or: .aide/skills/install-codex.ps1
 ```
 
 ### 4. Configure AIDE for Your Project
@@ -113,10 +114,10 @@ AIDE/
 │   │   ├── CODING_GUIDELINES.template.md
 │   │   └── DEVELOPMENT.template.md
 │   │
-│   ├── agents/                  # AI agent primers (symlink these)
-│   │   ├── IMPLEMENTATION_START.md
-│   │   ├── PR_REVIEW_START.md
-│   │   ├── DOC_REVIEW_START.md
+│   ├── agents/                  # Compact Tier 2 reference files (on-demand)
+│   │   ├── COMMAND_CATALOG.md
+│   │   ├── GITHUB_QUERIES.md
+│   │   ├── ERROR_RECOVERY.md
 │   │   └── ...
 │   │
 │   └── examples/                # Language-specific examples
@@ -125,6 +126,11 @@ AIDE/
 │       ├── python/
 │       └── rust/
 │
+├── skills/                      # AIDE skills (install via install-claude.ps1)
+│   ├── implement/
+│   ├── pr-review/
+│   ├── design/
+│   └── ...
 └── tools/                       # Setup automation scripts
     ├── init-project.sh
     └── init-project.bat
@@ -147,29 +153,29 @@ Document once in the best place. Reference, don't duplicate.
 ### 5. Test-Driven Development
 All changes require tests. No exceptions (unless you document why).
 
-## Agent Roles
+## Skills
 
-AIDE defines specialized AI agent roles:
+AIDE provides self-contained skills that define what the agent is doing, not who it is:
 
-- **Implementation Agent**: Builds features following the implementation workflow (Steps 0-10)
-- **PR Review Agent**: Reviews code for quality, architecture, and standards
-- **Documentation Agent**: Reviews docs for accuracy and consistency
-- **Codebase Review Agent**: Performs holistic codebase audits
-- **Design Spec Agent**: Helps prioritize and spec new features
-- **Design Workshop Agent**: Facilitates high-level design exploration
+- **`/implement`** — Build features end-to-end: spec intake, code, tests, verify, push
+- **`/pr-review`** — Review code for quality, architecture, and standards
+- **`/design`** — Design exploration → Architecture Decision Record (ADR)
+- **`/scope`** — Decompose an ADR into GitHub issues via issue-creator
+- **`/codebase-review`** — Holistic codebase health audit
+- **`/doc-review`** — Documentation accuracy review
+- **`/review`** — Cross-cutting artifact review (two-file filesystem protocol)
+- **`/pr-draft`, `/pr-ready`** — PR lifecycle management
+- **`/quality`, `/handoff`, `/sync`, `/issue`, `/evolve`, `/skill-author`** — Utilities
 
-Each role has a dedicated primer in `docs/agents/`.
+**Token Optimization**: Skills follow token economy best practices (see `docs/agents/TOKEN_ECONOMY.md`). Each skill is 30-50 lines and self-contained — no preloading required.
 
-**Token Optimization**: All agent primers follow token economy best practices (see `docs/agents/AGENT_TOKEN_ECONOMY.md`) to maximize context budget for code analysis and implementation. Target 150-500 tokens per primer depending on complexity.
+## Implementation Workflow
 
-## Implementation Workflow (Canonical)
+The canonical implementation workflow is inlined in the `/implement` skill:
 
-The canonical implementation workflow lives in the Implementation Agent primer index:
+- `skills/implement/SKILL.md` — two-layer plan (constraint check + ordered steps), code, verify
 
-- [docs/agents/IMPLEMENTATION_START.md](docs/agents/IMPLEMENTATION_START.md) (index)
-- [docs/agents/implementation/](docs/agents/implementation/) (stage-scoped step docs)
-
-To avoid duplication and drift, this README does not restate the step-by-step instructions.
+Start by invoking `/implement` in your AI chat session and providing a GitHub issue number or spec.
 
 ## Philosophy
 
@@ -185,10 +191,11 @@ AIDE emerged from real-world experience building software with AI agents. Key in
 
 ### Lightborn Exile: Divinity Engine (Godot/GDScript)
 A roguelike factory survival game built entirely with AI-assisted development using AIDE workflows. Demonstrates:
-- Implementation workflow (Steps 0-10)
-- PR review process with inline comments
-- Documentation review and accuracy checks
-- Design workshop for feature planning
+
+- Skill-based implementation workflow (`/implement`, `/pr-draft`, `/pr-ready`)
+- PR review process with inline comments (`/pr-review`)
+- Documentation review and accuracy checks (`/doc-review`)
+- Design sessions producing ADRs (`/design`, `/scope`)
 
 See `docs/examples/godot-gdscript/` for implementation details.
 
@@ -212,5 +219,5 @@ Created by LightForge Labs as a distillation of AI-assisted development best pra
 
 - Read [QUICK_START.md](QUICK_START.md) for setup instructions
 - Browse `docs/examples/` for your tech stack
-- Check `docs/agents/` for agent-specific guidance
+- Check `docs/agents/COMMAND_CATALOG.md` for the full skill catalog
 - Open an issue for questions or suggestions

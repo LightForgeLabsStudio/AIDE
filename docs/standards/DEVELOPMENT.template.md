@@ -55,7 +55,7 @@ Technical reference for extending and debugging {{PROJECT_NAME}}.
 - [CONTRIBUTING.md](../core/CONTRIBUTING.md) - Full workflow
 - [CODING_GUIDELINES.md](CODING_GUIDELINES.md) - Code standards
 - `{{PROJECT_DESIGN_DOCS}}` - Design documentation
-- [agents/PR_REVIEW_START.md](../agents/PR_REVIEW_START.md) - Review checklist
+- [AGENTS.md](../../AGENTS.md) - Skill entry workflow (implement, pr-review, and all utilities)
 
 ## Customization for Your Project
 

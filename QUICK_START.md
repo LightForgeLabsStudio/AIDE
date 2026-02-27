@@ -81,20 +81,19 @@ cp .aide/docs/examples/nodejs-typescript/DEVELOPMENT.md docs/
 # Then customize these files for your project
 ```
 
-### 4. Link Agent Primers
+### 4. Install Skills
 
-Agent primers are usually symlinked (universal across projects):
+AIDE skills are the agent workflow entry points. Install them into your AI tool:
 
 ```bash
-# Symlink entire agents directory
-ln -s ../.aide/docs/agents docs/agents
+# Claude Code
+powershell -ExecutionPolicy Bypass -File .aide/skills/install-claude.ps1
 
-# Or symlink individual primers
-ln -s ../../.aide/docs/agents/IMPLEMENTATION_START.md docs/agents/
-ln -s ../../.aide/docs/agents/PR_REVIEW_START.md docs/agents/
-ln -s ../../.aide/docs/agents/DOC_REVIEW_START.md docs/agents/
-# ... etc
+# Codex
+powershell -ExecutionPolicy Bypass -File .aide/skills/install-codex.ps1
 ```
+
+After installing, reload your AI tool and type `/` to see available skills (`/implement`, `/pr-review`, etc.).
 
 ### 5. Instantiate Templates
 
@@ -156,9 +155,8 @@ values for `{{PLACEHOLDERS}}`:
 
 ## Agent Workflows (AIDE Framework)
 
-@.aide/docs/agents/IMPLEMENTATION_START.md
-@.aide/docs/agents/PR_REVIEW_START.md
-...
+# Skills are self-contained — invoke via /implement, /pr-review, etc.
+# See AGENTS.md for the full skill catalog and entry workflow.
 ```
 
 **Benefits:**
@@ -204,12 +202,11 @@ git commit -m "Add AIDE framework for AI-assisted development
 - Add AIDE as submodule
 - Copy tech stack templates (Node.js/TypeScript)
 - Initialize PROJECT_SUMMARY
-- Configure agent primers
+- Install AIDE skills (implement, pr-review, design, scope, and more)
 - Set up GitHub state tracking labels
 
 Framework provides:
-- Implementation workflow (Steps 0-10)
-- PR review process
+- Skill-first workflow (/implement, /pr-review, /design, /scope, etc.)
 - Documentation standards
 - Testing policy"
 ```
@@ -218,15 +215,14 @@ Framework provides:
 
 Once setup is complete, share this with your AI assistant:
 
-```
+```text
 I've integrated the AIDE framework into this project. Please read:
 
-1. docs/agents/IMPLEMENTATION_START.md - For implementing features (index)
-2. docs/agents/PR_REVIEW_START.md - For reviewing PRs
-3. Query GitHub for current state: gh issue list --label "status:in-progress"
-4. docs/CONTRIBUTING.md - Our workflow
+1. AGENTS.md - Project invariants, placeholder mappings, and skill entry workflow
+2. docs/CONTRIBUTING.md - Our workflow
 
-Follow the implementation workflow (Steps 0-10) for all changes.
+Use /implement to start a feature, /pr-review to review PRs, and /design for design sessions.
+Query GitHub for current state: gh issue list --label "status:in-progress"
 ```
 
 ## Verification Checklist
@@ -238,7 +234,7 @@ Ensure you have:
 - [ ] `docs/TESTING_POLICY.md` (copied and customized for your stack)
 - [ ] `docs/CODING_GUIDELINES.md` (copied and customized for your stack)
 - [ ] `docs/DEVELOPMENT.md` (copied and customized for your architecture)
-- [ ] `docs/agents/` (symlinked directory or individual primer symlinks)
+- [ ] Skills installed (run `.aide/skills/install-claude.ps1` or `install-codex.ps1`)
 - [ ] `docs/PROJECT_SUMMARY.md` (instantiated from template)
 - [ ] `README.md` (updated with project info)
 - [ ] GitHub labels configured for state tracking (`status:in-progress`, `status:ready`, etc.)
@@ -261,13 +257,15 @@ Edit `docs/CODING_GUIDELINES.md` and update:
 - Language-specific conventions
 - Linting tool configuration
 
-### Adding Custom Agent Roles
+### Adding Custom Skills
 
-Create new agent primers in `docs/agents/`:
+Use the `/skill-author` skill to create new AIDE skills:
 
 ```bash
-cp docs/agents/AGENT_PRIMER_TEMPLATE.md docs/agents/MY_CUSTOM_AGENT.md
-# Edit to define role, responsibilities, workflow
+# In your AI chat session, invoke:
+/skill-author
+# Follow the workflow to create a new skill in .aide/skills/
+# Then run install-claude.ps1 to deploy it
 ```
 
 ### Project-Specific Architecture
@@ -300,9 +298,9 @@ git submodule update --remote .aide
 
 ## Next Steps
 
-1. **Read the implementation workflow index**: [docs/agents/IMPLEMENTATION_START.md](docs/agents/IMPLEMENTATION_START.md)
-2. **Start Your First Feature**: Follow the workflow with your AI agent
-3. **Review Your First PR**: Use [docs/agents/PR_REVIEW_START.md](docs/agents/PR_REVIEW_START.md)
+1. **Read the skill entry workflow**: `AGENTS.md` — invariants, placeholders, all available skills
+2. **Start Your First Feature**: Type `/implement` in your AI chat and follow the workflow
+3. **Review Your First PR**: Type `/pr-review` in your AI chat
 4. **Customize Further**: Adapt templates to your team's needs
 
 ## Getting Help

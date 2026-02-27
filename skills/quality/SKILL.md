@@ -1,61 +1,46 @@
 ---
 name: quality
-description: Run project quality gates from project placeholder mappings. Executes lint and tests based on project configuration.
+description: Run project quality gates. Executes lint and tests based on project placeholder mappings.
 ---
 
-# AIDE Quality
+# Quality
 
-Run project quality gates from project placeholder mappings.
+Run project quality gates and report results.
+
+## Inputs
+
+Ask the user for scope:
+- **Default (recommended):** lint + unit tests (fast feedback)
+- **Full:** all tests + smoke tests
+- **Dry-run:** print commands without executing
 
 ## Workflow
 
-### 1. Locate repo root
-Assume the current workspace is the repo root.
+1. **Load commands** from project placeholder mappings:
+   - `{{LINT_COMMAND}}`
+   - `{{RUN_UNIT_TESTS_COMMAND}}` (optional)
+   - `{{RUN_ALL_TESTS_COMMAND}}`
+   - `{{SMOKE_TEST_COMMAND}}` (optional)
 
-### 2. Load quality commands
-Use project placeholder mappings and extract these commands:
-- `{{RUN_ALL_TESTS_COMMAND}}` - Full test suite
-- `{{RUN_UNIT_TESTS_COMMAND}}` - Unit tests only (optional)
-- `{{LINT_COMMAND}}` - Linting
-- `{{FORMAT_COMMAND}}` - Formatting (optional)
-- `{{SMOKE_TEST_COMMAND}}` - Smoke tests (optional)
+2. **Execute** in order: lint → tests → smoke (if full scope).
 
-### 3. Determine scope
-Ask the user what scope they want:
-- **Default (recommended):** Lint + unit tests (fast feedback)
-- **Full:** All tests + smoke tests
-- **Dry-run:** Print commands without executing
+3. **Report:**
+   ```
+   ## Quality Gate Results
+   Scope: <default|full|dry-run>
 
-### 4. Execute validation
-Run the selected commands in this order:
-1. Lint (if defined)
-2. Unit tests OR all tests (depending on scope)
-3. Smoke tests (if full scope and defined)
+   Results:
+   ✅/❌ Lint: passed | failed
+   ✅/❌ Tests: X passed, Y failed
+   ✅/❌ Smoke: passed | failed | skipped
 
-### 5. Output format (<=15 lines)
-```
-## Quality Gate Results
+   [If failures: show failing test names and relevant log lines]
 
-Repo: [repo root path]
-Scope: [default/full/dry-run]
+   Next: Fix failures | Proceed with PR
+   ```
 
-Commands:
-- Lint: [command or "not defined"]
-- Tests: [command or "not defined"]
-- Smoke: [command or "not defined"]
+## Notes
 
-Results:
-✅/❌ Lint: [passed/failed/skipped]
-✅/❌ Tests: [X passed, Y failed/skipped]
-✅/❌ Smoke: [passed/failed/skipped]
-
-[If failures: show failing test names and logs]
-
-Next: [Fix failures OR proceed with PR if all passed]
-```
-
-## Important Notes
-- Never modify test files
-- If commands are missing, ask user to provide them
-- Stop immediately if lint or tests fail - do not proceed
-- For CI/PR workflows, always run at least lint + tests before marking ready
+- Stop immediately if lint or tests fail.
+- Do not modify test files.
+- For CI/PR workflows, always run at least lint + tests before marking ready.

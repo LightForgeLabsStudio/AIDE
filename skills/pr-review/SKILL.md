@@ -1,51 +1,45 @@
 ---
 name: pr-review
-description: Review a pull request (no code changes) covering spec alignment, architecture, tests, docs, and clear findings.
+description: Review a pull request for spec alignment, architecture, tests, and docs. No code changes.
 ---
 
 # PR Review
 
-Review a PR against the linked issue spec and project constraints. Do not push fixes.
+Review a PR against its linked issue and project constraints. Do not push fixes.
 
-## Documentation Loading (role-based)
+## Inputs
 
-- Always use: project constraints + the linked issue spec.
-- Stage-load (review work): `docs/CODING_GUIDELINES.md`, `docs/TESTING_POLICY.md`, `docs/CONTRIBUTING.md`, and `docs/DEVELOPMENT.md`.
-- Stage-load (as needed): relevant `design/` pillar(s) and `docs/DOCUMENTATION_POLICY.md` if docs are in scope.
+PR number or URL. Reviewer GitHub login (must not be PR author). Any custom concerns.
 
-## Inputs (ask first)
+## Review-aware
 
-- PR number or URL.
-- Reviewer GitHub login to use for reviews (must not be the PR author).
-- Any custom concerns/checks the requester wants verified.
+Before starting: check if `<pr-slug>.findings.md` exists. If it does, incorporate prior findings into this review.
 
 ## Workflow
 
-1) **Read Tier 1 rules**
-   - Use the project's constraints (already loaded in this environment) and stage-load the role-relevant Tier 1 docs (see above).
+1. **Verify identity** — Run `gh api user --jq .login`. If reviewer == PR author, stop and request an identity switch.
 
-2) **Load PR + spec**
-   - Use `gh pr view <n>` / `gh pr diff <n>` to read the PR.
-   - Extract linked issue ("Fixes #X") and read the full issue spec/comments.
+   If you need a separate reviewer identity (e.g., work vs. personal account):
+   ```bash
+   # One-time setup for a reviewer account
+   GH_CONFIG_DIR=~/.config/gh-reviewer gh auth login
+   # Then prefix all gh commands with GH_CONFIG_DIR=~/.config/gh-reviewer
+   GH_CONFIG_DIR=~/.config/gh-reviewer gh api user --jq .login
+   ```
 
-3) **Review**
-   - Spec alignment (goals/scope/success criteria).
-   - Architecture and design pillar compliance.
-   - Testing posture (new tests where appropriate; no unjustified test edits).
-   - Docs drift/duplication.
-   - Git hygiene (commit structure, no debug leftovers).
+2. **Load PR + spec** — Run `gh pr view <n>` and `gh pr diff <n>`. Extract linked issue (`Fixes #X`) and read its full spec.
 
-4) **Report**
-    - Findings grouped by severity (Critical/Major/Minor) with `path:line` references.
-    - Clear decision: approve / request changes / non-blocking.
-    - Prefer submitting as a formal GitHub Review via `gh pr review` (not only as a PR comment).
-    - Run reviews from a dedicated reviewer context:
-      - Prefer a separate window/terminal with `GH_CONFIG_DIR` set to the reviewer auth store.
-      - Verify identity with `gh api user --jq .login` before submitting a review.
-      - If needed, use `gh auth switch -u <reviewer_login>` (see `.aide/docs/agents/PR_REVIEW_START.md`).
-    - If the reviewer identity == PR author, stop and request switching identities (do not review as the author).
+3. **Review** — Check:
+   - Spec alignment (goals, scope, success criteria)
+   - Architecture compliance (AGENTS.md invariants, authoritative systems)
+   - Testing posture (new tests where appropriate; no unjustified test edits)
+   - Docs drift or duplication
+   - Git hygiene (commit structure, no debug leftovers)
 
-## Reference
+4. **Report findings** — Group by severity (Critical/Major/Minor) with `path:line` references. State a clear decision: approve / request changes / non-blocking.
 
-- AIDE PR review primer: `.aide/docs/agents/PR_REVIEW_START.md`
-- Cross-role handoffs + escalation protocol: `.aide/docs/agents/AGENT_COLLABORATION.md`
+5. **Submit** — Use `/review` protocol to write `<pr-slug>.findings.md`, OR submit via:
+   ```
+   gh pr review <n> --request-changes --body "..."
+   ```
+   Do not review as the PR author.

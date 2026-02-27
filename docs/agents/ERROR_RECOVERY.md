@@ -1,110 +1,47 @@
 # Error Recovery Playbook
 
-Use this playbook when an implementation session hits a failure mode (tests failing, git conflicts, CI breakage, or scope pivots).
+Use when implementation hits a failure mode: tests failing, git conflicts, CI breakage, or scope pivots.
 
-Goals:
-- Restore a **known-good** state quickly.
-- Keep changes **reviewable** and aligned with the spec.
-- Escalate to the user when the decision is ambiguous, risky, or non-mechanical.
+**Goals:** restore a known-good state quickly; keep changes reviewable; escalate when the decision is ambiguous.
 
-## Default Recovery Loop (Works for Most Cases)
+## Default Recovery Loop
 
-1) **Stop the bleed**
-- Pause new coding.
-- Capture context: failing command + exact error text + current branch/commit.
+1. **Stop the bleed** — pause new coding; capture failing command + exact error text + current branch/commit.
+2. **Return to stable base** — choose: fix forward, revert, or stash and branch. Prefer the smallest restoring change.
+3. **Reduce to a minimal reproducer** — isolate the failing test/command before running full suites.
+4. **Fix systematically** — one hypothesis at a time; keep commits small; don't mix refactors with fixes.
+5. **Re-validate** — re-run the minimal reproducer, then the project's standard quality gates.
 
-2) **Return to a stable base**
-- Decide whether to: fix forward, revert, or stash and branch.
-- Prefer the smallest change that restores correctness.
+## When to Escalate
 
-3) **Reduce to a minimal reproducer**
-- Isolate the failing test / command.
-- If possible, reproduce locally with the smallest scope before running full suites.
+Pause and ask the user when any of these are true:
 
-4) **Fix systematically**
-- One hypothesis at a time.
-- Keep commits small; avoid mixing refactors with fixes.
+- Multiple plausible approaches with real tradeoffs (architecture/UX decisions)
+- Fix requires changing Tier 1 rules, public APIs, or core workflow expectations
+- Fix would modify existing tests
+- The failure suggests the spec is wrong or success criteria changed
+- The change would touch many files, introduce a new pattern, or expand scope
 
-5) **Re-validate**
-- Re-run the minimal reproducer.
-- Then run the project’s standard quality gates (lint/tests).
+Do **not** escalate for mechanical tasks (formatting, obvious typos, trivial conflicts).
 
-## When to Escalate to the User
+## Failure Mode Quick Reference
 
-Escalate (pause and ask) when any of these are true:
-- Multiple plausible approaches with tradeoffs (design/architecture/UX decisions).
-- Fix requires changing Tier 1 rules, public APIs, or core workflow expectations.
-- Fix would modify existing tests (unless the project explicitly allows it).
-- The failure suggests the spec is wrong/incomplete or the success criteria changed.
-- The change would touch many files, introduce a new pattern, or expand scope.
+**Tests fail locally:** Run smallest scope first; copy only the *first* failure. Escalate if fix requires changing existing tests.
 
-Do not escalate for mechanical tasks (formatting, trivial conflicts, obvious typos) unless the project’s rules require it.
+**CI fails, local passes:** Compare CI command vs local (versions, OS, paths, flags). Escalate if fix changes CI policy or project-wide tooling.
 
-## Failure Modes
+**Git conflicts:** Identify cause (upstream refactor, concurrent edits); rebase frequently rather than accumulating. Escalate if correct merge behavior for spec-critical areas is unclear.
 
-### 1) Tests fail locally
+**Scope pivot:** Restate new goal/scope/criteria; choose extend PR or new branch. Escalate if pivot contradicts design pillars or Tier 1 rules.
 
-Checklist:
-- Confirm you ran the right scope (unit vs integration vs full suite).
-- Copy the *first* failure and error text; ignore cascades until the first is fixed.
-- Check for warnings-as-errors and type issues (common in strict pipelines).
+**Spec gap mid-implementation:** Use `AGENT_COLLABORATION.md` decision tree. Escalate (Scenario A) if spec is unimplementable without a design decision.
 
-Fix approach:
-- Make the smallest change to restore correctness.
-- If the failure is unrelated to your changes, document it and ask whether to proceed or file a follow-up issue.
+## Handy Commands
 
-Escalate if:
-- The fix requires changing existing tests or changing behavior beyond the spec.
-
-### 2) CI fails but local passes
-
-Checklist:
-- Identify the CI job and its exact command (version, OS, environment).
-- Look for: line endings, path case-sensitivity, missing generated files, tool version mismatches.
-- Compare what CI runs vs what you ran locally (scripts, flags, working directory).
-
-Fix approach:
-- Prefer changes that improve determinism (pin versions, use repo-root paths, avoid environment assumptions).
-- If CI uses a stricter configuration, align local reproduction to that strict mode first.
-
-Escalate if:
-- Fix requires changing CI policy or project-wide tooling expectations.
-
-### 3) Git conflicts / rebase pain
-
-Checklist:
-- Identify conflict cause: upstream refactor, file moves, or concurrent edits.
-- Prefer rebasing frequently rather than resolving one massive conflict at the end.
-
-Fix approach:
-- Resolve conflicts by preserving intended behavior, not by “making it compile”.
-- After resolving, re-run the smallest relevant tests to ensure no silent behavior drift.
-
-Escalate if:
-- Conflicts affect spec-critical areas and the correct merge behavior is unclear.
-
-### 4) Mid-implementation scope pivot
-
-Checklist:
-- Restate new request in terms of: goal, scope, success criteria.
-- Determine whether it is: (a) same feature extension, (b) new feature, (c) separate bugfix.
-
-Fix approach:
-- If it increases review complexity, split into a follow-up issue/PR.
-- Update plan/checklist to reflect the new scope.
-
-Escalate if:
-- The pivot contradicts design pillars, Tier 1 rules, or requires a new architecture decision.
-
-### 5) Spec gap discovered mid-implementation
-
-If the spec is insufficient or contradictory, use the decision tree and escalation protocol in:
-
-- `docs/agents/AGENT_COLLABORATION.md` (Part 1: Handling Spec Gaps)
-
-## Handy Commands (Generic)
-
-- Show current state: `git status -sb`, `git log -1 --oneline`
-- Find regressions: `git diff`, `git show`, `git blame`
-- Conflict help: `git rebase --continue`, `git rebase --abort`, `git mergetool` (if configured)
-
+```bash
+git status -sb          # Current state
+git log -1 --oneline    # Last commit
+git diff                # What changed
+git rebase --continue   # After resolving conflict
+git rebase --abort      # To abandon rebase
+```

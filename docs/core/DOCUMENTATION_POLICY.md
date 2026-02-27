@@ -56,7 +56,7 @@ In rare cases, duplication is permitted when there is a clear operational benefi
 
 **Agent Token Economy Best Practices:**
 
-All agent primer files should prioritize token efficiency to maximize context budget for code analysis and implementation. See `.aide/docs/agents/AGENT_TOKEN_ECONOMY.md` for comprehensive strategies.
+All agent-facing docs should prioritize token efficiency to maximize context budget for code analysis and implementation. See `.aide/docs/agents/TOKEN_ECONOMY.md` for comprehensive strategies.
 
 - **Prefer concise directives over verbose explanations**
 - **Use bullet points and checklists instead of paragraphs**

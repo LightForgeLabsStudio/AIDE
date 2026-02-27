@@ -1,135 +1,49 @@
 ---
 name: evolve
-description: Apply the AIDE system evolution workflow to repeated mistakes. Reads SYSTEM_EVOLUTION.md and outputs a concrete proposal for turning failures into rules or automation.
+description: Turn a repeated failure pattern into a system improvement. Outputs a concrete proposal for constraints, docs, or automation.
 ---
 
-# AIDE Evolve
+# Evolve
 
-Turn repeated mistakes into system improvements (constraints, docs, automation).
+Convert repeated mistakes into rules or automation. Requires 2+ occurrences with evidence.
 
-## Workflow
+## Inputs
 
-### 1. Locate repo root
-Assume the current workspace is the repo root.
-
-### 2. Read the evolution guide
-Read `.aide/docs/agents/SYSTEM_EVOLUTION.md` for the decision tree and trigger criteria.
-
-### 3. Collect failure pattern inputs
 Ask the user for:
-- **What happened?** (Describe the failure/mistake)
-- **How many times?** (Must be 2+ occurrences across sessions/PRs)
-- **Evidence:** (PR/issue links or brief excerpts showing the pattern)
-- **Where should it have been caught?** (Tooling? Docs? Invariant?)
+- What happened (describe the failure)
+- How many times (must be 2+ across sessions or PRs)
+- Evidence (PR/issue links or excerpts)
+- Where it should have been caught (tooling, docs, invariant)
 
-### 4. Apply decision tree
-Use this hierarchy (smallest effective change):
+## Decision hierarchy (smallest effective change)
 
-**1. Can it be automated?**
-- Is it enforceable by tooling (lint, validator, CI check)?
-- If YES → Propose automation (scripts, CI, pre-commit hook)
+1. **Automate** — Can tooling enforce it (lint rule, CI check, pre-commit hook)? If yes, propose automation first.
+2. **Tier 1 constraint** — Applies to all code, critical to enforce? Add to AGENTS.md invariants.
+3. **Tier 2 guidance** — System-specific, helpful but not critical? Add to the relevant doc in `docs/`.
+4. **Reference only** — Best practice but not enforceable? Add as a comment or reference doc.
 
-**2. Is it project-wide binding?**
-- Does it apply to ALL code/features?
-- Is violating it a critical error?
-- If YES → Tier 1 constraint (project constraints doc)
+## Output format
 
-**3. Is it system-specific guidance?**
-- Does it apply to a specific subsystem/pattern?
-- Is it helpful but not critical?
-- If YES → Tier 2 guidance (docs/[system].md)
-
-**4. Is it informational only?**
-- Is it a best practice but not enforceable?
-- If YES → Reference-only (docs/reference/ or comments)
-
-### 5. Output concrete proposal
-```markdown
+```
 ## System Evolution Proposal
-
 ### Failure Pattern
-**What:** [Clear description]
-**Frequency:** [X times across Y PRs/sessions]
-**Evidence:**
-- [PR/issue link or excerpt 1]
-- [PR/issue link or excerpt 2]
-
-### Analysis
-**Where it should be caught:** [Tooling/Docs/Invariant]
-**Impact if violated:** [Low/Medium/High]
-**Enforceable by automation:** [Yes/No]
-
-### Decision: [AUTOMATION | TIER 1 | TIER 2 | REFERENCE]
-
-**Rationale:** [1-2 sentences explaining why this tier/approach]
-
+What: <description>
+Frequency: <X> times across <Y> PRs/sessions
+Evidence: <links or excerpts>
+### Decision: AUTOMATION | TIER 1 | TIER 2 | REFERENCE
+Rationale: <1-2 sentences>
 ### Proposed Change
-
-**Location:** [Exact file path + section heading]
-
-**Current state:** [What exists now, if anything]
-
-**Proposed addition:**
-```
-[Exact text to add - use positive constraints, not negative]
-```
-
-**Example in practice:**
-```
-[Show how this rule/check would prevent the failure]
-```
-
+Location: <exact file path + section>
+Proposed addition:
+  <exact text to add — use positive constraints>
 ### Implementation Steps
-1. [What to modify/add]
-2. [Testing/validation needed]
-3. [PR creation]
-
-### Next Action
-[Create PR? Add to automation? Update docs?]
+1. <what to modify>
+2. <validation needed>
+3. <PR creation>
 ```
 
-### 6. Important constraints
-- Use positive language ("Do X" not "Don't do Y")
-- Be specific and measurable
-- Include examples showing correct behavior
-- If automation: specify exact tool/command
-- If Tier 1: must be universally applicable
+## Notes
 
-### 7. Get approval before implementing
-After proposing the change:
-- Ask if the user agrees with the tier/approach
-- Confirm the proposed wording is clear
-- Get approval before creating PR or modifying files
-
-## Examples
-
-**Automation example:**
-```
-Decision: AUTOMATION
-Location: .github/workflows/pr-check.yml
-Proposed: Add validator for PR body formatting
-Rationale: Enforceable via regex, prevents recurring formatting issues
-```
-
-**Tier 1 example:**
-```
-Decision: TIER 1
-Location: project constraints doc → Critical Invariants
-Proposed: "InventoryService is the single source of truth for item quantities"
-Rationale: Project-wide invariant, violations cause data corruption
-```
-
-**Tier 2 example:**
-```
-Decision: TIER 2
-Location: docs/UI_PATTERNS.md
-Proposed: "Prefer IconButton over TextButton for toolbars (consistency)"
-Rationale: UI pattern, not critical but improves UX consistency
-```
-
-## Important Notes
-- Do NOT modify files until user approves
-- Prefer automation when possible (enforced > documented)
-- Keep constraints actionable and testable
-- Link to evidence (PRs/issues where pattern occurred)
-- This is about preventing future failures, not blame
+- Use positive language ("Do X", not "Don't do Y").
+- Do not modify files until the user approves the proposal.
+- Prefer automation when possible — enforced beats documented.

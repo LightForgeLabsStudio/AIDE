@@ -71,4 +71,4 @@ Technical reference for extending and debugging the Godot implementation.
 - [CONTRIBUTING.md](CONTRIBUTING.md) - Full workflow
 - [CODING_GUIDELINES.md](CODING_GUIDELINES.md) - Code standards
 - [PROJECT_SUMMARY.md](../design/PROJECT_SUMMARY.md) - Project overview
-- [PR_REVIEW_START.md](agents/PR_REVIEW_START.md) - Review checklist
+- [AGENTS.md](../../AGENTS.md) - Skill entry workflow (implement, pr-review, and all utilities)

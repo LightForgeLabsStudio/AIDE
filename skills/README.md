@@ -129,20 +129,21 @@ Check tool documentation for skill installation. Most support the same `SKILL.md
 
 | Skill | Command | Description |
 |-------|---------|-------------|
-| **implement** | `/implement` | Implementation entrypoint: plan, branch, PR, validate, push |
-| **pr-review** | `/pr-review` | Review PRs (no fixes): spec alignment, tests, docs |
-| **codebase-review** | `/codebase-review` | Holistic health review + follow-up issues |
-| **doc-review** | `/doc-review` | Documentation accuracy/drift review |
-| **design** | `/design` | Relaxed design exploration + optional issue creation |
-| **quality** | `/quality` | Run lint and tests from project placeholder mappings |
-| **handoff** | `/handoff` | Generate session handoff note for context resets |
-| **plan** | `/plan` | Create two-layer implementation plan + PR draft |
-| **evolve** | `/evolve` | Turn repeated failures into rules/automation |
-| **sync** | `/sync` | End-of-session git sync (pull, push, verify) |
-| **issue** | `/issue` | Create labeled GitHub issue |
-| **pr-ready** | `/pr-ready` | Validate and mark PR ready |
-| **pr-draft** | `/pr-draft` | Create draft PR with validated body template |
-| **skill-author** | `/skill-author` | Create or update skills (frontmatter, workflow, install) |
+| **implement** | `/implement` | Execute a GitHub issue or spec end-to-end. Inline two-layer plan, code, verify. |
+| **design** | `/design` | Design a feature or change into a reviewed ADR. Outputs a decision record ready for /scope. |
+| **scope** | `/scope` | Decompose an accepted ADR into GitHub issues using the issue-creator tool. |
+| **review** | `/review` | Cross-cutting artifact review using a two-file filesystem protocol. |
+| **pr-review** | `/pr-review` | Review a PR for spec alignment, architecture, tests, and docs. No code changes. |
+| **pr-draft** | `/pr-draft` | Create a draft PR with a validated body template and issue linkage. |
+| **pr-ready** | `/pr-ready` | Run validation, post a summary, and flip a PR from draft to ready. |
+| **codebase-review** | `/codebase-review` | Holistic read-only codebase health review to find drift, dead code, and test gaps. |
+| **doc-review** | `/doc-review` | Review documentation for accuracy, drift, and duplication. No code changes. |
+| **quality** | `/quality` | Run project quality gates from project placeholder mappings. |
+| **handoff** | `/handoff` | Generate a session handoff note for context resets or multi-day work. |
+| **sync** | `/sync` | Sync branch with remote and confirm a clean end-of-session state. |
+| **issue** | `/issue` | Create a GitHub issue with AIDE label conventions and GitHub Issue Type. |
+| **evolve** | `/evolve` | Turn a repeated failure pattern into a concrete system improvement proposal. |
+| **skill-author** | `/skill-author` | Create or update an AIDE skill with valid frontmatter and a concise workflow. |
 
 ## Development
 

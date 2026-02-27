@@ -66,8 +66,8 @@ See `{{DESIGN_DOCS_PATH}}` for the complete vision.
 - **[TESTING_POLICY.md](TESTING_POLICY.md)** - Testing requirements
 
 **For Agents:**
-- **[agents/IMPLEMENTATION_START.md](agents/IMPLEMENTATION_START.md)** - Implementation workflow
-- **[agents/PR_REVIEW_START.md](agents/PR_REVIEW_START.md)** - Review workflow
+
+- **[AGENTS.md](AGENTS.md)** - Skill entry workflow (implement, review, and all utilities)
 
 **Design Documentation:**
 - **`{{DESIGN_DOCS_PATH}}`** - Complete design documentation

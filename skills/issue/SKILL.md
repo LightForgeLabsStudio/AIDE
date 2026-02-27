@@ -1,48 +1,40 @@
 ---
 name: issue
-description: Create a GitHub issue following AIDE label conventions. Applies priority/area/status labels and sets GitHub Issue Type (no type labels).
+description: Create a GitHub issue with AIDE label conventions and GitHub Issue Type.
 ---
 
-# AIDE Issue
+# Issue
 
-## Overview
+Create issues consistently with required labels so work is trackable.
 
-Create issues consistently with required labels so work is trackable and automation-friendly.
+## Inputs
 
-## Spec Writing (recommended structure)
-
-When the issue is a spec (feature/tech debt/chore), prefer a lean, issue-friendly structure:
-
-- **Goals**
-- **Scope**
-- **Non-Goals**
-- **Success Criteria** (testable/measurable)
-
-Rules:
-- Do not use checklists (`- [ ]`) in issues; use plain bullets (`-`).
-- For batch epics/children, prefer the issue-creator tool spec format.
-
-References:
-- `.aide/docs/SPEC_WRITING_GUIDE.md` (normative)
-- `.aide/docs/ISSUE_CREATOR_GUIDE.md`
-- `.aide/tools/issue-creator/example-spec.md`
+- Title (required)
+- Body (required) — use Goals / Scope / Non-Goals / Success Criteria structure; plain bullets, no checklists
+- Issue Type: `feature` | `bug` | `technical-debt` | `chore` | `documentation` | `research` | `epic`
+- Priority: `critical` | `high` | `medium` | `low`
+- Area: `area:<name>`
+- Status: `status:needs-spec` | `status:ready` | `status:in-progress`
+- Optional: repo override (`owner/repo`)
 
 ## Workflow
 
-### Inputs
-- Title (required)
-- Body (required; include reproduction/acceptance criteria)
-- Issue Type (GitHub Issue Types): `feature` | `bug` | `technical-debt` | `chore` | `documentation` | `research` | `epic`
-- Priority: `critical` | `high` | `medium` | `low`
-- Area: `area:<name>` (string)
-- Status: `status:needs-spec` | `status:ready` | `status:in-progress`
-- Optional repo override (`owner/repo`)
+1. Build labels list: `priority:<x>,area:<y>,status:<z>` (add `Epic` label if type is epic).
 
-### Actions
-1) Build labels list: `priority:<x>, area:<y>, status:<z>` (+ `Epic` if epic)
-2) Run `gh issue create` with title/body/labels.
-3) Set GitHub Issue Type via `.aide/tools/set-issue-type.py --issue <num> --type <type>`; fail if this step fails.
-4) Output the created issue URL.
+2. Create issue:
+   ```
+   gh issue create --title "..." --body "..." --label "priority:<x>,area:<y>,status:<z>"
+   ```
+
+3. Set GitHub Issue Type:
+   ```
+   python .aide/tools/set-issue-type.py --issue <num> --type <type>
+   ```
+   Fail if this step fails.
+
+4. Output the created issue URL.
 
 ## Notes
-- If labels are missing or differ in a repo, ask for the correct labels before creating.
+
+- Do not use checklists (`- [ ]`) in issue bodies; use plain bullets.
+- For batch issue creation, use `/scope` with the issue-creator tool instead.

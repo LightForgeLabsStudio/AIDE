@@ -4,11 +4,12 @@ Minimal, repeatable workflow to keep changes consistent and documented.
 
 ## Official Workflow
 
-**All contributors and agents must follow the implementation workflow (Steps 0-10) documented in [agents/IMPLEMENTATION_START.md](../agents/IMPLEMENTATION_START.md).**
+**All contributors and agents must use the AIDE skills for implementation and review.** Skills are self-contained workflow definitions invoked in AI chat sessions.
 
-To reduce duplication and drift, this file does not restate the step-by-step workflow. Use the primer index as the single source of truth, and load only the step document for the stage you are currently executing.
+See [AGENTS.md](../../AGENTS.md) for the skill entry workflow. Key skills:
 
-See [agents/IMPLEMENTATION_START.md](../agents/IMPLEMENTATION_START.md) (index) and [agents/implementation/](../agents/implementation/) (step docs) for complete details.
+- `/implement` — full implementation workflow (spec intake through push and PR)
+- `/pr-review` — PR review workflow (identity check, alignment, findings report)
 
 ---
 
@@ -16,11 +17,11 @@ See [agents/IMPLEMENTATION_START.md](../agents/IMPLEMENTATION_START.md) (index) 
 
 1. **Branch:** Create a feature branch for the work (one feature/bugfix per branch)
 2. **Plan & Approve:** Write brief spec, share implementation plan, wait for approval
-3. **Implement:** Follow [agents/IMPLEMENTATION_START.md](../agents/IMPLEMENTATION_START.md) workflow
+3. **Implement:** Use the `/implement` skill in your AI chat session
 4. **Test:** Run tests per [TESTING_POLICY.md](TESTING_POLICY.md)
 5. **Document:** Update docs per [DOCUMENTATION_POLICY.md](DOCUMENTATION_POLICY.md)
 6. **CI:** Wait for CI checks to pass before marking PR ready
-7. **Review:** Open PR for review per [agents/PR_REVIEW_START.md](../agents/PR_REVIEW_START.md)
+7. **Review:** Open PR for review — reviewer uses the `/pr-review` skill
 8. **Merge:** Address feedback, then implementer merges when approved by reviewer
 
 **Lightweight Change Exception:**
@@ -41,7 +42,7 @@ Some changes may skip the spec/issue requirement (step 2) if they meet ALL crite
 
 ## PR Review Process
 
-All PRs require review before merging. See [agents/PR_REVIEW_START.md](../agents/PR_REVIEW_START.md) for the complete review workflow.
+All PRs require review before merging. Reviewer uses the `/pr-review` skill; see [AGENTS.md](../../AGENTS.md) for the full skill workflow.
 
 **Review Expectations:**
 - Reviewer inspects: scope, changes, architecture compliance, test results
@@ -124,8 +125,8 @@ See [CODING_GUIDELINES.md](CODING_GUIDELINES.md) for complete coding standards.
 ## Reference Documentation
 
 **Workflow & Process:**
-- [agents/IMPLEMENTATION_START.md](../agents/IMPLEMENTATION_START.md) - Implementation workflow (index)
-- [agents/PR_REVIEW_START.md](../agents/PR_REVIEW_START.md) - PR review workflow
+
+- [AGENTS.md](../../AGENTS.md) - Skill entry workflow (implement, pr-review, and all utilities)
 - [TESTING_POLICY.md](TESTING_POLICY.md) - Testing requirements and standards
 - [DOCUMENTATION_POLICY.md](DOCUMENTATION_POLICY.md) - Documentation standards
 

@@ -56,15 +56,11 @@ cp ".aide/docs/examples/$TECH_STACK/TESTING_POLICY.md" docs/
 cp ".aide/docs/examples/$TECH_STACK/CODING_GUIDELINES.md" docs/
 echo "✓ Copied $TECH_STACK documentation templates"
 
-# Symlink agent primers
-ln -s ../../.aide/docs/agents/IMPLEMENTATION_START.md docs/agents/
-ln -s ../../.aide/docs/agents/PR_REVIEW_START.md docs/agents/
-ln -s ../../.aide/docs/agents/DOC_REVIEW_START.md docs/agents/
-ln -s ../../.aide/docs/agents/CODEBASE_REVIEW_START.md docs/agents/
-ln -s ../../.aide/docs/agents/DESIGN_WORKSHOP_START.md docs/agents/
-ln -s ../../.aide/docs/agents/design/DESIGN_SPEC_REFERENCE.md docs/agents/
-ln -s ../../.aide/docs/agents/AGENT_PRIMER_TEMPLATE.md docs/agents/
-echo "✓ Symlinked agent primers"
+# Install skills (Claude Code)
+if [ -f ".aide/skills/install-claude.ps1" ]; then
+    echo "  To install skills: powershell -ExecutionPolicy Bypass -File .aide/skills/install-claude.ps1"
+fi
+echo "✓ Skills available via .aide/skills/install-claude.ps1 (Claude) or install-codex.ps1 (Codex)"
 
 # Copy templates
 cp .aide/docs/core/IMPLEMENTATION_STATUS.template.md docs/IMPLEMENTATION_STATUS.md
@@ -95,5 +91,6 @@ echo "  1. cd $PROJECT_NAME"
 echo "  2. Edit docs/IMPLEMENTATION_STATUS.md (replace {{PLACEHOLDERS}})"
 echo "  3. Edit docs/PROJECT_SUMMARY.md (replace {{PLACEHOLDERS}})"
 echo "  4. Edit README.md (replace {{PLACEHOLDERS}})"
-echo "  5. Start building with: docs/agents/IMPLEMENTATION_START.md"
+echo "  5. Install skills: powershell -ExecutionPolicy Bypass -File .aide/skills/install-claude.ps1
+  6. Start building: open AI chat and type /implement (or see AGENTS.md for all skills)"
 echo ""
