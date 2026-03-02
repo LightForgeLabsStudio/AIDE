@@ -16,7 +16,7 @@ Tool-agnostic skill definitions. Authority lives in each skill's `SKILL.md`; thi
 | `/implement` | Execute a GitHub issue or spec end-to-end |
 | `/design` | Design a feature into a reviewed ADR |
 | `/scope` | Decompose an accepted ADR into GitHub issues |
-| `/review` | Cross-cutting artifact review (two-file protocol) |
+| `/findings` | Cross-cutting review protocol that writes reviewer findings files |
 | `/pr-review` | Review a PR for spec alignment, arch, tests, docs |
 | `/pr-draft` | Create a draft PR with validated body |
 | `/pr-ready` | Validate and flip a PR from draft to ready |
@@ -34,7 +34,7 @@ Tool-agnostic skill definitions. Authority lives in each skill's `SKILL.md`; thi
 ```text
 /design → ADR → /scope → GitHub issues → /implement → /pr-draft → /pr-ready
                                        ↑                           ↓
-                                  /review                      /pr-review
+                                /findings                     /pr-review
 ```
 
 ## Implementation Guidance

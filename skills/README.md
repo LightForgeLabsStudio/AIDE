@@ -132,7 +132,7 @@ Check tool documentation for skill installation. Most support the same `SKILL.md
 | **implement** | `/implement` | Execute a GitHub issue or spec end-to-end. Inline two-layer plan, code, verify. |
 | **design** | `/design` | Design a feature or change into a reviewed ADR. Outputs a decision record ready for /scope. |
 | **scope** | `/scope` | Decompose an accepted ADR into GitHub issues using the issue-creator tool. |
-| **review** | `/review` | Cross-cutting artifact review using a two-file filesystem protocol. |
+| **findings** | `/findings` | Write reviewer findings to a `<slug>.findings.md` file for any scoped review target. |
 | **pr-review** | `/pr-review` | Review a PR for spec alignment, architecture, tests, and docs. No code changes. |
 | **pr-draft** | `/pr-draft` | Create a draft PR with a validated body template and issue linkage. |
 | **pr-ready** | `/pr-ready` | Run validation, post a summary, and flip a PR from draft to ready. |

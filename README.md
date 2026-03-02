@@ -163,7 +163,7 @@ AIDE provides self-contained skills that define what the agent is doing, not who
 - **`/scope`** — Decompose an ADR into GitHub issues via issue-creator
 - **`/codebase-review`** — Holistic codebase health audit
 - **`/doc-review`** — Documentation accuracy review
-- **`/review`** — Cross-cutting artifact review (two-file filesystem protocol)
+- **`/findings`** — Cross-cutting review protocol that writes reviewer output to `<slug>.findings.md`
 - **`/pr-draft`, `/pr-ready`** — PR lifecycle management
 - **`/quality`, `/handoff`, `/sync`, `/issue`, `/evolve`, `/skill-author`** — Utilities
 

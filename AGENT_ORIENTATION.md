@@ -17,7 +17,7 @@ AIDE uses **skills** — task-focused, self-contained workflow definitions — i
 | `/pr-draft`, `/pr-ready` | PR lifecycle |
 | `/codebase-review` | Holistic health audits |
 | `/doc-review` | Documentation accuracy |
-| `/review` | Cross-cutting artifact review (two-file protocol) |
+| `/findings` | Cross-cutting review protocol that writes reviewer findings files |
 | `/quality`, `/handoff`, `/sync`, `/issue`, `/evolve`, `/skill-author` | Utilities |
 
 Full catalog: `docs/agents/COMMAND_CATALOG.md`

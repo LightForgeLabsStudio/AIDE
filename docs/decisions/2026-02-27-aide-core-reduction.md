@@ -77,7 +77,7 @@ Flow: **`/design` → ADR → `/scope` → GitHub issues → `/implement`**
 
 ### Cross-Cutting Review Protocol
 
-A `/review` skill that is artifact-agnostic. Any skill output — ADR, issue body, PR body — can be put into a review loop without changing the author skill.
+A `/findings` skill, originally introduced as `/review`, that is artifact-agnostic. Any skill output — ADR, issue body, PR body — can be put into a review loop without changing the author skill.
 
 **Two-file protocol:**
 
@@ -93,7 +93,7 @@ A `/review` skill that is artifact-agnostic. Any skill output — ADR, issue bod
 2. Author reads `findings.md` → updates artifact body + overwrites `response.md`
 3. Repeat until both contexts are satisfied
 
-**Author skills are review-aware:** each skill gains one optional step — if a findings file exists for the current artifact, read it before proceeding. This is the only coupling between `/review` and any author skill.
+**Author skills are review-aware:** each skill gains one optional step — if a findings file exists for the current artifact, read it before proceeding. This is the only coupling between the review protocol and any author skill.
 
 **No copy-paste between windows.** The filesystem is the message bus. Switching contexts requires only pointing the new chat at the relevant file, not copying and pasting output text.
 
@@ -147,7 +147,7 @@ Any artifact benefits from independent review — ADRs, implementation plans, sp
 Changes to make following this ADR:
 
 1. **Rewrite `AGENTS.md`** — add pointers to Tier 2 references; extract key facts from deleted files (see items 3–4); keep under 150 lines
-2. **Rewrite all skills** — task-focused, 30–50 lines, no role framing, self-contained; add review-aware step to artifact-producing skills only (implement, design, pr-review, codebase-review, doc-review). Full skill set: `implement`, `scope`, `design`, `pr-review`, `pr-draft`, `pr-ready`, `codebase-review`, `doc-review`, `handoff`, `sync`, `issue`, `quality`, `evolve`, `skill-author`, `review`. Replace existing `/plan` skill with `/scope`. Two-layer planning logic folds back into `/implement`.
+2. **Rewrite all skills** — task-focused, 30–50 lines, no role framing, self-contained; add review-aware step to artifact-producing skills only (implement, design, pr-review, codebase-review, doc-review). Full skill set: `implement`, `scope`, `design`, `pr-review`, `pr-draft`, `pr-ready`, `codebase-review`, `doc-review`, `handoff`, `sync`, `issue`, `quality`, `evolve`, `skill-author`, `findings` (originally `review`). Replace existing `/plan` skill with `/scope`. Two-layer planning logic folds back into `/implement`.
 3. **Delete — pure ritual, no unique content:**
    - `.aide/docs/agents/DESIGN_WORKSHOP_START.md`
    - `.aide/docs/agents/DOC_REVIEW_START.md`
@@ -175,8 +175,8 @@ Changes to make following this ADR:
    - `docs/TESTING_POLICY.md` — GUT-specific rules and gotchas
    - `docs/DEVELOPMENT.md` — architecture reference
 7. **Establish ADR pattern** — two roots: `.aide/docs/decisions/` (AIDE) and `docs/decisions/` (project). This file is the first AIDE-level ADR.
-8. **Write `/review` skill** — artifact-agnostic, implements two-file protocol
-9. **No separate `review-protocol.md`** — deliberately omitted. The `/review` skill is the protocol. A separate reference file would duplicate it with no operational gain.
+8. **Write `/findings` skill** — artifact-agnostic, implements two-file protocol. Original command name: `/review`.
+9. **No separate `review-protocol.md`** — deliberately omitted. The review skill is the protocol. A separate reference file would duplicate it with no operational gain.
 10. **Update `.aide/docs/core/DOCUMENTATION_POLICY.md`** — remove "agent primer files" guidance; replace with tiered skill-first model description
 
 **Rollout order (prevents broken skill references mid-migration):**

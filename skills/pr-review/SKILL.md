@@ -38,7 +38,7 @@ Before starting: check if `<pr-slug>.findings.md` exists. If it does, incorporat
 
 4. **Report findings** — Group by severity (Critical/Major/Minor) with `path:line` references. State a clear decision: approve / request changes / non-blocking.
 
-5. **Submit** — Use `/review` protocol to write `<pr-slug>.findings.md`, OR submit via:
+5. **Submit** — Use `/findings` to write `<pr-slug>.findings.md`, OR submit via:
    ```
    gh pr review <n> --request-changes --body "..."
    ```
