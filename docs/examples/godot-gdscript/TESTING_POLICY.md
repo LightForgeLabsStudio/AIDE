@@ -29,7 +29,7 @@ At minimum, run the fast unit tests:
 
 ```bash
 # Run GUT unit tests only
-Godot_v4.5.1_console.exe --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/unit -gexit
+Godot_v4.6.1_console.exe --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/unit -gexit
 ```
 
 If no automated tests exist yet, provide a short, repeatable manual checklist (steps + expected outcome) in the PR.
@@ -51,10 +51,10 @@ If no automated tests exist yet, provide a short, repeatable manual checklist (s
 **GUT Unit Tests:**
 ```bash
 # Run all unit tests
-Godot_v4.5.1_console.exe --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/unit -gexit
+Godot_v4.6.1_console.exe --headless -s addons/gut/gut_cmdln.gd -gdir=res://tests/unit -gexit
 
 # Run specific unit test file
-Godot_v4.5.1_console.exe --headless -s addons/gut/gut_cmdln.gd -gtest=res://tests/unit/test_resource_manager.gd -gexit
+Godot_v4.6.1_console.exe --headless -s addons/gut/gut_cmdln.gd -gtest=res://tests/unit/test_resource_manager.gd -gexit
 
 # Run from Godot Editor: Project -> Tools -> GUT
 ```
@@ -62,13 +62,13 @@ Godot_v4.5.1_console.exe --headless -s addons/gut/gut_cmdln.gd -gtest=res://test
 **Integration Tests:**
 ```bash
 # Deliver ore to refinery and verify alloy output
-Godot_v4.5.1_console.exe --headless -s tests/logistics/test_job_and_refinery.gd
+Godot_v4.6.1_console.exe --headless -s tests/logistics/test_job_and_refinery.gd
 
 # Load World.tscn and run a short smoke
-Godot_v4.5.1_console.exe --headless -s tests/smoke/smoke_world.gd
+Godot_v4.6.1_console.exe --headless -s tests/smoke/smoke_world.gd
 
 # Placement anchor rotation test
-Godot_v4.5.1_console.exe --headless -s tests/logistics/test_placement_anchor_rotation.gd
+Godot_v4.6.1_console.exe --headless -s tests/logistics/test_placement_anchor_rotation.gd
 ```
 
 ### Notes for Godot 4 Test Runs

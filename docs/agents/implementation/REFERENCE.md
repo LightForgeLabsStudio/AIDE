@@ -35,6 +35,6 @@ Reference the issue number for traceability: `#42 Add drone return-to-base`.
 | --- | --- |
 | `{{MAIN_BRANCH}}` | `main` |
 | `{{RUN_ALL_TESTS_COMMAND}}` | `cmd /c run_tests.bat` |
-| `{{RUN_UNIT_TESTS_COMMAND}}` | `Godot_v4.5.1_console.exe --headless -s addons/gut/gut_cmdln.gd` |
+| `{{RUN_UNIT_TESTS_COMMAND}}` | `Godot_v4.6.1_console.exe --headless -s addons/gut/gut_cmdln.gd` |
 | `{{LINT_COMMAND}}` | `cmd /c lint.bat` |
 | `{{SMOKE_TEST_COMMAND}}` | `cmd /c smoke_test.bat` |
