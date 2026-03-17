@@ -1,7 +1,0 @@
-{
-  "id": "implementation",
-  "version": 2,
-  "skill": "skills/implement/SKILL.md",
-  "skill_consumer_prefix": ".aide/",
-  "note": "Steps 0-10 are inlined in the skill. Separate entrypoint, one_pager, and step docs were deleted per ADR 2026-02-27-aide-core-reduction."
-}

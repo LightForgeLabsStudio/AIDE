@@ -4,6 +4,7 @@ This directory contains AIDE skills in a **tool-agnostic format** compatible wit
 
 ## Supported Tools
 
+- **Qwen Code** (VS Code Extension & CLI)
 - **Claude Code** (VS Code Extension & CLI)
 - **Codex** (VS Code Extension)
 - **Cursor** (with AIDE plugin)
@@ -56,6 +57,47 @@ Practical tips:
 - Keep `description` short and plain-text (aim for <120 chars).
 
 ## Installation
+
+### Qwen Code (VS Code Extension or CLI)
+
+**Option 0: Repo-local install (recommended for teams)**
+```bash
+# From repo root (Windows PowerShell)
+.aide/skills/install-qwen.ps1
+
+# From repo root (Linux/Mac bash)
+./aide/skills/install-qwen.sh
+
+# Installs skills into: .qwen/skills/
+# Reload VS Code / restart Qwen Code to pick up changes
+```
+
+**Option 1: Symlink (recommended - stays in sync)**
+```bash
+# Windows (PowerShell as Admin)
+New-Item -ItemType SymbolicLink -Path "$HOME\.qwen\skills\implement" -Target "path\to\.aide\skills\implement"
+
+# Linux/Mac
+ln -s /path/to/.aide/skills/implement ~/.qwen/skills/implement
+```
+
+**Option 2: Copy**
+```bash
+# Windows
+xcopy /E /I .aide\skills\implement %USERPROFILE%\.qwen\skills\implement
+
+# Linux/Mac
+cp -r .aide/skills/implement ~/.qwen/skills/implement
+```
+
+**Option 3: Install Script with Custom Path**
+```bash
+# Windows
+.aide/skills/install-qwen.ps1 -SkillsPath "$HOME\\.qwen\\skills"
+
+# Linux/Mac with custom path
+./aide/skills/install-qwen.sh --skills-path "$HOME/.qwen/skills"
+```
 
 ### Claude Code (VS Code Extension or CLI)
 
