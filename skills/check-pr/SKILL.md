@@ -14,7 +14,7 @@ Inspect an existing pull request for reviewer feedback and summarize the actiona
 
 ## Workflow
 
-1. **Verify context** - Use `gh api user --jq .login` if identity matters. If the PR author and current user are the same, stop and ask for a separate reviewer context.
+1. **Verify context** - Use `gh api user --jq .login` if identity matters. The author is expected to use this skill to inspect reviewer feedback on their own PR, so do not block on matching identities unless a separate reviewer context is explicitly required by the user.
 2. **Load PR** - Run `gh pr view <n>` and `gh pr diff <n>`. Read the linked issue if the PR references one.
 3. **Read feedback** - Inspect PR review threads and comments. Treat existing external review findings as the source of truth for this skill.
 4. **Triage** - Group findings by severity and note whether each item is blocking, non-blocking, or already resolved in the branch.
