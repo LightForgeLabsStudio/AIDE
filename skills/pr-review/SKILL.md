@@ -35,7 +35,7 @@ Before starting: check if `<pr-slug>.findings.md` exists. If it does, incorporat
    - Testing posture (new tests where appropriate; no unjustified test edits)
    - Docs drift or duplication
    - Git hygiene (commit structure, no debug leftovers)
-   - If a check is red, compare against `main` and inspect the full PR commit range before classifying it. If the failure appears anywhere in the PR range, treat it as branch-owned regression and review it as part of the PR.
+   - If a check is red, compare against `main` and inspect the full PR commit range before classifying it. If the failure appears anywhere in the PR range, treat it as branch-owned regression and review it as part of the PR. Do not label a failure as `pre-existing` unless that baseline comparison proves it.
 
 4. **Report findings** — Group by severity (Critical/Major/Minor) with `path:line` references. State a clear decision: approve / request changes / non-blocking.
 
