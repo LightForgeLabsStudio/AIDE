@@ -1,35 +1,35 @@
 ---
 name: respond
-description: Apply findings from a /findings review to an ADR and write a response file
+description: Apply findings from a /findings review to a spec or ADR and write a response file
 ---
 
 # Respond
 
-Handle the designer's side of the ADR review loop. Read findings, triage them, apply agreed changes, and write a response record.
+Handle the designer's side of the spec/ADR review loop. Read findings, triage them, apply agreed changes, and write a response record.
 
-Pairs with `/findings` (reviewer writes findings) and `/design` (designer writes ADR).
+Pairs with `/findings` (reviewer writes findings) and `/design` (designer writes the spec/ADR).
 
 ## Inputs
 
-- Path to the ADR under review, or enough context to locate it
-- The findings file must already exist alongside the ADR as `<slug>.findings.md`
+- Path to the spec or ADR under review, or enough context to locate it
+- The findings file must already exist alongside it as `<slug>.findings.md`
 
 ## Workflow
 
-1. **Locate files** — Find the ADR in `docs/decisions/` or `.aide/docs/decisions/`. Look for the sibling `<slug>.findings.md`. If not found, stop and tell the user.
+1. **Locate files** — Find the artifact in `docs/specs/`, `docs/decisions/`, or `.aide/docs/`. Look for the sibling `<slug>.findings.md`. If not found, stop and tell the user.
 
-2. **Read both files** — Read the ADR and the findings file in full.
+2. **Read both files** — Read the artifact and the findings file in full.
 
 3. **Triage findings** — For each finding, decide:
-   - **Apply** — finding is correct, change the ADR
+   - **Apply** — finding is correct, change the artifact
    - **Reject** — finding is incorrect or out of scope; record reasoning
-   - **Defer** — valid but out of scope for this ADR; note where it should land
+   - **Defer** — valid but out of scope for this artifact; note where it should land
 
-4. **Apply changes** — Edit the ADR for all accepted findings. Do not change the ADR status — the reviewer (`/findings`) owns that.
+4. **Apply changes** — Edit the artifact for all accepted findings. Do not change its status — the reviewer (`/findings`) owns that.
 
-5. **Write response file** — Write `<slug>.response.md` alongside the ADR with this structure:
+5. **Write response file** — Write `<slug>.response.md` alongside the artifact with this structure:
    ```
-   # Review Response: <ADR Title>
+   # Review Response: <Title>
    ## Applied
    ## Rejected
    ## Deferred
@@ -40,5 +40,5 @@ Pairs with `/findings` (reviewer writes findings) and `/design` (designer writes
 
 ## Reference
 
-- ADR locations: `docs/decisions/` (game decisions), `.aide/docs/decisions/` (AIDE decisions)
+- Artifact locations: `docs/specs/` (living specs), `docs/decisions/` (project ADRs), `.aide/docs/decisions/` (AIDE ADRs)
 - Findings file written by: `/findings`

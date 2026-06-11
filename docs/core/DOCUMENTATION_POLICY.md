@@ -1,99 +1,42 @@
-# Documentation Policy
+# Documentation Policy (Template)
 
-Keep docs lean, consistent, and authoritative.
+> **Template — instantiate, don't point.** Copy this into your project as `docs/DOCUMENTATION_POLICY.md`, replace placeholders, and delete sections that don't apply. Do **not** ship a stub that defers to this file: the `.aide/` pin is not your project's source of truth. Kernel references: [DOCUMENT_TAXONOMY.md](DOCUMENT_TAXONOMY.md), [DOCUMENTATION_PRINCIPLES.md](DOCUMENTATION_PRINCIPLES.md).
 
-## Sources of Truth
+## Taxonomy (six homes, two flavors)
 
-Define your project's documentation hierarchy:
+| Home | Question answered | Flavor |
+| --- | --- | --- |
+| `{{DESIGN_DIRECTORY}}` | Why does this product exist and feel this way? | Living |
+| `docs/specs/` | What is true of this system now, and what must remain true? | Living |
+| `docs/decisions/` | What did we choose that is hard to reverse, and why? | Dated |
+| GitHub epics/issues | How and when? | Executed and closed — these are the plans |
+| `docs/evaluations/` | What did we learn? | Dated |
+| Conventions ({{CODING_GUIDELINES_DOC}}, {{TESTING_POLICY_DOC}}, {{CONTRIBUTING_DOC}}) | How do we work? | Living |
 
-- **README.md**: User/player-facing basics (install, run, key features)
-- **GitHub Epics + child Issues**: Specs and implementation state
-- **{{PROJECT_SUMMARY_DOC}}**: High-level project overview and current state
-- **{{DEVELOPMENT_DOC}}**: Architecture and how to extend/debug
-- **{{CONTRIBUTING_DOC}}**: Workflow, specs, testing, review process
-- **{{CONTRACTS_DIRECTORY}}**: System invariants/contracts (project-level, optional)
+**Living** docs claim to be current and are the only maintenance burden — keep the set small. **Dated** records are append-only and never edited after the fact (status lines only).
 
-Customize this list to match your project's structure.
+## Creation Rule
+
+> System truth → spec. Hard-to-reverse choice → ADR. Execution → issue.
+
+- A **spec** (`docs/specs/<system>.md`) is the living description of a system, with status frontmatter and a binding **Invariants** section. Load it before modifying that system. When executed work changes invariants, updating the spec is part of the work.
+- An **ADR** (`docs/decisions/YYYY-MM-DD-slug.md`) is written only when real alternatives existed, the choice constrains future work, and a newcomer could accidentally reverse it.
+- **Plans are GitHub issues.** There is no plans folder. No contracts/reports/review/handoffs folders either — see the taxonomy doc for where that content lives.
 
 ## Update Rules
 
-- Update only the relevant sources; avoid duplicating the same details across multiple files
-- When behavior changes, touch the single best place (README for users, {{DEVELOPMENT_DOC}} for developers)
-- Do not remove or rewrite existing tests without explicit approval
-- Confirm with the requester before initiating large refactors or cross-cutting doc reorganizations
-- Align on intent and testing scope before commits/PRs (no surprise changes)
+- Update only the relevant source; never duplicate the same fact across files — link instead.
+- When behavior changes: README for users, {{DEVELOPMENT_DOC}} for developers, the system spec for invariants.
+- Implementation state is queried from GitHub (`{{IMPLEMENTATION_STATUS_QUERY}}`), never tracked in markdown snapshots.
+- Git commits serve as the changelog during active development; a formal `CHANGELOG.md` is optional until public release.
 
-## Changelog Policy
+## Allowed Exception: Token-Efficient Summaries
 
-During active development, git commits serve as the technical changelog. Commit messages should be descriptive and include what was tested.
+Condensed agent summaries (e.g. `DESIGN_QUICK_REFERENCE.md`) may duplicate content when they clearly state they are non-authoritative, link the source, and are kept synchronized.
 
-A formal `CHANGELOG.md` is optional and should be added when preparing for public releases or when the project reaches a stable milestone. If created, changelog entries should include:
-- Version number and date
-- Summary of changes (new features, fixes, breaking changes)
-- Tests run or manual verification performed
+## Placeholders
 
-## Adding/Editing Docs
-
-- Add a brief feature summary and implementation approach in GitHub issues/PRs before coding
-- Prefer links/references to existing sections instead of copy/pasting content
-- Note known gaps or future work where applicable
-
-## Allowed Exceptions to No-Duplication Policy
-
-In rare cases, duplication is permitted when there is a clear operational benefit that outweighs the maintenance cost:
-
-### Token Optimization for Agents
-
-**Exception:** Quick reference documents (e.g., `DESIGN_QUICK_REFERENCE.md`, `API_QUICK_REFERENCE.md`)
-
-- **Purpose:** Condensed summaries for agent token efficiency
-- **Justification:** Reading full docs (10,000+ tokens) vs quick reference (500 tokens) = 95%+ reduction
-- **Requirements:**
-  - Must clearly state it is NOT authoritative
-  - Must link to authoritative sources
-  - Must be kept synchronized when source docs change
-  - Must cover ALL relevant topics (not selective)
-
-**Agent Token Economy Best Practices:**
-
-All agent-facing docs should prioritize token efficiency to maximize context budget for code analysis and implementation. See `.aide/docs/agents/TOKEN_ECONOMY.md` for comprehensive strategies.
-
-- **Prefer concise directives over verbose explanations**
-- **Use bullet points and checklists instead of paragraphs**
-- **Reference authoritative docs instead of duplicating content**
-- **Front-load critical information (most important rules first)**
-- **Use quick reference documents when available**
-- **Avoid redundant examples (one clear example > three similar ones)**
-
-### ~~Implementation State Tracking~~ (DEPRECATED)
-
-**Former Exception:** `IMPLEMENTATION_STATUS.md` (deprecated as of AIDE v1.1)
-
-- **Replaced by:** GitHub Issues/PRs/Epics (query via `gh` CLI)
-- **Rationale:** Static markdown files fall out of sync. GitHub is the actual canonical state and auto-updates on PR merge.
-- **Migration:** Use GitHub CLI queries instead of reading stale markdown:
-  ```bash
-  gh issue list --label "status:in-progress" --state open  # Current work
-  gh pr list --state open                                   # Active PRs
-  gh issue list --label "status:ready" --state open        # Ready to implement
-  ```
-- **See:** [GITHUB_QUERIES.md](../agents/GITHUB_QUERIES.md) for comprehensive query reference
-
-**Recommendation:** Use GitHub as single source of truth for implementation state. Agents query current state dynamically rather than reading snapshot documents.
-
-**When to add new exceptions:**
-- Operational benefit must be significant and measurable
-- Exception must be explicitly documented here
-- Must include synchronization requirements
-- Prefer references over duplication whenever possible
-
-## Customization for Your Project
-
-Replace these placeholders with your actual documentation structure:
-
-- `{{PROJECT_SUMMARY_DOC}}` -> `docs/PROJECT_SUMMARY.md` or `docs/OVERVIEW.md`
-- `{{DEVELOPMENT_DOC}}` -> `docs/DEVELOPMENT.md` or `docs/ARCHITECTURE.md`
-- `{{CONTRIBUTING_DOC}}` -> `docs/CONTRIBUTING.md` or `CONTRIBUTING.md`
-- `{{CONTRACTS_DIRECTORY}}` -> `docs/contracts/`
-- `{{IMPLEMENTATION_STATUS_QUERY}}` -> `gh issue list --label "status:in-progress"` (see [GITHUB_QUERIES.md](../agents/GITHUB_QUERIES.md))
-- `{{PROJECT_DESIGN_DOCS}}` -> `docs/design/`, `docs/architecture/`
+- `{{DESIGN_DIRECTORY}}` → `design/`, `docs/design/`
+- `{{DEVELOPMENT_DOC}}` → `docs/DEVELOPMENT.md`, `docs/ARCHITECTURE.md`
+- `{{CODING_GUIDELINES_DOC}}` / `{{TESTING_POLICY_DOC}}` / `{{CONTRIBUTING_DOC}}` → your convention docs
+- `{{IMPLEMENTATION_STATUS_QUERY}}` → e.g. `gh issue list --label "status:in-progress"`

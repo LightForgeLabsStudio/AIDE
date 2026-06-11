@@ -39,6 +39,9 @@ Project-side documents satisfy AIDE contracts.
 | Code style rules | `{{CODING_GUIDELINES_DOC}}` |
 | Test requirements | `{{TESTING_POLICY_DOC}}` |
 | Workflow rules | `{{CONTRIBUTING_DOC}}` |
+| System truth + binding invariants | `docs/specs/<system>.md` living specs (see `docs/core/DOCUMENT_TAXONOMY.md`) |
+
+Documentation kernel: [docs/core/DOCUMENT_TAXONOMY.md](docs/core/DOCUMENT_TAXONOMY.md) (six homes, two flavors, creation rule) and [docs/core/DOCUMENTATION_PRINCIPLES.md](docs/core/DOCUMENTATION_PRINCIPLES.md). Projects instantiate policy files from templates — no stubs pointing into `.aide/`.
 
 ### Tier 2: Compact Reference (On-Demand)
 
