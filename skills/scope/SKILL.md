@@ -1,19 +1,19 @@
 ---
 name: scope
-description: Decompose an accepted ADR into GitHub issues using the issue-creator tool.
+description: Decompose an accepted spec (and its ADR, if one exists) into GitHub issues using the issue-creator tool.
 ---
 
 # Scope
 
-Turn an accepted ADR into a set of GitHub issues. Read AGENTS.md if not in context.
+Turn an accepted system spec into a set of GitHub issues. Read AGENTS.md if not in context.
 
 ## Inputs
 
-Path to the accepted ADR file (or paste contents). Optionally: repo override (`owner/repo`).
+Path to the accepted spec in `docs/specs/` (or paste contents). If the design produced an ADR, read it too. Optionally: repo override (`owner/repo`).
 
 ## Workflow
 
-1. **Read ADR** — Extract: Context, Decision, Success Criteria, and any explicit scope boundaries.
+1. **Read the spec** (and ADR if present) — Extract: the change being made, Invariants affected, Success Criteria, and any explicit scope boundaries.
 
 2. **Identify work units** — Break the decision into discrete, independently deliverable chunks. Each chunk becomes one issue.
 
@@ -21,8 +21,8 @@ Path to the accepted ADR file (or paste contents). Optionally: repo override (`o
 
    ```
    ## Epic: <title>
-   Goal: <from ADR Decision>
-   ADR: <path-to-adr>
+   Goal: <from the spec's design/change section>
+   Spec: <path-to-spec>   (plus ADR path if one exists)
 
    ### Issue: <title>
    Goal: <what this chunk delivers>

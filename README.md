@@ -64,9 +64,10 @@ Browse `docs/examples/` for your stack:
 Copy relevant templates to your project:
 
 ```bash
-# Core process docs (usually symlink these)
-ln -s .aide/docs/core/DOCUMENTATION_POLICY.md docs/DOCUMENTATION_POLICY.md
-ln -s .aide/docs/core/CONTRIBUTING.md docs/CONTRIBUTING.md
+# Core process docs — COPY and customize, never symlink or stub-point into .aide/
+# (AIDE defines shapes; your project owns instances. See docs/core/DOCUMENT_TAXONOMY.md)
+cp .aide/docs/core/DOCUMENTATION_POLICY.md docs/DOCUMENTATION_POLICY.md
+cp .aide/docs/core/CONTRIBUTING.md docs/CONTRIBUTING.md
 
 # Tech-specific standards (copy and customize)
 cp .aide/docs/examples/nodejs-typescript/TESTING_POLICY.md docs/TESTING_POLICY.md

@@ -1,4 +1,6 @@
-# Contributing / Working Agreement
+# Contributing / Working Agreement (Template)
+
+> **Template — instantiate, don't point.** Copy into your project as `docs/CONTRIBUTING.md` and replace placeholders. Do not ship a stub that defers to this file.
 
 Minimal, repeatable workflow to keep changes consistent and documented.
 
@@ -106,10 +108,10 @@ See [TESTING_POLICY.md](TESTING_POLICY.md) for complete testing requirements.
 See [DOCUMENTATION_POLICY.md](DOCUMENTATION_POLICY.md) for complete documentation standards.
 
 **Summary:**
-- Update relevant docs when behavior changes (README, {{DEVELOPMENT_DOC}}, design docs)
+- Update relevant docs when behavior changes (README, {{DEVELOPMENT_DOC}}, the system spec)
 - Avoid duplicating information across files; use references
-- Only create new spec files when explicitly requested
-- System invariants live in {{CONTRACTS_DIRECTORY}} (if used); avoid restating them elsewhere
+- System invariants live in the relevant `docs/specs/<system>.md` Invariants section; avoid restating them elsewhere. See [DOCUMENT_TAXONOMY.md](DOCUMENT_TAXONOMY.md)
+- When executed work changes a system's invariants, updating that spec is part of the work
 
 ## Code Standards
 
@@ -145,5 +147,5 @@ Replace these placeholders:
 - `{{LANGUAGE}}` -> `TypeScript`, `Python`, `Rust`, `GDScript`
 - `{{FRAMEWORK}}` -> `React`, `Django`, `Actix`, `Godot`
 - `{{DEVELOPMENT_DOC}}` -> `docs/DEVELOPMENT.md`, `docs/ARCHITECTURE.md`
-- `{{CONTRACTS_DIRECTORY}}` -> `docs/contracts/`
+- `{{DESIGN_DIRECTORY}}` -> `design/`, `docs/design/`
 - `{{PROJECT_DESIGN_DOCS}}` -> `docs/design/`, `docs/architecture/`
