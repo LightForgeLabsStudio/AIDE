@@ -11,10 +11,6 @@ Review a PR against its linked issue and project constraints. Do not push fixes.
 
 PR number or URL. Reviewer GitHub login (must not be PR author). Any custom concerns.
 
-## Review-aware
-
-Before starting: check if `<pr-slug>.findings.md` exists. If it does, incorporate prior findings into this review.
-
 ## Workflow
 
 1. **Verify identity** — Run `gh api user --jq .login`. If reviewer == PR author, stop and request an identity switch.
@@ -39,8 +35,8 @@ Before starting: check if `<pr-slug>.findings.md` exists. If it does, incorporat
 
 4. **Report findings** — Group by severity (Critical/Major/Minor) with `path:line` references. State a clear decision: approve / request changes / non-blocking.
 
-5. **Submit** — Use `/findings` to write `<pr-slug>.findings.md`, OR submit via:
+5. **Submit** — Post findings directly as a GitHub PR review:
    ```
    gh pr review <n> --request-changes --body "..."
    ```
-   Do not review as the PR author.
+   (Use `--approve` or `--comment` as appropriate.) Do not review as the PR author.
