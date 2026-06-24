@@ -29,7 +29,7 @@ Before starting: check if `<artifact>.findings.md` exists for this topic. If it 
 
 6. **Cross-review** — Use `/findings` to exchange findings before accepting. Do not accept unreviewed specs.
 
-7. **Accept** — Set spec frontmatter `status: accepted` (and ADR status if one was written). Hand off to `/scope` to decompose into GitHub issues.
+7. **Accept** — Set spec frontmatter `status: accepted` (and ADR status if one was written). Hand off to `/scope` to decompose into GitHub issues (or, when the project elects a `docs/plans/` layer, an optional staged plan).
 
 ## Spec frontmatter
 

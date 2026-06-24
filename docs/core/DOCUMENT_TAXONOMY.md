@@ -50,7 +50,7 @@ Closing step of any executed epic or accepted decision that establishes new inva
 
 ## Explicitly Rejected Categories
 
-- **No `plans/` folder.** Execution detail lives in GitHub epics and issues. Plan documents duplicate the tracker and rot.
+- **No *default* `plans/` folder.** By default, execution lives in GitHub epics/issues (they *are* the plans). Plans are **optional, not rejected**: a project may elect a `docs/plans/` execution layer in its own taxonomy for staged work with ordered steps and validation gates. When used, a plan *sequences* (it must not duplicate the issue tracker) and is closed or archived on completion.
 - **No `contracts/` folder.** Invariants live inside the relevant spec's Invariants section — on the load path, not in a separate archive.
 - **No `reports/` / `review/` / `handoffs/` folders.** Evaluations are dated records in `docs/evaluations/`; PR reviews live on GitHub; session handoffs are transient (archive or delete).
 - **No implementation-status snapshots.** Query GitHub (`gh`) for live state.
