@@ -21,7 +21,7 @@
 
 - A **spec** (`docs/specs/<system>.md`) is the living description of a system, with status frontmatter and a binding **Invariants** section. Load it before modifying that system. When executed work changes invariants, updating the spec is part of the work.
 - An **ADR** (`docs/decisions/YYYY-MM-DD-slug.md`) is written only when real alternatives existed, the choice constrains future work, and a newcomer could accidentally reverse it.
-- **Plans are GitHub issues.** There is no plans folder. No contracts/reports/review/handoffs folders either — see the taxonomy doc for where that content lives.
+- **Plans default to GitHub issues; a `docs/plans/` execution layer is optional.** Epics/issues *are* the plans by default. A project may elect staged plan documents in its taxonomy for ordered implementation steps with validation gates; when used, a plan sequences and must not duplicate the tracker. No contracts/reports/review/handoffs folders either — see the taxonomy doc for where that content lives.
 
 ## Update Rules
 
