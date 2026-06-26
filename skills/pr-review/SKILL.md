@@ -23,6 +23,13 @@ PR number or URL. Reviewer GitHub login (must not be PR author). Any custom conc
    GH_CONFIG_DIR=~/.config/gh-reviewer gh api user --jq .login
    ```
 
+   If `gh` is configured with multiple accounts in the default config, do not stop after the first identity check. Inspect `gh auth status`, look for an available reviewer account (for this repo that is typically `lightforgelabsdev-review`), and switch with:
+   ```bash
+   gh auth switch -u lightforgelabsdev-review
+   ```
+
+   Important: in Codex shell sessions, the GitHub account may be reset at the start of each new shell command. When you need to switch accounts for a review, perform the switch, identity verification, and `gh pr review ...` submission inside the same shell invocation rather than separate commands.
+
 2. **Load PR + spec** — Run `gh pr view <n>` and `gh pr diff <n>`. Extract linked issue (`Fixes #X`) and read its full spec.
 
 3. **Review** — Check:
@@ -40,3 +47,8 @@ PR number or URL. Reviewer GitHub login (must not be PR author). Any custom conc
    gh pr review <n> --request-changes --body "..."
    ```
    (Use `--approve` or `--comment` as appropriate.) Do not review as the PR author.
+
+   In this repository, if you had to switch to a reviewer account first, prefer a single shell invocation such as:
+   ```bash
+   gh auth switch -u lightforgelabsdev-review && gh api user --jq .login && gh pr review <n> --request-changes --body "..."
+   ```

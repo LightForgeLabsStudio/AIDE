@@ -106,7 +106,7 @@ cp -r .aide/skills/implement ~/.qwen/skills/implement
 # From repo root (Windows PowerShell)
 .aide/skills/install-claude.ps1
 
-# Installs skills into: .claude/skills/
+# Installs skills into: .claude/skills/ as links to the `.aide` canonicals by default
 # Reload VS Code / restart Claude Code to pick up changes
 ```
 
@@ -131,7 +131,7 @@ cp -r .aide/skills/implement ~/.claude/skills/implement
 **Option 3: Install Script**
 ```bash
 # From repo root
-.aide/skills/install-claude.ps1    # Windows (defaults to .claude/skills)
+.aide/skills/install-claude.ps1    # Windows (defaults to linked .claude/skills)
 .aide/skills/install-claude.sh     # Linux/Mac
 ```
 
@@ -139,6 +139,13 @@ To install to a user-level directory instead:
 ```bash
 .aide/skills/install-claude.ps1 -SkillsPath "$HOME\\.claude\\skills"
 ```
+
+To force a copied install instead of symlinks:
+```bash
+.aide/skills/install-claude.ps1 -Symlink:$false
+```
+
+On Windows, the PowerShell installer uses directory junctions for linked installs so admin elevation is not required. On non-Windows, it uses symbolic links.
 
 ### Codex (VS Code Extension)
 
@@ -149,9 +156,16 @@ Codex can use either packaged `.skill` files or repo-local skills.
 # From repo root
 .aide/skills/install-codex.ps1
 
-# Installs skills into: .codex/skills/
+# Installs skills into: .codex/skills/ as links to the `.aide` canonicals by default
 # Reload VS Code / restart Codex to pick up changes
 ```
+
+To force a copied install instead of links:
+```bash
+.aide/skills/install-codex.ps1 -Symlink:$false
+```
+
+On Windows, the PowerShell installer uses directory junctions for linked installs so admin elevation is not required. On non-Windows, it uses symbolic links.
 
 **Option 2: Packaged `.skill` import (for distribution)**
 

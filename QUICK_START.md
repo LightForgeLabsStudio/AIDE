@@ -93,6 +93,10 @@ powershell -ExecutionPolicy Bypass -File .aide/skills/install-claude.ps1
 powershell -ExecutionPolicy Bypass -File .aide/skills/install-codex.ps1
 ```
 
+`install-claude.ps1` now installs Claude skills as links to the `.aide/skills/` canonicals by default. On Windows it uses directory junctions; on non-Windows it uses symbolic links. Use `-Symlink:$false` only when you explicitly want copied snapshots.
+
+`install-codex.ps1` now does the same for Codex installs under `.codex/skills/`.
+
 After installing, reload your AI tool and type `/` to see available skills (`/implement`, `/pr-review`, etc.).
 
 ### 5. Instantiate Templates

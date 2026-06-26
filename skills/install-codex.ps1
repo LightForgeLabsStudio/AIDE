@@ -2,14 +2,52 @@
 # Install AIDE skills for Codex (repo-local .codex/skills)
 
 param(
-    [switch]$Symlink = $false,
+    [switch]$Symlink = $true,
     [string]$RepoRoot = "",
     [string]$SkillsPath = ""
 )
 
 $ErrorActionPreference = "Stop"
+$OnWindows = $env:OS -eq "Windows_NT"
 
 Write-Host "Installing AIDE skills for Codex..." -ForegroundColor Cyan
+
+function Remove-SkillInstallTarget {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Path
+    )
+
+    if (-not (Test-Path -LiteralPath $Path)) {
+        return
+    }
+
+    $item = Get-Item -LiteralPath $Path -Force
+    if ($OnWindows -and $item.PSIsContainer -and $item.LinkType -eq "Junction") {
+        cmd /c rmdir $Path | Out-Null
+        return
+    }
+
+    Remove-Item -LiteralPath $Path -Recurse -Force
+}
+
+function New-SkillInstallLink {
+    param(
+        [Parameter(Mandatory = $true)]
+        [string]$Path,
+
+        [Parameter(Mandatory = $true)]
+        [string]$Target
+    )
+
+    if ($OnWindows) {
+        New-Item -ItemType Junction -Path $Path -Target $Target | Out-Null
+        return "junction"
+    }
+
+    New-Item -ItemType SymbolicLink -Path $Path -Target $Target | Out-Null
+    return "symlink"
+}
 
 # This script lives in: <consumer-repo>/.aide/skills/
 $aideSkillsDir = $PSScriptRoot
@@ -31,6 +69,7 @@ if ($SkillsPath -eq "") {
 
 Write-Host "Repo root: $RepoRoot" -ForegroundColor Gray
 Write-Host "Target Codex skills dir: $SkillsPath" -ForegroundColor Gray
+Write-Host ("Install mode: {0}" -f ($(if ($Symlink) { "linked" } else { "copy" }))) -ForegroundColor Gray
 
 if (-not (Test-Path $SkillsPath)) {
     Write-Host "Creating skills directory: $SkillsPath" -ForegroundColor Yellow
@@ -55,21 +94,20 @@ foreach ($skill in $skills) {
     $targetPath = Join-Path $SkillsPath $skillName
 
     if ($Symlink) {
-        # Create symlink (may require admin on Windows depending on policy)
         if (Test-Path $targetPath) {
             Write-Host "  Removing existing: $skillName" -ForegroundColor Yellow
-            Remove-Item -Recurse -Force $targetPath
+            Remove-SkillInstallTarget -Path $targetPath
         }
 
-        Write-Host "  Symlinking: $skillName" -ForegroundColor Cyan
-        New-Item -ItemType SymbolicLink -Path $targetPath -Target $sourcePath | Out-Null
+        $linkType = New-SkillInstallLink -Path $targetPath -Target $sourcePath
+        Write-Host "  Linking ($linkType): $skillName" -ForegroundColor Cyan
         continue
     }
 
     # Copy files
     if (Test-Path $targetPath) {
         Write-Host "  Updating: $skillName" -ForegroundColor Yellow
-        Remove-Item -Recurse -Force $targetPath
+        Remove-SkillInstallTarget -Path $targetPath
     } else {
         Write-Host "  Installing: $skillName" -ForegroundColor Green
     }
@@ -77,7 +115,7 @@ foreach ($skill in $skills) {
 }
 
 Write-Host ""
-Write-Host "✅ Installation complete!" -ForegroundColor Green
+Write-Host "Installation complete!" -ForegroundColor Green
 Write-Host ""
 Write-Host "Installed skills (repo-local):" -ForegroundColor Cyan
 foreach ($skill in $skills) {
@@ -89,6 +127,10 @@ Write-Host "  1. Ensure Codex is configured to load repo skills from .codex/skil
 Write-Host "  2. Reload VS Code / restart Codex if needed"
 Write-Host ""
 
-if (-not $Symlink) {
-    Write-Host "Note: Skills were copied. To auto-sync with AIDE updates, re-run with -Symlink" -ForegroundColor Gray
+if ($Symlink) {
+    Write-Host "Note: Skills were linked to the .aide canonicals." -ForegroundColor Gray
+    Write-Host "      Windows uses directory junctions; non-Windows uses symbolic links." -ForegroundColor Gray
+    Write-Host "      Re-run with -Symlink:`$false if you need a copied install instead." -ForegroundColor Gray
+} else {
+    Write-Host "Note: Skills were copied. Re-run with -Symlink to keep Codex skills synced to .aide." -ForegroundColor Gray
 }
