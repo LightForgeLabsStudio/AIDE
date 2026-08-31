@@ -17,7 +17,7 @@ Path to the accepted spec in `docs/specs/` (or paste contents). If the design pr
 
 2. **Identify work units** — Break the decision into discrete, independently deliverable chunks with their ordering and dependencies. Each chunk becomes one issue (issues output) or maps onto one stage (plan output).
 
-3. **Choose output** — **GitHub issues is the default.** Use the optional **plan output** only when the project's documentation taxonomy elects a `docs/plans/` execution layer (or the user explicitly asks for a plan). Most projects stay issues-only.
+3. **Choose output** — **GitHub issues is the default.** Use the optional **plan output** only if the project documentation explicitly includes a `docs/plans/` execution layer or if the user requests a plan output. Most projects stay issues-only.
 
 ### Issues output (default)
 

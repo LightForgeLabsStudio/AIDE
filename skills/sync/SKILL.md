@@ -14,7 +14,7 @@ Optional: `-DryRun` (print actions only), `-AllowMain` (permit syncing on `main`
 ## Workflow
 
 1. Confirm current branch is not `main` (unless `-AllowMain`).
-2. Confirm working tree is clean. If not, warn and stop.
+2. Confirm working tree is clean. If not, warn and stop; instruct the user to commit the changes they want to keep, stash them with `git stash`, or discard them intentionally before rerunning sync.
 3. Run `git pull --rebase`. If it fails, stop and report — do not force.
 4. Run `git push`.
 5. Run `git status -sb` and confirm branch is up to date.

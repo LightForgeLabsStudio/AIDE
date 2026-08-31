@@ -15,18 +15,20 @@ PR number or URL. Reviewer GitHub login (must not be PR author). Any custom conc
 
 1. **Verify identity** — Run `gh api user --jq .login`. If reviewer == PR author, stop and request an identity switch.
 
-   If you need a separate reviewer identity (e.g., work vs. personal account):
-   ```bash
-   # One-time setup for a reviewer account
-   GH_CONFIG_DIR=~/.config/gh-reviewer gh auth login
-   # Then prefix all gh commands with GH_CONFIG_DIR=~/.config/gh-reviewer
-   GH_CONFIG_DIR=~/.config/gh-reviewer gh api user --jq .login
-   ```
-
-   If `gh` is configured with multiple accounts in the default config, do not stop after the first identity check. Inspect `gh auth status`, look for an available reviewer account (for this repo that is typically `lightforgelabsdev-review`), and switch with:
-   ```bash
-   gh auth switch -u lightforgelabsdev-review
-   ```
+   If you need a separate reviewer identity (for example, a work account versus a personal account), do this in order:
+   1. Check whether a separate identity is needed.
+   2. If yes, complete the one-time reviewer setup:
+      ```bash
+      # One-time setup for a reviewer account
+      GH_CONFIG_DIR=~/.config/gh-reviewer gh auth login
+      # Then prefix all gh commands with GH_CONFIG_DIR=~/.config/gh-reviewer
+      GH_CONFIG_DIR=~/.config/gh-reviewer gh api user --jq .login
+      ```
+   3. If `gh` is configured with multiple accounts in the default config, inspect `gh auth status`, identify the reviewer account for this repo (typically `lightforgelabsdev-review`), and switch to it:
+      ```bash
+      gh auth switch -u lightforgelabsdev-review
+      ```
+   4. Re-check the active identity before reviewing.
 
    Important: in Codex shell sessions, the GitHub account may be reset at the start of each new shell command. When you need to switch accounts for a review, perform the switch, identity verification, and `gh pr review ...` submission inside the same shell invocation rather than separate commands.
 
@@ -38,7 +40,7 @@ PR number or URL. Reviewer GitHub login (must not be PR author). Any custom conc
    - Testing posture (new tests where appropriate; no unjustified test edits)
    - Docs drift or duplication
    - Git hygiene (commit structure, no debug leftovers)
-   - If a check is red, compare against `main` and inspect the full PR commit range before classifying it. If the failure appears anywhere in the PR range, treat it as branch-owned regression and review it as part of the PR. Do not label a failure as `pre-existing` unless that baseline comparison proves it.
+   - If a check is red, compare against `main` and inspect the full PR commit range before classifying the check as a regression or a pre-existing issue. If the failure appears anywhere in the PR range, treat it as a branch-owned regression and review it as part of the PR. Do not label a failure as `pre-existing` unless that baseline comparison proves it.
 
 4. **Report findings** — Group by severity (Critical/Major/Minor) with `path:line` references. State a clear decision: approve / request changes / non-blocking.
 

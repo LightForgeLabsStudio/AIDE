@@ -11,7 +11,7 @@ Convert repeated mistakes into rules or automation. Requires 2+ occurrences with
 
 Ask the user for:
 - What happened (describe the failure)
-- How many times (must be 2+ across sessions or PRs)
+- How many times (must be at least 2 occurrences across all sessions or PRs)
 - Evidence (PR/issue links or excerpts)
 - Where it should have been caught (tooling, docs, invariant)
 

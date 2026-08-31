@@ -1,11 +1,11 @@
 ---
 name: findings
-description: Write reviewer findings to a <slug>.findings.md file for any scoped review target.
+description: Write reviewer findings to a <slug>.findings.md file for any scoped review target such as a file, ADR, doc set, PR context, diff, or uncommitted workspace.
 ---
 
 # Findings
 
-Write reviewer findings for any scoped target using a two-file message bus. This command applies to a file, ADR, doc set, PR context, diff, uncommitted workspace, or another named review scope.
+Write reviewer findings for any scoped target such as a file, ADR, doc set, PR context, diff, uncommitted workspace, or another named review scope using a two-file message bus.
 
 ## Protocol
 

@@ -5,12 +5,12 @@ description: Inspect PR review feedback and report what needs addressing.
 
 # Check PR
 
-Inspect an existing pull request for reviewer feedback and summarize the actionable items.
+Inspect an existing pull request for reviewer feedback and summarize the actionable items. If the PR number or URL is invalid, respond with an error message indicating the issue and request a valid input.
 
 ## Inputs
 
 - PR number or URL
-- Optional user note about what kind of feedback to prioritize
+- If provided, a user note about specific areas of concern to prioritize as a guideline for the feedback summary
 
 ## Workflow
 

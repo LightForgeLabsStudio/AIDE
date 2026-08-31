@@ -9,11 +9,11 @@ Execute a GitHub issue or spec. Read AGENTS.md if not in context.
 
 ## Inputs
 
-Issue number (`gh issue view <n>`) or pasted spec text. If no spec exists, use `/design` first.
+Issue number (`gh issue view <n>`) or pasted spec text. If no spec exists, refer to the existing design document at `/design` for guidance on creating a new spec.
 
 ## Review-aware
 
-Before starting: check if `<issue-slug>.findings.md` exists. If it does, read it and incorporate findings before proceeding.
+Before starting, first check if `<issue-slug>.findings.md` exists. If it does, read it. Then, incorporate findings into your plan before proceeding.
 If CI or a test is red, compare against `main` and inspect the full PR commit range before classifying the failure. If the failure appears anywhere in the PR range, treat it as branch-owned and fix it in this PR.
 
 ## Before touching code

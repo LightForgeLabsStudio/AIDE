@@ -39,7 +39,7 @@ Tests: passing | failing (<failures>) | Lint: passing | failing
 
 ## Where to post
 
-Ask the user — post to PR comment, issue comment, or print only. Never commit.
+If the user wants to share the handoff, ask whether they want to post it to a PR comment or an issue comment; if they prefer to keep it local, confirm that they want to print it instead. Never commit.
 
 ```bash
 gh pr comment <n> --body-file handoff.md

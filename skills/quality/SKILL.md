@@ -9,10 +9,12 @@ Run project quality gates and report results.
 
 ## Inputs
 
-Ask the user for scope:
-- **Default (recommended):** lint + unit tests (fast feedback)
-- **Full:** all tests + smoke tests
-- **Dry-run:** print commands without executing
+Ask the user for scope. Choose one of the following options:
+- **default**: lint + unit tests (fast feedback)
+- **full**: all tests + smoke tests
+- **dry-run**: print commands without executing
+
+If the user provides an invalid scope option, respond with an error message indicating valid options: default, full, or dry-run.
 
 ## Workflow
 
@@ -27,7 +29,7 @@ Ask the user for scope:
 3. **Report:**
    ```
    ## Quality Gate Results
-   Scope: <default|full|dry-run>
+   Scope: default | full | dry-run
 
    Results:
    ✅/❌ Lint: passed | failed

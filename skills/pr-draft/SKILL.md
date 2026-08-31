@@ -9,7 +9,7 @@ Create a draft PR using a consistent template. Validate body locally before open
 
 ## Inputs
 
-Base branch (default `main`), head branch (default current), PR title, issue number, summary bullets (1-4), implementation checklist items, validation checklist items.
+Base branch (default `main`), head branch (default current), PR title, issue number, summary bullets (between 1 and 4), implementation checklist items, validation checklist items.
 
 ## Workflow
 
@@ -36,7 +36,7 @@ Base branch (default `main`), head branch (default current), PR title, issue num
    ```
    powershell -ExecutionPolicy Bypass -File tools/validate_pr_body.ps1 -Body (Get-Content -Raw <tmpfile>)
    ```
-   Fix and re-run until green.
+   Fix and re-run until green. If validation fails, provide specific error messages and suggest corrections.
 
 4. **Create draft PR** — Run:
    ```

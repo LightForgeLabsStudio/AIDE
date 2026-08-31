@@ -9,7 +9,7 @@ Review documentation for correctness, alignment with code and GitHub state, and 
 
 ## Inputs
 
-Which docs (or PR) to review. Audience focus (dev workflow vs player-facing).
+Please specify the exact documentation or pull requests (PRs) you want to review, including any specific versions or sections. Also clarify the intended audience focus: developer workflow or player-facing guidance.
 
 ## Review-aware
 

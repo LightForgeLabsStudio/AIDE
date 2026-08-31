@@ -21,7 +21,7 @@ Before starting: check if `<artifact>.findings.md` exists for this topic. If it 
 
 2. **Locate the system spec** — Find the relevant spec in `docs/specs/` (project) or `.aide/docs/` (AIDE framework work). If none exists for this system, you will create one named for the system, not the feature.
 
-3. **Shape options** — Produce 1 recommended option (+ 1 alternative max). Include: pros/cons, risks, dependencies, success validation.
+3. **Shape options** — Produce exactly 1 recommended option and optionally 1 alternative. Include: pros/cons, risks, dependencies, success validation.
 
 4. **Draft** — Create or update `docs/specs/<system>.md` with frontmatter (`status: draft` for new specs). Binding rules go in the spec's **Invariants** section.
 
