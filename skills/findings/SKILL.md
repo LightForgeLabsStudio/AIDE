@@ -50,7 +50,21 @@ Do not stop at chat-only review output. The findings file is the contract.
 
 ## Closing the loop
 
-Reviewer reads `<slug>.response.md`. If satisfied: both files deleted, target accepted. If not: iterate.
+Reviewer reads `<slug>.response.md`. If satisfied:
+
+1. Check the reviewed project's documentation conventions for review/approval
+   metadata, status fields, or other acceptance bookkeeping.
+2. Apply those project-defined conventions to the reviewed artifacts when the
+   reviewer is responsible for acceptance. If the project has no such
+   convention, no artifact metadata change is required.
+3. Delete both exchange files; target accepted.
+
+If not satisfied: iterate.
+
+Examples of project-defined bookkeeping include frontmatter such as
+`review_status: approved` / `reviewed: YYYY-MM-DD`, in-body ADR status text, a
+review log entry, or no approval metadata at all. These are examples, not AIDE
+requirements.
 
 ## Notes
 
