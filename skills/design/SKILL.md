@@ -21,15 +21,17 @@ Before starting: check if `<artifact>.findings.md` exists for this topic. If it 
 
 2. **Locate the system spec** — Find the relevant spec in `docs/specs/` (project) or `.aide/docs/` (AIDE framework work). If none exists for this system, you will create one named for the system, not the feature.
 
-3. **Shape options** — Produce exactly 1 recommended option and optionally 1 alternative. Include: pros/cons, risks, dependencies, success validation.
+3. **Native options and established practice first** — Before shaping options, survey what the platforms, frameworks and libraries already in use provide for this problem, what their documentation recommends as best practice, and how the problem is conventionally solved across the industry. Cite a source for each. The spec records which is used or rejected, and why, in an "Engine-native and established options" section. A custom mechanism is an option only after these have been named and ruled out.
 
-4. **Draft** — Create or update `docs/specs/<system>.md` with frontmatter (`status: draft` for new specs). Binding rules go in the spec's **Invariants** section.
+4. **Shape options** — Produce exactly 1 recommended option and optionally 1 alternative. Include: pros/cons, risks, dependencies, success validation.
 
-5. **ADR threshold check** — Also write a slim ADR to `docs/decisions/YYYY-MM-DD-<slug>.md` **only if all three hold**: real alternatives existed; the choice constrains future work; a newcomer could accidentally reverse it. The ADR points to the spec. Most features need no ADR.
+5. **Draft** — Create or update `docs/specs/<system>.md` with frontmatter (`status: draft` for new specs). Binding rules go in the spec's **Invariants** section.
 
-6. **Cross-review** — Use `/findings` to exchange findings before accepting. Do not accept unreviewed specs.
+6. **ADR threshold check** — Also write a slim ADR to `docs/decisions/YYYY-MM-DD-<slug>.md` **only if all three hold**: real alternatives existed; the choice constrains future work; a newcomer could accidentally reverse it. The ADR points to the spec. Most features need no ADR.
 
-7. **Accept** — Set spec frontmatter `status: accepted` (and ADR status if one was written). Hand off to `/scope` to decompose into GitHub issues (or, when the project elects a `docs/plans/` layer, an optional staged plan).
+7. **Cross-review** — Use `/findings` to exchange findings before accepting. Do not accept unreviewed specs.
+
+8. **Accept** — Set spec frontmatter `status: accepted` (and ADR status if one was written). Hand off to `/scope` to decompose into GitHub issues (or, when the project elects a `docs/plans/` layer, an optional staged plan).
 
 ## Spec frontmatter
 
