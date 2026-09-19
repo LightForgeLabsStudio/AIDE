@@ -21,7 +21,7 @@ Before starting: check if `<artifact>.findings.md` exists for this topic. If it 
 
 2. **Locate the system spec** — Find the relevant spec in `docs/specs/` (project) or `.aide/docs/` (AIDE framework work). If none exists for this system, you will create one named for the system, not the feature.
 
-3. **Native options and established practice first** — Before shaping options, survey what the platforms, frameworks and libraries already in use provide for this problem, what their documentation recommends as best practice, and how the problem is conventionally solved across the industry. Cite a source for each. The spec records which is used or rejected, and why, in an "Engine-native and established options" section. A custom mechanism is an option only after these have been named and ruled out.
+3. **Native options and established practice first** — Before shaping options, survey what the platforms, frameworks and libraries already in use provide for this problem, what their documentation recommends as best practice, and how the problem is conventionally solved across the industry. Cite a source for each. The spec records which is used or rejected, and why, in a "Native and established options" section. A custom mechanism is an option only after these have been named and ruled out.
 
 4. **Shape options** — Produce exactly 1 recommended option and optionally 1 alternative. Include: pros/cons, risks, dependencies, success validation.
 
