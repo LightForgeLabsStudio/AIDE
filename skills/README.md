@@ -156,7 +156,7 @@ Codex can use either packaged `.skill` files or repo-local skills.
 # From repo root
 .aide/skills/install-codex.ps1
 
-# Installs skills into: .codex/skills/ as links to the `.aide` canonicals by default
+# Installs skills into: .agents/skills/ as links to the `.aide` canonicals by default
 # Reload VS Code / restart Codex to pick up changes
 ```
 

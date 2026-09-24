@@ -1,5 +1,5 @@
 #!/usr/bin/env pwsh
-# Install AIDE skills for Codex (repo-local .codex/skills)
+# Install AIDE skills for Codex (repo-local .agents/skills)
 
 param(
     [switch]$Symlink = $true,
@@ -64,7 +64,7 @@ if ($RepoRoot -eq "") {
 }
 
 if ($SkillsPath -eq "") {
-    $SkillsPath = Join-Path $RepoRoot ".codex\\skills"
+    $SkillsPath = Join-Path $RepoRoot ".agents\\skills"
 }
 
 Write-Host "Repo root: $RepoRoot" -ForegroundColor Gray
@@ -123,7 +123,7 @@ foreach ($skill in $skills) {
 }
 Write-Host ""
 Write-Host "Next steps:" -ForegroundColor Yellow
-Write-Host "  1. Ensure Codex is configured to load repo skills from .codex/skills"
+Write-Host "  1. Codex discovers repo skills from .agents/skills"
 Write-Host "  2. Reload VS Code / restart Codex if needed"
 Write-Host ""
 

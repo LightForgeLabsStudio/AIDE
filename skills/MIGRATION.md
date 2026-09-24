@@ -25,5 +25,5 @@ Legacy Codex-only skills and routing workflows have been removed to avoid backwa
 
 ## Validation
 
-- Install repo-local skills for Codex: `powershell -ExecutionPolicy Bypass -File .aide/skills/install-codex.ps1`
+- Install repo-local skills for Codex: `powershell -ExecutionPolicy Bypass -File .aide/skills/install-codex.ps1` (installs into `.agents/skills/`)
 - Package `.skill` files: `powershell -ExecutionPolicy Bypass -File .aide/skills/package-codex.ps1`

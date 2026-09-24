@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Install AIDE skills for Codex (repo-local .codex/skills)
+# Install AIDE skills for Codex (repo-local .agents/skills)
 
 set -e
 
@@ -17,7 +17,7 @@ fi
 
 # Default to the repo that contains the .aide submodule
 REPO_ROOT="$(dirname "$AIDE_REPO_DIR")"
-SKILLS_PATH="$REPO_ROOT/.codex/skills"
+SKILLS_PATH="$REPO_ROOT/.agents/skills"
 
 # Parse arguments
 SYMLINK=false
@@ -29,7 +29,7 @@ while [[ $# -gt 0 ]]; do
             ;;
         --repo-root)
             REPO_ROOT="$2"
-            SKILLS_PATH="$REPO_ROOT/.codex/skills"
+            SKILLS_PATH="$REPO_ROOT/.agents/skills"
             shift 2
             ;;
         --skills-path)
@@ -101,7 +101,7 @@ fi
 
 echo -e "\033[0;32m\nInstallation complete!\033[0m"
 echo ""
-echo -e "\033[0;36mInstalled skills (repo-local .codex/skills):\033[0m"
+echo -e "\033[0;36mInstalled skills (repo-local .agents/skills):\033[0m"
 for skill_dir in "$AIDE_SKILLS_DIR"/*/; do
     if [ "$(basename "$skill_dir")" = "dist" ]; then
         continue
@@ -112,7 +112,7 @@ for skill_dir in "$AIDE_SKILLS_DIR"/*/; do
 done
 echo ""
 echo -e "\033[0;33mNext steps:\033[0m"
-echo "  1. Ensure Codex is configured to load repo skills from .codex/skills"
+echo "  1. Codex discovers repo skills from .agents/skills"
 echo "  2. Reload VS Code / restart Codex if needed"
 echo ""
 
