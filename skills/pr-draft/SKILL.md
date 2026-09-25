@@ -32,11 +32,17 @@ Base branch (default `main`), head branch (default current), PR title, issue num
    - [ ] <criterion>
    ```
 
-3. **Validate body** — Run:
+3. **Validate body** — Locate the validator from the repository root before running it. Check both the repository-level path and the AIDE-submodule path; this repository may keep it under `.aide/tools/`:
    ```
-   powershell -ExecutionPolicy Bypass -File tools/validate_pr_body.ps1 -Body (Get-Content -Raw <tmpfile>)
+   $validator = @("tools/validate_pr_body.ps1", ".aide/tools/validate_pr_body.ps1") |
+       Where-Object { Test-Path -LiteralPath $_ } |
+       Select-Object -First 1
+   if (-not $validator) {
+       throw "Validator not found; search hidden files and inspect submodules before proceeding."
+   }
+   powershell -ExecutionPolicy Bypass -File $validator -Body (Get-Content -Raw <tmpfile>)
    ```
-   Fix and re-run until green. If validation fails, provide specific error messages and suggest corrections.
+   If neither path exists, search the repository including hidden files and inspect submodules before calling the validator unavailable. Do not replace the validator with manual checks. Fix and re-run until green; if validation fails, provide the specific errors and suggest corrections.
 
 4. **Create draft PR** — Run:
    ```
