@@ -42,7 +42,7 @@ PR number or URL. Reviewer GitHub login (must not be PR author). Any custom conc
    - Git hygiene (commit structure, no debug leftovers)
    - If a check is red, compare against `main` and inspect the full PR commit range before classifying the check as a regression or a pre-existing issue. If the failure appears anywhere in the PR range, treat it as a branch-owned regression and review it as part of the PR. Do not label a failure as `pre-existing` unless that baseline comparison proves it.
 
-4. **Report findings** — Group by severity (Critical/Major/Minor) with `path:line` references. State a clear decision: approve / request changes / non-blocking.
+4. **Decide and communicate** — Group findings by severity (Critical/Major/Minor) with `path:line` references. State a clear decision: approve / request changes / non-blocking. Use judgment about discussing the decision with the user before submission: do so when evidence is uncertain, scope is disputed, or their input could change the decision. A routine review or rereview with a clear decision proceeds to submission without another confirmation.
 
 5. **Submit** — Post findings directly as a GitHub PR review:
    ```
