@@ -2,6 +2,8 @@
 
 Placeholders that AIDE skills and docs expect projects to define. Declare mappings in `AGENTS.md`.
 
+Implementation, validation and review also accept the project's linked workflow document; see [PROJECT_WORKFLOW.md](PROJECT_WORKFLOW.md) for the complete validation command and external-review handoff. Project constraints override template documentation paths and label conventions; ticket-only projects do not need to create unused documents.
+
 ## Required Placeholders
 
 | Placeholder | Purpose |

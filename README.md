@@ -158,8 +158,8 @@ All changes require tests. No exceptions (unless you document why).
 
 AIDE provides self-contained skills that define what the agent is doing, not who it is:
 
-- **`/implement`** — Build features end-to-end: spec intake, code, tests, verify, push
-- **`/pr-review`** — Review code for quality, architecture, and standards
+- **`/implement`** — Implement requirements on a feature branch, validate, and deliver a draft PR with a review handoff
+- **`/pr-review`** — Review the current PR head against its ticket and project constraints, then submit findings for that commit
 - **`/design`** — Design exploration → Architecture Decision Record (ADR)
 - **`/scope`** — Decompose an ADR into GitHub issues via issue-creator
 - **`/codebase-review`** — Holistic codebase health audit
@@ -174,7 +174,7 @@ AIDE provides self-contained skills that define what the agent is doing, not who
 
 The canonical implementation workflow is inlined in the `/implement` skill:
 
-- `skills/implement/SKILL.md` — two-layer plan (constraint check + ordered steps), code, verify
+- `skills/implement/SKILL.md` — two-layer plan, feature branch, implementation, validation, draft PR, and head-specific review handoff
 
 Start by invoking `/implement` in your AI chat session and providing a GitHub issue number or spec.
 
