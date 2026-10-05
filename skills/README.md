@@ -185,12 +185,12 @@ Check tool documentation for skill installation. Most support the same `SKILL.md
 
 | Skill | Command | Description |
 |-------|---------|-------------|
-| **implement** | `/implement` | Execute a GitHub issue or spec end-to-end. Inline two-layer plan, code, verify. |
+| **implement** | `/implement` | Implement a ticket or requirements on a feature branch, validate, and deliver a draft PR with a head-specific review handoff. |
 | **design** | `/design` | Design a feature or change into a reviewed ADR. Outputs a decision record ready for /scope. |
 | **scope** | `/scope` | Decompose an accepted ADR into GitHub issues using the issue-creator tool. |
 | **findings** | `/findings` | Write reviewer findings to a `<slug>.findings.md` file for any scoped review target. |
-| **pr-review** | `/pr-review` | Review a PR for spec alignment, architecture, tests, and docs. No code changes. |
-| **pr-draft** | `/pr-draft` | Create a draft PR with a validated body template and issue linkage. |
+| **pr-review** | `/pr-review` | Review the complete current PR head against its ticket and project constraints, then submit findings for that commit. No code changes. |
+| **pr-draft** | `/pr-draft` | Create or update a draft PR with a validated body and issue linkage when applicable. |
 | **pr-ready** | `/pr-ready` | Run validation, post a summary, and flip a PR from draft to ready. |
 | **codebase-review** | `/codebase-review` | Holistic read-only codebase health review to find drift, dead code, and test gaps. |
 | **doc-review** | `/doc-review` | Review documentation for accuracy, drift, and duplication. No code changes. |

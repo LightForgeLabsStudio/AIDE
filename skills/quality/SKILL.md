@@ -10,15 +10,15 @@ Run project quality gates and report results.
 ## Inputs
 
 Use the requested scope, or default to full when none is supplied:
-- **default**: lint + unit tests (fast feedback)
+- **fast**: configured lint + unit tests (focused feedback; not a delivery gate)
 - **full**: all tests + smoke tests
 - **dry-run**: print commands without executing
 
-If the user provides an invalid scope option, respond with an error message indicating valid options: default, full, or dry-run.
+If the user provides an invalid scope option, respond with an error message indicating valid options: fast, full, or dry-run.
 
 ## Workflow
 
-1. **Load commands** using [project workflow configuration](../../docs/agents/PROJECT_WORKFLOW.md). Prefer its complete validation command for full scope. Otherwise resolve the project mappings:
+1. **Load commands** from the consuming project's root AGENTS.md and any workflow document it names (convention: `docs/agents/workflow.md`, relative to the project root). Prefer `VALIDATE_COMMAND` or `RUN_ALL_TESTS_COMMAND` for full scope. Resolve required commands before execution; report missing configuration instead of guessing or skipping a gate. Otherwise resolve the project mappings:
    - `{{LINT_COMMAND}}`
    - `{{RUN_UNIT_TESTS_COMMAND}}` (optional)
    - `{{RUN_ALL_TESTS_COMMAND}}`
@@ -29,7 +29,7 @@ If the user provides an invalid scope option, respond with an error message indi
 3. **Report:**
    ```
    ## Quality Gate Results
-   Scope: default | full | dry-run
+   Scope: fast | full | dry-run
 
    Results:
    ✅/❌ Lint: passed | failed

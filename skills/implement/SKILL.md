@@ -5,7 +5,7 @@ description: Implement a ticket, validate, and deliver a draft PR for review. Ap
 
 # Implement
 
-Read the project's AGENTS.md and [project workflow configuration](../../docs/agents/PROJECT_WORKFLOW.md). User instructions and project constraints govern the workflow.
+Read the consuming project's root AGENTS.md and any workflow document it names (convention: `docs/agents/workflow.md`, relative to the project root). Resolve required commands there before acting; report missing configuration instead of guessing or skipping a gate. User instructions and project constraints govern the workflow. Resolve `MAIN_BRANCH` (default `main`), the full validation command (`VALIDATE_COMMAND` or `RUN_ALL_TESTS_COMMAND`), and `REVIEW_MODE` (`external` by default; `independent-agent` only when selected by the project or user).
 
 ## Inputs
 
@@ -19,7 +19,7 @@ A ticket, pasted requirements, or an existing PR with accepted findings. Tickets
 
 ## Implement and validate
 
-- Keep the diff within the accepted scope. Follow the project's test policy, including any approval requirement for changing existing tests.
+- Keep the diff within the accepted scope. Follow the project's test policy, including any approval requirement for changing existing tests. Without a project test policy, do not modify existing tests without explicit user approval.
 - Run focused checks as needed, then the configured full validation command once on the final implementation. Run a separate lint command only when full validation does not include it.
 - If validation fails, compare with the base branch and inspect the full PR range before attributing it. Fix branch-owned failures; report proven baseline failures precisely.
 - Re-read the current ticket and comments before delivery. Account for every acceptance criterion with implementation and evidence, or mark it unresolved. Automated checks, inspected visual evidence and human play acceptance are distinct results.
@@ -32,7 +32,7 @@ A ticket, pasted requirements, or an existing PR with accepted findings. Tickets
 
    ```text
    Review <PR URL> at head <full SHA> against <ticket(s)> using pr-review.
-   Read the project workflow configuration; post findings through its review command.
+   Read the project root AGENTS.md and its linked workflow document; post findings through the configured review command.
    If the head changed, review the new complete head and state its SHA.
    ```
 

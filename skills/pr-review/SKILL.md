@@ -5,7 +5,7 @@ description: Review a PR against its current ticket and project constraints, the
 
 # PR Review
 
-Read the project's AGENTS.md and [project workflow configuration](../../docs/agents/PROJECT_WORKFLOW.md). The reviewer can run in a different tool or session from the implementer; GitHub holds the shared review record.
+Read the consuming project's root AGENTS.md and any workflow document it names (convention: `docs/agents/workflow.md`, relative to the project root). Resolve required commands there before acting; report missing configuration instead of guessing or skipping a gate. User instructions and project constraints govern the workflow. Resolve the reviewer identity and `REVIEW_COMMAND` from those sources. The reviewer can run in a different tool or session from the implementer; GitHub holds the shared review record.
 
 ## Inputs
 

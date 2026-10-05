@@ -13,7 +13,7 @@ PR number or URL. Optional: `-Fast` (lint + unit tests only), `-DryRun` (print a
 
 ## Workflow
 
-1. **Run validation** — Read [project workflow configuration](../../docs/agents/PROJECT_WORKFLOW.md). Prefer the complete validation command, running it once. If separate gates are required, resolve:
+1. **Run validation** — Read the consuming project's root AGENTS.md and any workflow document it names (convention: `docs/agents/workflow.md`, relative to the project root). Prefer `VALIDATE_COMMAND` or `RUN_ALL_TESTS_COMMAND`, running the complete gate once. Resolve required commands before execution; report missing configuration instead of guessing or skipping a gate. If separate gates are required, resolve:
    - `{{LINT_COMMAND}}`
    - `{{RUN_UNIT_TESTS_COMMAND}}`
    - `{{RUN_ALL_TESTS_COMMAND}}`

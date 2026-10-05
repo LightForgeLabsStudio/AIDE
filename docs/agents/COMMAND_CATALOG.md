@@ -13,12 +13,12 @@ Tool-agnostic skill definitions. Authority lives in each skill's `SKILL.md`; thi
 
 | Skill | Intent |
 | --- | --- |
-| `/implement` | Execute a GitHub issue or spec end-to-end |
+| `/implement` | Implement a ticket or requirements through a draft PR and review handoff |
 | `/design` | Design a feature into a reviewed ADR |
 | `/scope` | Decompose an accepted ADR into GitHub issues |
 | `/findings` | Cross-cutting review protocol that writes reviewer findings files |
-| `/pr-review` | Review a PR for spec alignment, arch, tests, docs |
-| `/pr-draft` | Create a draft PR with validated body |
+| `/pr-review` | Review the current PR head against its ticket and submit commit-specific findings |
+| `/pr-draft` | Create or update a draft PR with validated body |
 | `/pr-ready` | Validate and flip a PR from draft to ready |
 | `/codebase-review` | Holistic read-only codebase health review |
 | `/doc-review` | Documentation accuracy and drift review |
@@ -32,9 +32,13 @@ Tool-agnostic skill definitions. Authority lives in each skill's `SKILL.md`; thi
 ## Chaining Flow
 
 ```text
-/design → ADR → /scope → GitHub issues → /implement → /pr-draft → /pr-ready
-                                       ↑                           ↓
-                                /findings                     /pr-review
+/design → ADR → /scope → GitHub issues → /implement (includes draft PR)
+                                           ↓
+                                      /pr-review
+                                           ↓
+                           accepted findings → /implement
+
+/pr-ready marks the validated PR ready when requested; merging is a separate action.
 ```
 
 ## Implementation Guidance
