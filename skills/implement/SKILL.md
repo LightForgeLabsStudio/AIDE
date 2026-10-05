@@ -1,36 +1,44 @@
 ---
 name: implement
-description: Execute a GitHub issue or spec end-to-end. Inline two-layer plan, code, verify.
+description: Implement a ticket, validate, and deliver a draft PR for review. Apply accepted PR findings on the same branch.
 ---
 
 # Implement
 
-Execute a GitHub issue or spec. Read AGENTS.md if not in context.
+Read the project's AGENTS.md and [project workflow configuration](../../docs/agents/PROJECT_WORKFLOW.md). User instructions and project constraints govern the workflow.
 
 ## Inputs
 
-Issue number (`gh issue view <n>`) or pasted spec text. If no spec exists, refer to the existing design document at `/design` for guidance on creating a new spec.
+A ticket, pasted requirements, or an existing PR with accepted findings. Tickets can be the complete decision source; create a spec only when the project requires one. Read the ticket and its comments, plus any existing findings file.
 
-## Review-aware
+## Before code
 
-Before starting, first check if `<issue-slug>.findings.md` exists. If it does, read it. Then, incorporate findings into your plan before proceeding.
-If CI or a test is red, compare against `main` and inspect the full PR commit range before classifying the failure. If the failure appears anywhere in the PR range, treat it as branch-owned and fix it in this PR.
+1. Confirm goal, success criteria and scope from the available requirements. Ask only for missing decisions.
+2. State a narrow two-layer plan: applicable project constraints (at most eight bullets), then steps with checkable exit criteria. Name the files to inspect.
+3. Record the base branch and starting commit. Create a feature branch before implementation when currently on the base branch; use an isolated worktree if another task owns the checkout. Preserve unrelated changes. For an existing PR, use its head branch. Explicit user authorization or a project path-specific exception can allow work on the base branch; a notes-only exception never applies to code.
 
-## Before touching code
+## Implement and validate
 
-1. Confirm: Goal / Success Criteria / Scope. Ask if missing or ambiguous.
-2. State which files you plan to read before reading them.
-3. **Layer 1** — filter applicable constraints from AGENTS.md (≤8 bullets): which invariants, authoritative systems, and boundaries govern this task.
-4. **Layer 2** — ordered steps with exit criteria: `[Step] → Exit: [how to verify]`. State this plan explicitly before writing any code.
+- Keep the diff within the accepted scope. Follow the project's test policy, including any approval requirement for changing existing tests.
+- Run focused checks as needed, then the configured full validation command once on the final implementation. Run a separate lint command only when full validation does not include it.
+- If validation fails, compare with the base branch and inspect the full PR range before attributing it. Fix branch-owned failures; report proven baseline failures precisely.
+- Re-read the current ticket and comments before delivery. Account for every acceptance criterion with implementation and evidence, or mark it unresolved. Automated checks, inspected visual evidence and human play acceptance are distinct results.
 
-## Implementation
+## Deliver for review
 
-- Follow patterns in AGENTS.md. Load Tier 2 refs only when the task requires them.
-- Do not modify existing tests without explicit approval.
-- Keep diffs small and single-purpose.
+1. Inspect the final diff and status, then commit only this task's changes. Review tools comparing committed HEAD must run after this commit.
+2. Push the feature branch and follow [pr-draft](../pr-draft/SKILL.md) to create or update its draft PR. Keep the description aligned with the current scope and outstanding acceptance work. Do not close the ticket or merge the PR as part of implementation.
+3. Record the PR URL, head SHA and current CI status. In **external** review mode, return this handoff:
 
-## After coding
+   ```text
+   Review <PR URL> at head <full SHA> against <ticket(s)> using pr-review.
+   Read the project workflow configuration; post findings through its review command.
+   If the head changed, review the new complete head and state its SHA.
+   ```
 
-- Verify each Layer 2 exit criterion is met.
-- Run: `{{RUN_ALL_TESTS_COMMAND}}` and `{{LINT_COMMAND}}`
-- Report: what changed, which criteria are satisfied, any gaps.
+   The configured external reviewer (for example Claude) owns that pass. Do not substitute the implementation agent's own review or wait indefinitely for another session. In **independent-agent** mode, use a separate review agent only when configured or requested; include the pinned head and ticket. A report is not a submitted GitHub review.
+4. Report what was delivered, acceptance gaps, CI status and the review handoff. Green checks alone do not imply approval.
+
+## Accepted review findings
+
+When asked to address a PR's findings, read all reviews, threads and relevant comments at its current head. Resolve the accepted items on the same branch, preserve behavioral coverage, revalidate, commit and push. Update the PR description and return a fresh head-specific handoff. Previous approval does not establish review of new commits. Merge only on explicit user instruction after checking the current head, CI and review state.

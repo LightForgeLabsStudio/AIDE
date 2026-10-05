@@ -9,7 +9,7 @@ Run project quality gates and report results.
 
 ## Inputs
 
-Ask the user for scope. Choose one of the following options:
+Use the requested scope, or default to full when none is supplied:
 - **default**: lint + unit tests (fast feedback)
 - **full**: all tests + smoke tests
 - **dry-run**: print commands without executing
@@ -18,13 +18,13 @@ If the user provides an invalid scope option, respond with an error message indi
 
 ## Workflow
 
-1. **Load commands** from project placeholder mappings:
+1. **Load commands** using [project workflow configuration](../../docs/agents/PROJECT_WORKFLOW.md). Prefer its complete validation command for full scope. Otherwise resolve the project mappings:
    - `{{LINT_COMMAND}}`
    - `{{RUN_UNIT_TESTS_COMMAND}}` (optional)
    - `{{RUN_ALL_TESTS_COMMAND}}`
    - `{{SMOKE_TEST_COMMAND}}` (optional)
 
-2. **Execute** in order: lint → tests → smoke (if full scope).
+2. **Execute** the complete validation command for full scope, or lint → tests → smoke as configured. Run identical commands once. A complete gate already including lint and smoke replaces separate invocations.
 
 3. **Report:**
    ```

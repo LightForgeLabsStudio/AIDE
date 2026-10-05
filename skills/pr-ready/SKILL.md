@@ -13,13 +13,13 @@ PR number or URL. Optional: `-Fast` (lint + unit tests only), `-DryRun` (print a
 
 ## Workflow
 
-1. **Run validation** — Use project placeholder mappings to extract:
+1. **Run validation** — Read [project workflow configuration](../../docs/agents/PROJECT_WORKFLOW.md). Prefer the complete validation command, running it once. If separate gates are required, resolve:
    - `{{LINT_COMMAND}}`
    - `{{RUN_UNIT_TESTS_COMMAND}}`
    - `{{RUN_ALL_TESTS_COMMAND}}`
    - `{{SMOKE_TEST_COMMAND}}` (optional)
 
-   Default: lint + all tests + smoke (if defined). `-Fast`: lint + unit tests only.
+   Default: the complete delivery gate. `-Fast` gives focused feedback only; it cannot mark the PR ready unless the project explicitly permits it as the delivery gate. Do not rerun an identical command under multiple mappings.
 
 2. **Check CI** — Run `gh pr checks <pr> --watch`. Wait for green.
 
